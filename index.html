@@ -738,6 +738,9 @@ document.getElementById('resetBtn').addEventListener('click', async () => {
     streak: 0, best: 0, lastPracticedDate: null,
     qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0 },
     log: [], stampDates: [], answeredQuestions: []
+  };
+  await saveState();
+  render();
 });
 
 function expiryLabel(dateStr) {
