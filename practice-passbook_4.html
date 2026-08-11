@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Passbook</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --bg:#0F1A30;
+  --bg-alt:#16233F;
+  --paper:#FBF7EC;
+  --paper-line:#E6DCC3;
+  --ink:#221F1A;
+  --gold:#C9A227;
+  --gold-deep:#8C6D1F;
+  --stamp:#A63D30;
+  --muted:#6E6656;
+  --success:#2F6B3E;
+  --success-bg:#E6EFE3;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at top, var(--bg-alt), var(--bg) 70%);
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  min-height:100vh;
+  padding:20px 14px 60px;
+}
+.wrap{max-width:460px;margin:0 auto;}
+
+.masthead{
+  text-align:center;
+  color:var(--paper);
+  margin-bottom:18px;
+}
+.masthead .eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:4px;
+}
+.masthead h1{
+  font-family:'Fraunces',serif;
+  font-weight:700;
+  font-size:28px;
+  margin:0;
+  letter-spacing:0.3px;
+}
+.masthead p{
+  font-size:12.5px;
+  color:#B9C2D6;
+  margin:4px 0 0;
+}
+
+/* Passbook card */
+.passbook{
+  background:var(--paper);
+  border-radius:4px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.35), inset 0 0 0 1px var(--paper-line);
+  padding:22px 20px 18px;
+  margin-bottom:16px;
+  position:relative;
+  overflow:hidden;
+}
+.passbook::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:8px;
+  background:repeating-linear-gradient(0deg,var(--gold-deep) 0 3px, transparent 3px 9px);
+  opacity:0.5;
+}
+.passbook-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:1px dashed var(--paper-line);
+  padding-bottom:14px;
+  margin-bottom:14px;
+}
+.streak-num{
+  font-family:'Fraunces',serif;
+  font-size:46px;
+  font-weight:700;
+  line-height:1;
+  color:var(--stamp);
+}
+.streak-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:4px;
+}
+.best-badge{
+  text-align:right;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+}
+.best-badge b{color:var(--ink);font-size:15px;display:block;}
+
+.stamp-row{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.stamp{
+  width:30px;height:30px;
+  border-radius:50%;
+  border:2px solid var(--paper-line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;
+  color:var(--paper-line);
+  font-family:'JetBrains Mono',monospace;
+  flex-shrink:0;
+}
+.stamp.done{
+  border-color:var(--stamp);
+  color:var(--stamp);
+  transform:rotate(-8deg);
+  font-weight:700;
+}
+
+.next-line{
+  font-size:12.5px;
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+}
+.next-line b{color:var(--ink);}
+
+/* Today card */
+.card{
+  background:var(--paper);
+  border-radius:4px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.28), inset 0 0 0 1px var(--paper-line);
+  padding:20px;
+  margin-bottom:16px;
+}
+.card-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold-deep);
+  background:#F3E9C9;
+  padding:3px 9px;
+  border-radius:2px;
+  margin-bottom:10px;
+}
+.card h2{
+  font-family:'Fraunces',serif;
+  font-size:19px;
+  margin:0 0 12px;
+}
+.q-block{
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:3px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  font-size:14px;
+  line-height:1.5;
+}
+.q-block .qn{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  color:var(--gold-deep);
+  margin-bottom:4px;
+  display:block;
+}
+.q-block .q-text{margin-bottom:10px;}
+.reveal-btn{
+  background:none;
+  border:1px solid var(--gold-deep);
+  color:var(--gold-deep);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:3px;
+  cursor:pointer;
+  width:auto;
+}
+.a-text{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed var(--paper-line);
+  font-size:13.5px;
+  line-height:1.55;
+  color:#3A3527;
+}
+select, textarea{
+  width:100%;
+  font-family:'Inter',sans-serif;
+  font-size:13.5px;
+  padding:9px 10px;
+  border:1px solid var(--paper-line);
+  border-radius:3px;
+  background:#fff;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+textarea{resize:vertical;min-height:60px;}
+button{
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:13.5px;
+  border:none;
+  border-radius:3px;
+  padding:11px 16px;
+  cursor:pointer;
+  width:100%;
+}
+.btn-primary{
+  background:var(--ink);
+  color:var(--paper);
+}
+.btn-primary:disabled{
+  background:#B9B2A0;
+  cursor:default;
+}
+.btn-secondary{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--paper-line);
+  margin-top:8px;
+}
+.done-banner{
+  background:var(--success-bg);
+  color:var(--success);
+  font-size:13px;
+  font-weight:600;
+  padding:10px 12px;
+  border-radius:3px;
+  margin-bottom:10px;
+}
+
+/* Log */
+.log-title{
+  color:var(--paper);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin:22px 0 8px 4px;
+}
+.log-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 4px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  font-size:12.5px;
+  color:#C7CEDE;
+}
+.log-row .d{font-family:'JetBrains Mono',monospace;color:var(--gold);flex-shrink:0;}
+.log-row .t{flex:1;color:#EDEFF5;}
+.log-empty{
+  color:#7C859C;
+  font-size:12.5px;
+  padding:10px 4px;
+  font-style:italic;
+}
+.tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:16px;
+  background:rgba(255,255,255,0.06);
+  padding:4px;
+  border-radius:6px;
+}
+.tab-btn{
+  flex:1;
+  background:none;
+  border:none;
+  color:#B9C2D6;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  padding:9px 6px;
+  border-radius:4px;
+  cursor:pointer;
+}
+.tab-btn.active{
+  background:var(--paper);
+  color:var(--ink);
+}
+.lib-topic{
+  margin-bottom:14px;
+}
+.lib-topic-title{
+  color:var(--gold);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin:0 0 8px 4px;
+}
+.lib-q{
+  background:var(--paper);
+  border-radius:4px;
+  box-shadow:inset 0 0 0 1px var(--paper-line);
+  padding:14px 16px;
+  margin-bottom:8px;
+}
+.reset-link{
+  text-align:center;
+  margin-top:20px;
+}
+.reset-link button{
+  background:none;
+  color:#7C859C;
+  font-size:11px;
+  text-decoration:underline;
+  width:auto;
+  padding:4px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="eyebrow">Fintech PM Track</div>
+    <h1>Practice Passbook</h1>
+    <p>Mon · Wed · Fri · Sat — evening entries</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabToday">Today</button>
+    <button class="tab-btn" id="tabLibrary">Practice Questions</button>
+  </div>
+
+  <div id="todayView">
+  <div class="passbook">
+    <div class="passbook-header">
+      <div>
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-label">day streak</div>
+      </div>
+      <div class="best-badge">
+        <b id="bestNum">0</b>
+        best streak
+      </div>
+    </div>
+    <div class="stamp-row" id="stampRow"></div>
+    <div class="next-line" id="nextLine">Loading…</div>
+  </div>
+
+  <div class="card" id="todayCard">
+    <div class="card-tag" id="topicTag">TODAY</div>
+    <h2 id="topicHeading">Loading…</h2>
+    <div id="questionArea"></div>
+    <textarea id="noteField" placeholder="Optional: jot a note on how it went…"></textarea>
+    <button class="btn-primary" id="markBtn">Mark session practiced</button>
+    <button class="btn-secondary" id="skipTopicBtn">Practice a different topic instead</button>
+  </div>
+
+  <div class="card" id="moreCard" style="display:none;">
+    <div class="card-tag">EXTRA PRACTICE</div>
+    <h2>Want another question today?</h2>
+    <p style="font-size:13px;color:var(--muted);margin:-6px 0 12px;">Your streak's already counted for today — this just adds more reps.</p>
+    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px;">Topic</label>
+    <select id="moreTopicSelect"></select>
+    <button class="btn-primary" id="moreBtn">Give me another question</button>
+  </div>
+
+  <div class="log-title">Ledger</div>
+  <div id="logList"></div>
+
+  <div class="reset-link"><button id="resetBtn">Reset all data</button></div>
+  </div>
+
+  <div id="libraryView" style="display:none;"></div>
+</div>
+
+<script>
+const TOPICS = {
+  product_sense: {
+    label: "Product Sense",
+    questions: [
+      { q: "Design a bill payment reminder feature for BBPS users who frequently miss due dates.",
+        a: "Scope to existing users, prioritize electricity (highest volume, less reminder-overlap than credit cards). Segment root causes: reminder ignored (SMS fatigue) vs never-received (network/opt-out). Solve for 'ignored' first — highest reach, lowest effort. Ship in-app nudge + WhatsApp/email in phase 1 (4 wks) to validate; scale via third-party app integrations (PhonePe/GPay) in phase 2. Metric: % reduction in missed-due-date payments; secondary: reminder open/click rate." },
+      { q: "How would you improve the first-time NACH mandate creation flow?",
+        a: "Identify friction: bank selection confusion, OTP drop-offs, unclear physical-mandate fallback. Pre-fill customer/account data via Account Aggregator consent to cut manual entry. Single consolidated consent screen instead of multi-step forms. Real-time status tracker (pending/approved/failed with reason) instead of silent waiting. Metric: mandate completion rate, time-to-activate." },
+      { q: "Redesign UPI AutoPay's mandate-pause experience.",
+        a: "Problem: users cancel fully instead of pausing because pause isn't visible/granular. Add 'pause for N cycles' as a first-class action next to cancel, with auto-resume reminder before reactivation. Show pause impact clearly (e.g., 'next debit skipped, resumes on [date]'). Metric: reduction in full cancellations, pause-to-resume conversion rate." },
+      { q: "How would you help users recover from a failed eNACH mandate registration?",
+        a: "Show the actual failure reason (bank server down, invalid account, OTP expiry) instead of a generic error. Offer immediate retry for transient failures, and a fallback path (physical NACH or alternate bank) for hard failures. Track retry success rate as the core metric; segment failures by bank to catch systemic issues." },
+      { q: "Design a feature to reduce Digital Cancelled Cheque upload failures.",
+        a: "Root causes usually: poor lighting/glare, cropped edges, low OCR confidence on handwritten fields. Add a live camera guide overlay with real-time quality feedback, allow manual correction of OCR-extracted fields before submit, and a manual-entry fallback if OCR confidence is low. Metric: first-attempt upload success rate." },
+      { q: "How would you design an onboarding flow for a first-time BBPS biller?",
+        a: "Break onboarding into a checklist (KYC docs, bank integration, test transactions) with visible status per step. Assign a single point of contact/dedicated support for the first 30 days. Provide a sandbox for test billing before go-live. Metric: time-to-go-live, drop-off rate by step." }
+    ]
+  },
+  execution: {
+    label: "Execution / Prioritization",
+    questions: [
+      { q: "You have 3 engineers and 6 weeks. Prioritize: NACH failure-reason clarity, BBPS new biller onboarding, DCC OCR accuracy improvement. Justify your call.",
+        a: "Use RICE: NACH failure-reason clarity affects the largest existing user base with low build effort (mostly UX/messaging) — highest score, pick first. BBPS onboarding is high-impact but effort-heavy (partner-dependent) — phase 2. DCC OCR improvement is valuable but affects a smaller, newer user base — phase 3 or parallel-track if capacity allows." },
+      { q: "A key regulatory deadline (RBI mandate) conflicts with a revenue-driving feature launch. How do you sequence?",
+        a: "Regulatory deadlines are non-negotiable — compliance risk (penalties, license risk) outweighs revenue delay. Sequence compliance first, but look for a parallel track: can a smaller eng pod handle compliance while the rest continues revenue-feature groundwork (design, backend prep) so launch isn't fully blocked once compliance ships?" },
+      { q: "Your BBPS COU integration is delayed by a partner dependency. Walk through how you'd manage the roadmap and stakeholders.",
+        a: "Communicate the delay and revised timeline transparently to stakeholders immediately — don't let it surface late. Decouple roadmap items that don't depend on the partner and keep those moving. Escalate through partner's account/BD channel with a clear ask and deadline. Build a fallback (manual/interim process) if the delay risks a committed external date." },
+      { q: "How would you decide whether to build vs. buy for a new fraud-check module in DCC?",
+        a: "Buy if speed-to-market matters and mature vendor solutions exist with acceptable accuracy/cost — avoids reinventing a solved problem. Build if the fraud patterns are proprietary/unique to your data, or if long-term cost and control (no vendor lock-in) matter more than initial speed. Weigh: cost over 2-3 years, data sensitivity, integration effort, vendor reliability." },
+      { q: "Write a 1-week sprint plan for fixing a spike in eNACH mandate failures.",
+        a: "Day 1: Pull failure data, segment by bank/error-code/time. Day 2: Identify top 2 root causes (e.g., one bank's API issue). Day 3-4: Ship fix for highest-impact cause + improve error messaging. Day 5: Deploy, monitor dashboards closely. Weekend: on-call watch, rollback plan ready." }
+    ]
+  },
+  analytics: {
+    label: "Analytics / Metrics",
+    questions: [
+      { q: "Define success metrics for the BBPS bill reminder feature we designed earlier.",
+        a: "Primary: % reduction in missed-due-date payments within 90 days. Secondary: reminder open/click-through rate by channel, opt-in rate for WhatsApp, on-time payment rate lift vs control group. Guardrail: opt-out/unsubscribe rate (avoid notification fatigue backlash)." },
+      { q: "eNACH mandate success rate dropped 8% last week. Walk through your root-cause approach.",
+        a: "Segment the drop: by bank (is it one bank's API/downtime?), by step in funnel (OTP, authorization, activation), by device/OS, and by time (correlate with any recent release or bank-side change). Isolate the single largest contributing segment before proposing a fix — avoid fixing symptoms broadly without a confirmed root cause." },
+      { q: "Estimate the number of BBPS bill payments processed daily in India.",
+        a: "Structure over precision: ~140Cr population → ~50Cr adults with bank accounts → assume ~60% pay at least one recurring bill (electricity/DTH/etc.) → ~30Cr bill-paying adults → assume ~20% use BBPS specifically (vs. direct biller apps) → ~6Cr BBPS bill-payers → average 1 bill/month → ~20L bills/day roughly. State assumptions clearly and sanity-check against any known public NPCI BBPS volume data if available." },
+      { q: "What metrics would you track for Digital Cancelled Cheque adoption in its first quarter?",
+        a: "Activation rate (% eligible users who try DCC), first-attempt upload success rate, time-to-approval, repeat usage rate (adoption stickiness), and drop-off rate by step (capture → OCR → review → submit)." },
+      { q: "How would you set up an A/B test for a new NACH mandate UI?",
+        a: "Define hypothesis (e.g., 'single-screen consent increases completion rate by X%'). Random-assign traffic 50/50, primary metric = mandate completion rate, guardrail metrics = error rate and support tickets. Calculate sample size/duration via a power calculation before launch; avoid peeking early and stopping on noise." }
+    ]
+  },
+  behavioral: {
+    label: "Behavioral",
+    questions: [
+      { q: "Tell me about a time you had to push back on a stakeholder's requirement. Use your eNACH/BBPS/DCC experience.",
+        a: "STAR template — Situation: what was requested and by whom. Task: why it conflicted with your view (compliance risk, user harm, tech debt). Action: how you pushed back — data used, alternative proposed, how you brought them along. Result: outcome + what you'd repeat/change. Use a real moment from your eNACH/BBPS/DCC work — this needs your specifics, not a generic script." },
+      { q: "Describe a time a product decision you made didn't work out. What did you learn?",
+        a: "STAR template — pick a real decision with a genuine miss (not a disguised humble-brag). Be honest about the wrong assumption, show the data/signal that revealed it, and end with a concrete change in how you decide things now. Authenticity matters more than a 'perfect' story." },
+      { q: "Tell me about a time you had to align Product, Compliance, and Engineering on a tight regulatory deadline.",
+        a: "STAR template — Situation: the deadline and competing priorities across teams. Task: your role in alignment. Action: how you ran the conversation (shared doc, working sessions, trade-off framing). Result: outcome and relationship impact. Draw on your actual eNACH/BBPS regulatory work for specifics." },
+      { q: "Describe a situation where you had incomplete data but still had to make a call.",
+        a: "STAR template — name the missing data explicitly, the deadline pressure, your reasoning for a directional call vs. waiting, and how you mitigated risk (fast rollback plan, phased rollout). Show judgment, not recklessness." },
+      { q: "Tell me about a time you influenced without direct authority.",
+        a: "STAR template — a peer team or senior stakeholder you needed buy-in from without reporting authority. Focus the Action on the specific influence tactic: data, relationship-building, incremental wins, or framing their incentive. Fill with your own APB experience." }
+    ]
+  },
+  fintech_domain: {
+    label: "Fintech Domain (bonus)",
+    questions: [
+      { q: "Explain the difference between BOU and COU in the BBPS ecosystem.",
+        a: "BOU (Biller Operating Unit) onboards and integrates billers (electricity boards, telcos, etc.) onto the BBPS network. COU (Customer Operating Unit) is the customer-facing entity — banks, wallets, apps — that lets end customers discover and pay those bills. One connects billers in, the other lets customers pay out." },
+      { q: "Walk through the eNACH mandate lifecycle as a destination bank.",
+        a: "Customer initiates mandate (via net-banking/debit card/Aadhaar-based auth) → mandate details registered and stored with NPCI → for each billing cycle, a debit is presented against the mandate → destination bank validates and authorizes/declines based on mandate terms and balance → settlement occurs → dispute/complaint handling if a debit is contested." },
+      { q: "What changed in RBI's e-mandate framework for recurring payments, and why?",
+        a: "Broadly: additional factor authentication (AFA) requirements for recurring debits above a threshold, mandatory pre-debit notification to the customer ahead of each auto-debit, and relaxed/simplified authentication for small-value transactions below a threshold. Intent: balance fraud prevention with friction-free recurring payments. Verify exact current thresholds against the latest RBI circular before quoting numbers in an interview." },
+      { q: "How does Account Aggregator differ from BBPS/NACH data flows?",
+        a: "Account Aggregator is a consent-based framework for sharing financial *data* across institutions (statements, holdings) — it doesn't move money. BBPS and NACH are payment *execution* rails — BBPS for bill collection, NACH for recurring debits/credits. AA can inform decisions (e.g., credit underwriting); BBPS/NACH actually move the money." },
+      { q: "What obligations does a destination bank hold in an eNACH transaction chain?",
+        a: "Validate mandate authenticity before honoring a debit, execute the debit per the exact mandate terms (amount/frequency/date), perform balance checks, adhere to NPCI-mandated turnaround times for authorization/response, and handle customer disputes/complaints within regulatory timelines." }
+    ]
+  }
+};
+
+const SCHEDULE = { 1: "execution", 3: "analytics", 5: "behavioral", 6: "product_sense" };
+// 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+
+const STORE_KEY = "pm-prep-state-v1";
+let state = null;
+let activeTopicKey = null;
+let lastRevealed = null;
+
+function todayStr(d = new Date()) {
+  return d.toISOString().slice(0,10);
+}
+function dayName(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'short' });
+}
+
+async function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (!parsed.answeredQuestions) parsed.answeredQuestions = [];
+      return parsed;
+    }
+  } catch(e) {}
+  return {
+    streak: 0,
+    best: 0,
+    lastPracticedDate: null,
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0 },
+    log: [],
+    stampDates: [],
+    answeredQuestions: []
+  };
+}
+
+function pruneOldAnsweredQuestions() {
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 4);
+  const cutoffStr = todayStr(cutoff);
+  state.answeredQuestions = (state.answeredQuestions || []).filter(e => e.date >= cutoffStr);
+}
+
+async function saveState() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  } catch(e) { console.error("save failed", e); }
+}
+
+function scheduledDaysBetween(fromDate, toDate) {
+  // returns list of scheduled weekday numbers strictly between fromDate(exclusive) and toDate(inclusive)
+  let count = 0;
+  let d = new Date(fromDate);
+  d.setDate(d.getDate() + 1);
+  while (d <= toDate) {
+    if (SCHEDULE[d.getDay()] && todayStr(d) !== todayStr(toDate)) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return count;
+}
+
+function checkStreakBreak() {
+  if (!state.lastPracticedDate) return;
+  const last = new Date(state.lastPracticedDate);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  last.setHours(0,0,0,0);
+  const missed = scheduledDaysBetween(last, today);
+  if (missed > 0) {
+    state.streak = 0;
+  }
+}
+
+function getTopicForToday() {
+  const dow = new Date().getDay();
+  return SCHEDULE[dow] || null;
+}
+
+function render() {
+  document.getElementById('streakNum').textContent = state.streak;
+  document.getElementById('bestNum').textContent = state.best;
+
+  // stamp row - last 8 scheduled sessions
+  const stampRow = document.getElementById('stampRow');
+  stampRow.innerHTML = '';
+  const recent = state.stampDates.slice(-8);
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'stamp' + (recent[i] ? ' done' : '');
+    s.textContent = recent[i] ? '✓' : '';
+    stampRow.appendChild(s);
+  }
+
+  const todayKey = getTopicForToday();
+  const scheduledToday = !!todayKey;
+  const doneToday = state.lastPracticedDate === todayStr();
+
+  const todayCount = state.log.filter(e => e.date === todayStr()).length;
+
+  let nextTxt = '';
+  if (doneToday) {
+    nextTxt = todayCount + (todayCount === 1 ? " question" : " questions") + " logged today. Next scheduled: " + nextScheduledLabel();
+  } else if (scheduledToday) {
+    nextTxt = "Scheduled today — " + TOPICS[todayKey].label;
+  } else {
+    nextTxt = "Free day. Next scheduled: " + nextScheduledLabel();
+  }
+  document.getElementById('nextLine').innerHTML = nextTxt;
+
+  activeTopicKey = todayKey || activeTopicKey || 'product_sense';
+  renderTopicCard(doneToday);
+  renderLog();
+
+  document.getElementById('moreCard').style.display = doneToday ? 'block' : 'none';
+  renderMoreSelect();
+}
+
+function renderMoreSelect() {
+  const sel = document.getElementById('moreTopicSelect');
+  if (sel.options.length === 0) {
+    Object.keys(TOPICS).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = TOPICS[key].label;
+      sel.appendChild(opt);
+    });
+  }
+  sel.value = activeTopicKey;
+}
+
+function nextScheduledLabel() {
+  let d = new Date();
+  for (let i = 1; i <= 7; i++) {
+    d.setDate(d.getDate() + 1);
+    if (SCHEDULE[d.getDay()]) {
+      return dayName(d) + " · " + TOPICS[SCHEDULE[d.getDay()]].label;
+    }
+  }
+  return '';
+}
+
+function createQuestionBlock(key, idx, autoReveal) {
+  const topic = TOPICS[key];
+  const item = topic.questions[idx];
+  const block = document.createElement('div');
+  block.className = 'q-block';
+  block.innerHTML =
+    '<span class="qn">Q' + (idx+1) + ' of ' + topic.questions.length + '</span>' +
+    '<div class="q-text">' + item.q + '</div>' +
+    '<button class="reveal-btn" type="button">Show model answer</button>' +
+    '<div class="a-text" style="display:none;">' + item.a + '</div>';
+  const revealBtn = block.querySelector('.reveal-btn');
+  const aText = block.querySelector('.a-text');
+  revealBtn.addEventListener('click', () => {
+    const showing = aText.style.display !== 'none';
+    aText.style.display = showing ? 'none' : 'block';
+    revealBtn.textContent = showing ? 'Show model answer' : 'Hide model answer';
+  });
+  if (autoReveal) {
+    aText.style.display = 'block';
+    revealBtn.textContent = 'Hide model answer';
+  }
+  return block;
+}
+
+function renderTopicCard(doneToday) {
+  const key = activeTopicKey;
+  const topic = TOPICS[key];
+  document.getElementById('topicTag').textContent = getTopicForToday() === key ? "TODAY'S TOPIC" : "PRACTICING";
+  document.getElementById('topicHeading').textContent = topic.label;
+
+  const qArea = document.getElementById('questionArea');
+  qArea.innerHTML = '';
+
+  const justMarked = doneToday && getTopicForToday() === key && lastRevealed && lastRevealed.key === key;
+
+  if (doneToday && getTopicForToday() === key) {
+    const banner = document.createElement('div');
+    banner.className = 'done-banner';
+    banner.textContent = "✓ Practiced today — streak: " + state.streak + " days";
+    qArea.appendChild(banner);
+  }
+
+  const idx = justMarked ? lastRevealed.idx : (state.qIndex[key] % topic.questions.length);
+  qArea.appendChild(createQuestionBlock(key, idx, !!justMarked));
+
+  const markBtn = document.getElementById('markBtn');
+  markBtn.disabled = doneToday;
+  markBtn.textContent = doneToday ? "Streak already logged today" : "Mark session practiced";
+}
+
+function renderLog() {
+  const logList = document.getElementById('logList');
+  logList.innerHTML = '';
+  if (state.log.length === 0) {
+    logList.innerHTML = '<div class="log-empty">No entries yet — your first stamp goes here.</div>';
+    return;
+  }
+  const recent = [...state.log].reverse().slice(0, 12);
+  recent.forEach(entry => {
+    const row = document.createElement('div');
+    row.className = 'log-row';
+    row.innerHTML = '<span class="d">' + entry.date + '</span><span class="t">' + entry.topic + (entry.note ? ' — ' + escapeHtml(entry.note) : '') + '</span>';
+    logList.appendChild(row);
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function recordAnsweredQuestion(key, idx, date) {
+  state.answeredQuestions = (state.answeredQuestions || []).filter(e => !(e.key === key && e.idx === idx));
+  state.answeredQuestions.push({ key: key, idx: idx, date: date });
+  pruneOldAnsweredQuestions();
+}
+
+document.getElementById('markBtn').addEventListener('click', async () => {
+  const key = activeTopicKey;
+  const topic = TOPICS[key];
+  const today = todayStr();
+  if (state.lastPracticedDate === today) return;
+
+  const note = document.getElementById('noteField').value.trim();
+  const answeredIdx = state.qIndex[key] % topic.questions.length;
+
+  state.streak += 1;
+  state.best = Math.max(state.best, state.streak);
+  state.lastPracticedDate = today;
+  state.qIndex[key] = (state.qIndex[key] + 1) % topic.questions.length;
+  state.log.push({ date: today, topic: topic.label, note: note });
+  state.stampDates.push(today);
+  recordAnsweredQuestion(key, answeredIdx, today);
+
+  lastRevealed = { key: key, idx: answeredIdx };
+
+  document.getElementById('noteField').value = '';
+  await saveState();
+  render();
+});
+
+document.getElementById('moreBtn').addEventListener('click', async () => {
+  const key = document.getElementById('moreTopicSelect').value;
+  const topic = TOPICS[key];
+  const idx = state.qIndex[key] % topic.questions.length;
+  state.qIndex[key] = (state.qIndex[key] + 1) % topic.questions.length;
+  state.log.push({ date: todayStr(), topic: topic.label, note: '' });
+  recordAnsweredQuestion(key, idx, todayStr());
+  await saveState();
+
+  activeTopicKey = key;
+  lastRevealed = { key: key, idx: idx };
+  document.getElementById('topicTag').textContent = "EXTRA — " + topic.label.toUpperCase();
+  document.getElementById('topicHeading').textContent = topic.label;
+  const qArea = document.getElementById('questionArea');
+  qArea.innerHTML = '';
+  qArea.appendChild(createQuestionBlock(key, idx, true));
+  qArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  renderLog();
+  document.getElementById('nextLine').innerHTML = (state.log.filter(e => e.date === todayStr()).length) + " questions logged today. Next scheduled: " + nextScheduledLabel();
+});
+
+document.getElementById('skipTopicBtn').addEventListener('click', () => {
+  const keys = Object.keys(TOPICS);
+  const idx = keys.indexOf(activeTopicKey);
+  activeTopicKey = keys[(idx + 1) % keys.length];
+  renderTopicCard(state.lastPracticedDate === todayStr() && getTopicForToday() === activeTopicKey);
+});
+
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  if (!confirm('Reset all streak and log data?')) return;
+  state = {
+    streak: 0, best: 0, lastPracticedDate: null,
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0 },
+    log: [], stampDates: [], answeredQuestions: []
+});
+
+function expiryLabel(dateStr) {
+  const d = new Date(dateStr);
+  d.setMonth(d.getMonth() + 4);
+  return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function renderLibrary() {
+  pruneOldAnsweredQuestions();
+  const lib = document.getElementById('libraryView');
+  lib.innerHTML = '';
+
+  const answered = state.answeredQuestions || [];
+  if (answered.length === 0) {
+    lib.innerHTML = '<div class="log-empty" style="color:#B9C2D6;">No questions answered yet. Once you mark a session practiced, it shows up here — and stays for 4 months.</div>';
+    return;
+  }
+
+  const byTopic = {};
+  answered.forEach(e => {
+    if (!byTopic[e.key]) byTopic[e.key] = [];
+    byTopic[e.key].push(e);
+  });
+
+  Object.keys(TOPICS).forEach(key => {
+    if (!byTopic[key]) return;
+    const topic = TOPICS[key];
+    const entries = byTopic[key].sort((a,b) => b.date.localeCompare(a.date));
+
+    const section = document.createElement('div');
+    section.className = 'lib-topic';
+    const title = document.createElement('div');
+    title.className = 'lib-topic-title';
+    title.textContent = topic.label;
+    section.appendChild(title);
+
+    entries.forEach(e => {
+      const item = topic.questions[e.idx];
+      if (!item) return;
+      const box = document.createElement('div');
+      box.className = 'lib-q';
+      box.innerHTML =
+        '<span class="qn">Answered ' + e.date + ' · in library till ' + expiryLabel(e.date) + '</span>' +
+        '<div class="q-text">' + item.q + '</div>' +
+        '<button class="reveal-btn" type="button">Show model answer</button>' +
+        '<div class="a-text" style="display:none;">' + item.a + '</div>';
+      const revealBtn = box.querySelector('.reveal-btn');
+      const aText = box.querySelector('.a-text');
+      revealBtn.addEventListener('click', () => {
+        const showing = aText.style.display !== 'none';
+        aText.style.display = showing ? 'none' : 'block';
+        revealBtn.textContent = showing ? 'Show model answer' : 'Hide model answer';
+      });
+      section.appendChild(box);
+    });
+    lib.appendChild(section);
+  });
+}
+
+document.getElementById('tabToday').addEventListener('click', () => {
+  document.getElementById('tabToday').classList.add('active');
+  document.getElementById('tabLibrary').classList.remove('active');
+  document.getElementById('todayView').style.display = 'block';
+  document.getElementById('libraryView').style.display = 'none';
+});
+
+document.getElementById('tabLibrary').addEventListener('click', () => {
+  document.getElementById('tabLibrary').classList.add('active');
+  document.getElementById('tabToday').classList.remove('active');
+  document.getElementById('todayView').style.display = 'none';
+  document.getElementById('libraryView').style.display = 'block';
+  renderLibrary();
+});
+
+(async function init() {
+  state = await loadState();
+  checkStreakBreak();
+  pruneOldAnsweredQuestions();
+  await saveState();
+  render();
+})();
+</script>
+</body>
+</html>
