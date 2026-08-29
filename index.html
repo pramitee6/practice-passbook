@@ -723,13 +723,27 @@ function nextScheduledLabel() {
   return '';
 }
 
+function formatBadgeDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: '2-digit' });
+}
+
+function sourceBadge(item) {
+  if (!item.source) return '';
+  const label = item.source === 'reported' ? 'Reported' : 'Claude practice';
+  const dateLabel = formatBadgeDate(item.addedDate);
+  return ' · ' + label + (dateLabel ? ' · ' + dateLabel : '');
+}
+
 function createQuestionBlock(key, idx, autoReveal) {
   const topic = TOPICS[key];
   const item = topic.questions[idx];
   const block = document.createElement('div');
   block.className = 'q-block';
   block.innerHTML =
-    '<span class="qn">Q' + (idx+1) + ' of ' + topic.questions.length + '</span>' +
+    '<span class="qn">Q' + (idx+1) + ' of ' + topic.questions.length + sourceBadge(item) + '</span>' +
     '<div class="q-text">' + item.q + '</div>' +
     '<button class="reveal-btn" type="button">Show model answer</button>' +
     '<div class="a-text" style="display:none;">' + item.a + '</div>';
@@ -904,7 +918,7 @@ function renderLibrary() {
       const box = document.createElement('div');
       box.className = 'lib-q';
       box.innerHTML =
-        '<span class="qn">Answered ' + e.date + ' · in library till ' + expiryLabel(e.date) + '</span>' +
+        '<span class="qn">Answered ' + e.date + ' · in library till ' + expiryLabel(e.date) + sourceBadge(item) + '</span>' +
         '<div class="q-text">' + item.q + '</div>' +
         '<button class="reveal-btn" type="button">Show model answer</button>' +
         '<div class="a-text" style="display:none;">' + item.a + '</div>';
