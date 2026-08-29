@@ -360,7 +360,8 @@ button{
     <div id="questionArea"></div>
     <textarea id="noteField" placeholder="Optional: jot a note on how it went…"></textarea>
     <button class="btn-primary" id="markBtn">Mark session practiced</button>
-    <button class="btn-secondary" id="skipTopicBtn">Practice a different topic instead</button>
+    <label style="font-size:12px;color:var(--muted);display:block;margin:10px 0 4px;">Or jump to a different topic</label>
+    <select id="topicSelect"></select>
   </div>
 
   <div class="card" id="moreCard" style="display:none;">
@@ -397,7 +398,15 @@ const TOPICS = {
       { q: "Design a feature to reduce Digital Cancelled Cheque upload failures.",
         a: "Root causes usually: poor lighting/glare, cropped edges, low OCR confidence on handwritten fields. Add a live camera guide overlay with real-time quality feedback, allow manual correction of OCR-extracted fields before submit, and a manual-entry fallback if OCR confidence is low. Metric: first-attempt upload success rate." },
       { q: "How would you design an onboarding flow for a first-time BBPS biller?",
-        a: "Break onboarding into a checklist (KYC docs, bank integration, test transactions) with visible status per step. Assign a single point of contact/dedicated support for the first 30 days. Provide a sandbox for test billing before go-live. Metric: time-to-go-live, drop-off rate by step." }
+        a: "Break onboarding into a checklist (KYC docs, bank integration, test transactions) with visible status per step. Assign a single point of contact/dedicated support for the first 30 days. Provide a sandbox for test billing before go-live. Metric: time-to-go-live, drop-off rate by step." },
+      { q: "Design a credit line feature for gig-economy workers with irregular income.",
+        a: "Traditional income-proof underwriting excludes this segment — use behavior-based signals instead (bank transaction history, gig-platform earnings via Account Aggregator consent). Start with small, conservative credit limits and increase based on observed repayment behavior rather than upfront income assumptions. Phase 1: pilot with one gig-platform partner to validate the data signal quality. Metric: approval rate, default rate by limit tier, limit utilization." },
+      { q: "How would you design a first investment experience for someone who has never invested before?",
+        a: "The barrier is anxiety and choice-overload, not access — start with one clear, low-risk recommended option (e.g. a liquid fund) tied to a specific goal, explained in plain language, rather than a menu of products. Keep the minimum investment low to reduce psychological commitment. Show progress visually to reinforce the habit. Metric: activation rate (first investment within 7 days), 90-day retention." },
+      { q: "Design a claims-filing experience for a health insurance app that reduces claim rejection rates.",
+        a: "Most rejections trace back to incomplete/incorrect documentation at submission — build a guided, checklist-driven flow with real-time validation against policy terms, pre-filled known data, and a pre-submission eligibility check that flags likely rejection reasons before the user submits. Metric: first-submission approval rate, average claim resolution time." },
+      { q: "How would you design a savings feature to help users build an emergency fund?",
+        a: "Behavioral design matters more than raw functionality: automate small contributions (round-ups or a % of income) with an easy pause option — friction on withdrawal erodes trust in a banking product, so don't lock funds. Use visual goal-tracking and nudges tied to actual spending patterns. Metric: % of users reaching a 3-month buffer target, opt-out rate." }
     ]
   },
   execution: {
@@ -412,7 +421,15 @@ const TOPICS = {
       { q: "How would you decide whether to build vs. buy for a new fraud-check module in DCC?",
         a: "Buy if speed-to-market matters and mature vendor solutions exist with acceptable accuracy/cost — avoids reinventing a solved problem. Build if the fraud patterns are proprietary/unique to your data, or if long-term cost and control (no vendor lock-in) matter more than initial speed. Weigh: cost over 2-3 years, data sensitivity, integration effort, vendor reliability." },
       { q: "Write a 1-week sprint plan for fixing a spike in eNACH mandate failures.",
-        a: "Day 1: Pull failure data, segment by bank/error-code/time. Day 2: Identify top 2 root causes (e.g., one bank's API issue). Day 3-4: Ship fix for highest-impact cause + improve error messaging. Day 5: Deploy, monitor dashboards closely. Weekend: on-call watch, rollback plan ready." }
+        a: "Day 1: Pull failure data, segment by bank/error-code/time. Day 2: Identify top 2 root causes (e.g., one bank's API issue). Day 3-4: Ship fix for highest-impact cause + improve error messaging. Day 5: Deploy, monitor dashboards closely. Weekend: on-call watch, rollback plan ready." },
+      { q: "You have 4 engineers and 8 weeks. Prioritize: reducing cross-border remittance failure rate, adding a new payout corridor (country), or improving FX rate transparency in the app. Justify.",
+        a: "Failure-rate reduction affects every existing user and directly threatens trust/repeat usage — highest priority. A new corridor is high-effort (compliance, banking partner) and only benefits future/new-market users — lower near-term ROI unless a launch date is already committed externally. FX transparency matters but doesn't block transactions, so it's lower urgency. Sequence: fix failures first, FX transparency in parallel if bandwidth allows, corridor expansion next quarter." },
+      { q: "Fraud losses spiked 3x this month on your peer-to-peer payment product. Engineering says a full fix will take 6 weeks. What do you do in the meantime?",
+        a: "Don't wait passively for the permanent fix — ship interim risk controls: velocity limits on new accounts, step-up authentication on high-risk transaction patterns, a manual review queue for flagged transactions. Communicate transparently with support teams and affected users. Track the false-positive rate on interim controls closely so you're not over-blocking legitimate users while the real fix is in progress." },
+      { q: "Your BNPL default rate is rising while approval rates need to stay competitive for growth. How do you sequence the fix?",
+        a: "Segment defaults by cohort (signup channel, credit tier, merchant category) to find where risk concentrates, rather than tightening approvals broadly (which kills growth). Tighten only the specific high-risk segment first, monitor the impact on both default rate and approval volume, then decide if broader tightening is warranted. In parallel, test underwriting model improvements (more data signals) so you're not stuck permanently trading growth for risk control." },
+      { q: "Card activation rate (card issued but never used) is low, and you have limited engineering capacity. How do you prioritize fixes?",
+        a: "Root-cause before committing engineering time: is it a physical delivery delay, an unclear activation flow, or lack of first-use incentive? Pull funnel data first. If activation-flow friction is the bottleneck, that's a quick, high-leverage engineering fix. If it's delivery logistics, that's an ops fix — don't spend engineering capacity solving the wrong lever." }
     ]
   },
   analytics: {
@@ -427,7 +444,15 @@ const TOPICS = {
       { q: "What metrics would you track for Digital Cancelled Cheque adoption in its first quarter?",
         a: "Activation rate (% eligible users who try DCC), first-attempt upload success rate, time-to-approval, repeat usage rate (adoption stickiness), and drop-off rate by step (capture → OCR → review → submit)." },
       { q: "How would you set up an A/B test for a new NACH mandate UI?",
-        a: "Define hypothesis (e.g., 'single-screen consent increases completion rate by X%'). Random-assign traffic 50/50, primary metric = mandate completion rate, guardrail metrics = error rate and support tickets. Calculate sample size/duration via a power calculation before launch; avoid peeking early and stopping on noise." }
+        a: "Define hypothesis (e.g., 'single-screen consent increases completion rate by X%'). Random-assign traffic 50/50, primary metric = mandate completion rate, guardrail metrics = error rate and support tickets. Calculate sample size/duration via a power calculation before launch; avoid peeking early and stopping on noise." },
+      { q: "How would you measure the success of an embedded lending product offered inside a partner's e-commerce checkout?",
+        a: "Primary: checkout conversion lift for users offered financing vs. not — incrementality, not just raw adoption. Secondary: approval rate, default rate by partner/merchant category, repeat usage rate. Guardrail: partner NPS/complaint rate, since a bad lending experience reflects on the partner's brand, not just yours." },
+      { q: "Loan approval rate differs significantly by region. How do you investigate whether this is a fairness/bias issue or a legitimate risk difference?",
+        a: "Separate correlation from causation first: check if the regional gap persists after controlling for income, credit history, and other legitimate underwriting factors. If it remains unexplained after controlling for legitimate risk factors, escalate immediately for fairness/compliance review — once bias is suspected, this stops being a growth-metrics question and becomes a compliance one." },
+      { q: "How would you define north-star metrics for a robo-advisory investment product?",
+        a: "Primary: assets under management (AUM) growth and net-new-money (deposits minus withdrawals) — reflects real trust, not just signups. Secondary: portfolio adherence to the recommended allocation, goal-completion rate. Guardrail: withdrawal rate during market downturns, since panic-selling signals a product/communication gap, not just market conditions." },
+      { q: "How would you track whether your fintech product is staying within RBI's data localization and consent requirements as you scale?",
+        a: "This isn't a single metric — build a compliance dashboard: % of data flows audited against localization rules, consent-capture completion rate, time-to-remediate flagged violations. Treat these as guardrails reviewed on a fixed cadence with legal/compliance, not ad hoc, since regulatory risk compounds silently until an audit or complaint surfaces it." }
     ]
   },
   behavioral: {
@@ -442,7 +467,13 @@ const TOPICS = {
       { q: "Describe a situation where you had incomplete data but still had to make a call.",
         a: "STAR template — name the missing data explicitly, the deadline pressure, your reasoning for a directional call vs. waiting, and how you mitigated risk (fast rollback plan, phased rollout). Show judgment, not recklessness." },
       { q: "Tell me about a time you influenced without direct authority.",
-        a: "STAR template — a peer team or senior stakeholder you needed buy-in from without reporting authority. Focus the Action on the specific influence tactic: data, relationship-building, incremental wins, or framing their incentive. Fill with your own APB experience." }
+        a: "STAR template — a peer team or senior stakeholder you needed buy-in from without reporting authority. Focus the Action on the specific influence tactic: data, relationship-building, incremental wins, or framing their incentive. Fill with your own APB experience." },
+      { q: "Tell me about a time you had to make a decision that was right for the business but unpopular with your team.",
+        a: "STAR template — pick a real moment (deprioritizing a feature the team was excited about, or holding a hard deadline). Focus the Action on how you communicated the 'why' transparently and involved the team in the how, even when the what wasn't up for debate. Result: team morale/trust impact and what you'd do differently." },
+      { q: "Describe a time you had to mentor or unblock a junior PM or cross-functional partner who was struggling.",
+        a: "STAR template — be specific about what 'struggling' looked like (missed deadlines, unclear prioritization, stakeholder friction), your diagnostic approach before jumping to solutions, and a concrete change in their output/confidence as the result." },
+      { q: "Tell me about a product you shipped that you later had to sunset or significantly pivot. Walk through your decision-making.",
+        a: "STAR template — be honest about the signal that told you it wasn't working (usage data, unit economics, market shift), how you built the case to stakeholders/leadership to pivot or kill it (often harder than launching), and what you'd validate earlier next time." }
     ]
   },
   fintech_domain: {
@@ -457,7 +488,86 @@ const TOPICS = {
       { q: "How does Account Aggregator differ from BBPS/NACH data flows?",
         a: "Account Aggregator is a consent-based framework for sharing financial *data* across institutions (statements, holdings) — it doesn't move money. BBPS and NACH are payment *execution* rails — BBPS for bill collection, NACH for recurring debits/credits. AA can inform decisions (e.g., credit underwriting); BBPS/NACH actually move the money." },
       { q: "What obligations does a destination bank hold in an eNACH transaction chain?",
-        a: "Validate mandate authenticity before honoring a debit, execute the debit per the exact mandate terms (amount/frequency/date), perform balance checks, adhere to NPCI-mandated turnaround times for authorization/response, and handle customer disputes/complaints within regulatory timelines." }
+        a: "Validate mandate authenticity before honoring a debit, execute the debit per the exact mandate terms (amount/frequency/date), perform balance checks, adhere to NPCI-mandated turnaround times for authorization/response, and handle customer disputes/complaints within regulatory timelines." },
+      { q: "Explain how alternative data-based credit underwriting works and its risks.",
+        a: "Uses non-traditional signals — utility bill payments, gig-platform earnings, phone/app usage patterns, bank transaction history via Account Aggregator — to assess creditworthiness for thin-file customers who lack traditional credit history. Risk: model bias if alternative signals correlate indirectly with protected attributes (e.g. phone model as a wealth proxy), and lower explainability for regulators/customers when a loan is denied on non-obvious grounds." },
+      { q: "How does an insurtech's distribution model typically differ (agent-led vs. digital-direct vs. embedded/bancassurance)?",
+        a: "Agent-led: high-touch, better for complex products (life/health) needing trust and explanation, but high cost-per-acquisition and slow scale. Digital-direct: low-cost, scalable, works for simple/commoditized products (travel, device insurance) where the trust barrier is lower. Embedded (bundled at checkout): highest conversion since it rides existing purchase intent, but needs strong underwriting automation since there's no agent to manually assess risk." },
+      { q: "What is Banking-as-a-Service (BaaS) and how does it change the fintech competitive landscape?",
+        a: "BaaS lets non-bank companies embed regulated banking products (accounts, cards, lending) via API, using a licensed bank's infrastructure/license behind the scenes. It lowers the barrier for any company to become a fintech distributor, shifting competition from 'who holds a banking license' to 'who owns the best customer distribution and experience' — banks become infrastructure, and value capture moves toward the customer-facing brand." },
+      { q: "Compare SWIFT-based cross-border payments to newer real-time cross-border rails.",
+        a: "SWIFT is a messaging network, not a settlement rail — correspondent banks in the chain each take a cut and add delay (1-5 days), with limited transparency on final amount/fees. Newer rails (real-time settlement partnerships, or regional real-time-payment interlinking like UPI-PayNow) cut intermediary hops for near-instant settlement and upfront fee/FX transparency, but typically have narrower corridor/currency coverage than SWIFT's near-universal reach." },
+      { q: "Explain credit card interchange economics — who pays whom and why it matters for product strategy.",
+        a: "The merchant's bank pays an interchange fee to the cardholder's issuing bank on each transaction (roughly 1-3%), funded by the merchant discount rate the merchant pays. This is why issuers can offer rewards/cashback (funded by interchange), and why low-margin merchants (fuel, groceries) push back on card fees or prefer UPI/direct-debit rails with near-zero MDR. Implication: a card product's rewards strategy is fundamentally bounded by its interchange economics, not just user delight." }
+    ]
+  },
+  strategy: {
+    label: "Strategy (bonus)",
+    questions: [
+      { q: "Should your BBPS platform build its own consumer-facing bill-pay app, or stay purely a backend rail for banks/wallets to plug into?",
+        a: "Frame as build-vs-stay-infra: a consumer app puts you in direct competition with your own COU partners (banks, PhonePe, GPay) — channel conflict risk. Staying infra-only keeps you the neutral rail everyone builds on, compounding distribution without owning acquisition cost. Recommend staying infra-first unless a clear underserved segment (e.g. no COU covers a biller category) justifies a narrow, non-competing wedge product." },
+      { q: "NPCI is considering opening UPI AutoPay mandates to a new class of use cases (e.g. SIP/EMI). How would you decide whether to prioritize supporting this on your platform?",
+        a: "Size the opportunity (TAM of SIP/EMI recurring volume vs. existing bill-pay volume), assess build cost (does it fit existing mandate infra or need new rails/compliance work), and check strategic fit (does it reinforce your core rail position or pull you into a new regulated vertical with new risk). Recommend a phased pilot with 1-2 partner banks before a full platform commitment, gated on measured mandate-success and dispute rates." },
+      { q: "A competitor payment rail is undercutting your BOU onboarding fees to win billers. How do you respond?",
+        a: "Don't default to a price war — check whether billers are switching purely on price or also on integration ease/reliability/settlement speed. If price-sensitive segment is small/low-margin, let it go and defend on service quality for higher-value billers. If broad-based, consider a tiered pricing model (volume-based discounts) rather than blanket cuts, preserving margin on your core base while staying competitive at the edges." },
+      { q: "Where should Digital Cancelled Cheque go next — deepen it for lending use cases, or expand it horizontally to other document types (e.g. digital KYC docs)?",
+        a: "Depends on where the compounding advantage is: deepening for lending leverages existing OCR/fraud-check investment and serves a clear, monetizable use case (loan disbursal speed). Horizontal expansion risks becoming a shallow, undifferentiated document-upload tool. Recommend depth-first — own the lending workflow end-to-end — then expand only once that segment shows clear retention/expansion revenue." },
+      { q: "How would you think about a 3-year vision for your NACH/eNACH product line given open banking (Account Aggregator) is maturing?",
+        a: "AA changes the data layer, not the execution rail — but it enables smarter mandates (e.g. affordability-checked recurring debits using consented account data). Vision: evolve from a pure execution rail to a 'smart mandate' layer that uses AA data to reduce failure rates and enable dynamic mandate terms (e.g. flexible EMI amounts based on real-time affordability), becoming stickier and harder to commoditize than a plain debit rail." },
+      { q: "Your fintech is deciding whether to enter the BNPL market. How would you evaluate this?",
+        a: "Check strategic fit first: does BNPL repayment data strengthen your core credit-decisioning moat, or is it a distraction into a commoditizing, thinning-margin category? Check the regulatory trajectory — BNPL is increasingly being pulled under formal credit regulation, raising the compliance cost of entry. Recommend entry only if it deepens an existing lending/underwriting capability, not as a standalone growth bet, given margin compression across the category." },
+      { q: "Should your wealth-tech platform build proprietary investment products, or stay a distribution platform for third-party funds/products?",
+        a: "Building proprietary products captures more margin but adds regulatory burden (fund management license) and conflict-of-interest scrutiny — are you recommending your own product because it's best, or because it's yours? Staying distribution-only keeps you asset-light and trusted as a neutral advisor, compounding on distribution/UX moat instead. Recommend distribution-first until AUM and trust justify the regulatory lift of proprietary products." },
+      { q: "How would you decide whether to pursue bancassurance partnerships vs. building a direct-to-consumer insurance app?",
+        a: "Bancassurance leverages the bank's existing trust and distribution for much faster time-to-scale, but makes you dependent on the partner's roadmap and shares margin. Direct-to-consumer gives full control and margin but requires building trust and acquisition from scratch — expensive given insurance's long consideration cycle. Recommend bancassurance first to prove product-market fit and generate data/capital, then evaluate direct expansion once underwriting confidence is established." },
+      { q: "Your company is considering international expansion — which market entry sequencing would you recommend for a payments product?",
+        a: "Prioritize markets by regulatory similarity/ease (faster time-to-launch), existing partner/banking relationships, and whether your core rail has an analogous local rail to interoperate with. Avoid leading with the largest-TAM market if it also has the highest regulatory complexity — a smaller, faster market builds the operational playbook and regulator/investor credibility before tackling harder markets." }
+    ]
+  },
+  rca: {
+    label: "RCA (bonus)",
+    questions: [
+      { q: "BBPS bill payment success rate dropped from 98% to 91% over the last 48 hours. Walk through your root-cause investigation.",
+        a: "Start broad, narrow fast: segment by biller category, BOU/COU, payment mode, and time-of-day to find where the drop concentrates. Check for correlated changes — recent deploy, a specific biller's backend issue, a COU app update, or a network/bank outage. Confirm hypothesis with a control comparison (unaffected segment as baseline) before rolling out a fix, and avoid broad remediation until the single dominant cause is isolated." },
+      { q: "A specific bank's eNACH mandate activation rate is 30% below the platform average. How do you find out why?",
+        a: "Pull that bank's funnel step-by-step (initiation → OTP/auth → registration → activation) and compare drop-off rates per step against the platform average — isolate exactly where it diverges. Cross-check timing (has this always been true, or did it start on a specific date — correlate with any API/version change on their end). Loop in the bank's technical team with the specific step/error-code data rather than a generic 'your numbers are low' complaint." },
+      { q: "DCC OCR accuracy suddenly dropped for a subset of uploads. What's your RCA process?",
+        a: "Segment the failures: device type, image resolution, cheque format/bank, lighting conditions, and OS. Check if a recent OCR model/library update coincides with the drop. Pull a sample of failed uploads and manually inspect for a common pattern (e.g. a specific bank's cheque layout the model wasn't trained on). Fix the identified root cause first, then verify accuracy recovers specifically in that segment before declaring resolved." },
+      { q: "Customer complaints about 'double debit' on NACH mandates spiked this month. How do you root-cause this?",
+        a: "First confirm it's a real double-debit (system-level) vs. a perception issue (two separate legitimate mandates/EMIs being read as one by the customer) — pull actual transaction logs for a sample of complaints. If real, check for a retry-logic bug (e.g. a timeout triggering a duplicate presentment) or a reconciliation gap between your system and NPCI's. Isolate whether it's platform-wide or specific to one bank/integration before scoping the fix." },
+      { q: "Your team ships a fix for a root cause, but the underlying metric doesn't recover. What do you do?",
+        a: "Don't assume the fix failed outright — first confirm the fix actually deployed/rolled out to the affected segment (rollout bugs are common). Re-verify the original hypothesis was the *dominant* cause, not just *a* cause — there may be a second contributing factor now unmasked. Re-run the same segmentation analysis post-fix to see if the drop has moved/shrunk rather than vanished, which tells you if you fixed part of the problem." },
+      { q: "Your lending product's approval rate suddenly dropped 15% this week with no policy change on your end. RCA?",
+        a: "Check upstream dependencies first: did a credit bureau or data provider change their scoring model or API response format? Segment the drop by which underwriting rule is triggering it — concentrated in one rule suggests a data feed issue, broad suggests a bureau-side scoring shift. Confirm with the bureau/vendor before assuming an internal cause." },
+      { q: "Fraud detection false-positive rate spiked, blocking legitimate transactions. Walk through your RCA.",
+        a: "Segment blocked transactions by rule/model trigger, merchant category, and user cohort to find where over-blocking concentrates. Check for a recent model retrain or rule-threshold change coinciding with the spike. Distinguish a genuinely riskier transaction mix from a miscalibrated model by manually verifying a sample of blocked transactions as false positives before rolling back or retuning." },
+      { q: "NPS for your digital banking app dropped sharply after a recent redesign launch. RCA approach?",
+        a: "Segment NPS responses by user tenure (new vs. existing users react differently to redesigns) and by feature area mentioned in verbatim feedback. Cross-check with usage/funnel data — is the drop sentiment-only, or is there a real behavioral drop-off (a core action now takes more taps)? Isolate genuine usability regression vs. change-aversion from long-time users, since the fix differs (UX fix vs. change-management/communication fix)." },
+      { q: "Cross-border payment failure rate spiked for one specific corridor (e.g. India-to-Singapore). RCA?",
+        a: "Check that corridor's specific chain: correspondent bank status, compliance/screening rule changes (AML/sanctions list updates can cause sudden holds), and recent FX volatility (some rails auto-reject if the rate moves beyond a threshold mid-transaction). Isolate to that corridor before escalating broadly, and bring the specific banking partner transaction-level evidence rather than a general complaint." }
+    ]
+  },
+  gtm: {
+    label: "GTM (bonus)",
+    questions: [
+      { q: "You're launching UPI AutoPay support for a new merchant category (e.g. insurance premiums). Outline your go-to-market plan.",
+        a: "Phase 1: pilot with 2-3 anchor insurers to validate mandate-creation and renewal flows end-to-end, fix friction before wide release. Phase 2: co-marketing with pilot partners (in-app banners, email to existing premium-paying customers) to drive initial adoption, tracking mandate setup and renewal-success rate. Phase 3: open self-serve onboarding for remaining insurers once the playbook (docs, support SLAs) is proven. Sequence trust-building (compliance, data security messaging) alongside acquisition, since insurance is a trust-sensitive category." },
+      { q: "How would you launch Digital Cancelled Cheque to a lender who currently relies on physical cheque collection?",
+        a: "Lead with the ROI story specific to them: faster loan disbursal (days to minutes) and lower operational cost (no physical handling/storage) — quantify with a pilot cohort. Run a parallel-path pilot (DCC alongside physical, not replacing it yet) so their risk/ops teams can validate accuracy before full cutover. Provide hands-on onboarding support (not just self-serve docs) since this is a workflow change for their ops team, and use the pilot's measured accuracy/speed numbers as the case study to expand to their other branches/products." },
+      { q: "Your BBPS platform wants to expand into a new state where biller digitization is low. What's your GTM approach?",
+        a: "Don't lead with the consumer app — start by signing the highest-volume local billers (electricity board, water utility) as BOUs, since without billers on the rail there's nothing for COUs/consumers to pay. Partner with local banks (existing trust/relationships) as COUs rather than building direct consumer acquisition from scratch. Expect a longer sales cycle for government/utility billers — plan for relationship-building and compliance alignment as the critical path, not marketing spend." },
+      { q: "How would you price and position a new fraud-check add-on for your DCC product to existing customers?",
+        a: "Anchor pricing to the cost it prevents (fraud losses avoided) rather than your build cost — usage-based or per-transaction pricing lowers adoption friction vs. a flat platform fee. Position as risk-reduction, not just a feature bolt-on — lead with a pilot offering free/discounted trial to a few existing customers to generate quantified loss-prevention data, then use that as the sales proof point for wider rollout and pricing justification." },
+      { q: "You're 6 weeks from a regulatory deadline that requires a UI change across all your NACH-integrated bank partners. How do you drive adoption in time?",
+        a: "Since it's regulatory (not optional), the GTM problem isn't persuasion — it's coordination and de-risking. Segment partners by integration complexity/readiness, prioritize outreach to the slowest movers first. Provide a clear migration kit (updated API docs, sandbox, sample code) to cut their implementation time. Run a shared tracking dashboard visible to all partners to create light peer pressure, and escalate stragglers early rather than at the deadline, with a contingency (phased/soft cutover) if a partner can't make it in time." },
+      { q: "You're launching a co-branded credit card with a retail partner. Outline your GTM.",
+        a: "Phase 1: soft-launch to the partner's existing loyal customer base — highest conversion, lowest acquisition cost — to validate approval rates and redemption behavior. Phase 2: in-store and app-based acquisition campaigns co-funded with the partner, tied to a launch incentive (bonus rewards on first purchase). Phase 3: broaden beyond the partner's base once unit economics (acquisition cost vs. card lifetime value) are validated. Track approval rate, activation rate, and repeat spend as core GTM metrics." },
+      { q: "How would you go to market with an embedded lending API product targeting other fintechs/e-commerce platforms as customers (B2B2C)?",
+        a: "This is a platform GTM, not a consumer one — lead with 2-3 design-partner integrations to prove the API's reliability and conversion lift before broad sales outreach. Invest in strong developer documentation/sandbox, since integration ease is your key differentiator against competing embedded-lending providers. Price to align incentives (e.g. revenue share on originated loans) so partners see you as a growth lever, not just a vendor cost." },
+      { q: "You're expanding your remittance product into a new payout corridor. What's your GTM sequencing?",
+        a: "Before any marketing spend, validate the operational chain end-to-end — payout partner reliability, compliance/KYC requirements for that corridor, FX rate competitiveness — with a soft-launch to a small user cohort. Once reliability is proven, target acquisition through the diaspora community sending to that corridor specifically (community channels, referral incentives) rather than broad marketing, since remittance trust is highly community/word-of-mouth driven." },
+      { q: "How would you launch a 'buy now pay later' feature to merchants who are wary of increased chargebacks/risk?",
+        a: "Lead GTM with risk-sharing reassurance, not just conversion-lift promises — offer merchants a guaranteed payout model (you absorb consumer default risk, not them) as the core pitch. Pilot with a small set of merchants in a lower-risk category first to build case-study data (conversion lift, average order value increase) before broader merchant sales outreach." }
     ]
   }
 };
@@ -490,7 +600,7 @@ async function loadState() {
     streak: 0,
     best: 0,
     lastPracticedDate: null,
-    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0 },
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0 },
     log: [],
     stampDates: [],
     answeredQuestions: []
@@ -573,13 +683,13 @@ function render() {
   activeTopicKey = todayKey || activeTopicKey || 'product_sense';
   renderTopicCard(doneToday);
   renderLog();
+  renderTopicSelect();
 
   document.getElementById('moreCard').style.display = doneToday ? 'block' : 'none';
   renderMoreSelect();
 }
 
-function renderMoreSelect() {
-  const sel = document.getElementById('moreTopicSelect');
+function populateTopicSelect(sel) {
   if (sel.options.length === 0) {
     Object.keys(TOPICS).forEach(key => {
       const opt = document.createElement('option');
@@ -588,6 +698,17 @@ function renderMoreSelect() {
       sel.appendChild(opt);
     });
   }
+}
+
+function renderTopicSelect() {
+  const sel = document.getElementById('topicSelect');
+  populateTopicSelect(sel);
+  sel.value = activeTopicKey;
+}
+
+function renderMoreSelect() {
+  const sel = document.getElementById('moreTopicSelect');
+  populateTopicSelect(sel);
   sel.value = activeTopicKey;
 }
 
@@ -725,18 +846,17 @@ document.getElementById('moreBtn').addEventListener('click', async () => {
   document.getElementById('nextLine').innerHTML = (state.log.filter(e => e.date === todayStr()).length) + " questions logged today. Next scheduled: " + nextScheduledLabel();
 });
 
-document.getElementById('skipTopicBtn').addEventListener('click', () => {
-  const keys = Object.keys(TOPICS);
-  const idx = keys.indexOf(activeTopicKey);
-  activeTopicKey = keys[(idx + 1) % keys.length];
+document.getElementById('topicSelect').addEventListener('change', (e) => {
+  activeTopicKey = e.target.value;
   renderTopicCard(state.lastPracticedDate === todayStr() && getTopicForToday() === activeTopicKey);
+  renderMoreSelect();
 });
 
 document.getElementById('resetBtn').addEventListener('click', async () => {
   if (!confirm('Reset all streak and log data?')) return;
   state = {
     streak: 0, best: 0, lastPracticedDate: null,
-    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0 },
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0 },
     log: [], stampDates: [], answeredQuestions: []
   };
   await saveState();
