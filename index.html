@@ -704,6 +704,44 @@ const TOPICS = {
         a: "Communicate the change proactively and well before the forced deadline, framing it as 'here's what's changing and exactly what you need to do,' not a surprise error state — the worst outcome is users hitting a broken purchase flow with no warning. Offer the smoothest available alternative path (e.g. web-based checkout link) and, if feasible, grandfather or grace-period existing subscribers so the transition doesn't look like a service disruption. Track churn/downgrade rate specifically among affected users during the transition window as the core GTM success metric, not just overall revenue, since a spike there is the leading indicator of a messaging failure.",
         source: "claude", addedDate: "2026-09-02" }
     ]
+  },
+  faq: {
+    label: "Frequently Asked (from real interviews)",
+    questions: [
+      { q: "You're the PM for a bank-account-linking product (in the vein of Plaid's Account Verification flow). How would you reduce user drop-off during the bank authentication step?",
+        a: "Instrument the funnel step-by-step first — drop-off concentrated at bank selection, credential entry, or post-auth callback each points to a different fix. If it's bank selection, add a search/recent-banks shortcut; if it's credential entry, check for banks with unreliable login pages and offer a statement-upload fallback; if it's post-auth, check callback latency/timeouts. Prioritize fixing the 3-5 banks that account for the most volume rather than a generic fix. Metric: authentication completion rate by bank, end-to-end linking success rate.",
+        source: "reported", addedDate: "2026-08-29" },
+      { q: "Describe a time you had a major disagreement with an engineering lead over product or system architecture. How did you resolve it?",
+        a: "STAR template — Situation: what the architectural disagreement was and why it mattered (cost, timeline, scalability, compliance risk). Task: your role in resolving it without just pulling rank. Action: how you got specific — pushed both sides to lay out trade-offs against a shared set of constraints (launch date, data volume, regulatory need) rather than arguing preferences, possibly with a time-boxed prototype or data point to settle it. Result: what was decided, whether it held up, and how the working relationship fared afterward.",
+        source: "reported", addedDate: "2026-08-29" },
+      { q: "Design a feature to help paycheck-to-paycheck users avoid overdraft fees.",
+        a: "The core insight: these users need a safety net that doesn't feel like a loan with interest — a fee-free short-term advance tied to detected income (payroll deposit pattern) works better than a traditional overdraft line. Make eligibility and available amount transparent upfront so it doesn't feel like a black box, and auto-repay on next paycheck deposit with an easy opt-out if repayment would cause hardship. Metric: overdraft-fee incidents avoided per active user, advance repayment default rate.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Your VP asks you to brainstorm 10 ways to increase engagement on your savings product in the next 30 minutes, then pick the one to build. Walk through how you'd run that exercise and what you'd pick.",
+        a: "Time-box the brainstorm and force quantity over quality first (10 ideas in 10 minutes, no filtering) — early filtering kills the ideas that need a second pass to sound good. Then score against 2-3 shared criteria (expected engagement lift, build effort, dependency risk) rather than picking on gut feel, and pick the one with the best effort-to-signal ratio for a fast test, not necessarily the biggest idea. Commit to a clear success metric and timebox before building, so the exercise produces a decision, not just a list.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Walk through how you'd use a prioritization framework like MoSCoW or Kano to sequence a backlog of 15 feature requests from your BBPS biller partners.",
+        a: "MoSCoW works well here because biller requests span very different urgency levels — sort into Must (blocks a biller from going live, e.g. a required API field), Should (meaningfully improves biller experience but not blocking), Could (nice-to-have), Won't (out of scope this cycle), and be transparent with partners about the 'Won't' bucket rather than going silent. Kano adds a second lens for the 'Should/Could' items — separate basic expectations from delighters, since biller partners will tolerate missing delighters but not missing basics. Sequence Musts first regardless of effort, then rank Should/Could by effort-to-partner-satisfaction ratio.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Approval rates for your BNPL product dropped 6 points over the past two weeks. Walk through how you'd diagnose it.",
+        a: "Segment first along product/channel dimensions: by merchant category (some merchant risk profiles shifted?), by cohort (are new applicants riskier, or is scoring stricter for existing users?), and by underwriting rule (is one specific rule now rejecting more?). Cross-check against any recent model retrain, bureau data change, or policy tightening on your end. Isolate whether the drop is deliberate (a recent risk-tightening decision) before treating it as a bug — if intentional, the real question becomes whether it's overcorrecting.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Size the BNPL market opportunity for a mid-sized e-commerce platform considering adding a 'pay in 4' option at checkout.",
+        a: "Structure the estimate from checkout volume, not population: take the platform's annual GMV, estimate the % of purchases in a price band where installments meaningfully help conversion (e.g. $50-$500), assume a BNPL attach rate based on comparable merchants (~15-25% typically), and apply that to estimate incremental GMV lift plus BNPL fee revenue. State assumptions explicitly and sanity-check attach-rate assumptions against any public benchmarks from Affirm/Klarna/Afterpay merchant case studies.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Tell me about a time you had to make a critical product decision under pressure. What was your decision-making process and the outcome?",
+        a: "STAR template — Situation: what forced urgency (an outage, a launch deadline, a stakeholder ultimatum). Task: your specific decision authority/role in that moment. Action: what information you used given the time constraint, who you looped in vs. decided solo, and why. Result: outcome and what you'd do differently with hindsight — interviewers weight the reasoning process here more than whether the outcome was perfect.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Explain how a BNPL provider like Klarna or Affirm actually makes money, and what happens to that economics if a regulator classifies BNPL as regulated credit.",
+        a: "BNPL providers earn primarily from merchant discount fees (a cut of GMV, often higher than card interchange, because merchants pay for the conversion/AOV lift), plus late fees and, on longer-tenor plans, interest from consumers. If regulated as credit, providers face mandatory affordability checks, credit bureau reporting, and disclosure requirements — this raises compliance cost and slows approval speed (BNPL's core UX advantage), and may push smaller/thinner-margin players out while entrenching well-capitalized incumbents who can absorb the compliance cost.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "How would you evaluate whether to sign a new large merchant partner for your BNPL platform, versus focusing resources on deepening penetration with existing merchants?",
+        a: "Weigh new-merchant GMV potential against integration/onboarding cost and cannibalization risk (does a new merchant pull volume from an existing one in the same category, or add net-new demand?). Existing-merchant penetration usually has a faster payback since the integration and trust are already built — prioritize a new large merchant only if it opens a genuinely new category or geography, not just more of the same volume. Recommend a portfolio approach: cap new-merchant sales effort at a fixed % of capacity so it doesn't crowd out expansion revenue from the existing base, which is typically higher-margin.",
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "Daily active users on your core payments app dropped 5% overnight with no known release that day. Walk through your RCA.",
+        a: "No known release doesn't mean no change — check third-party dependencies first (a payment partner/bank API version change, a certificate expiry, an ad platform/attribution tracking break inflating or deflating the number itself). Segment the drop by platform/OS version and geography to see if it's uniform (points to a measurement/tracking issue) or concentrated (points to a real functional break). Cross-check with a secondary data source (server-side transaction logs vs. client-side analytics) before concluding it's a real user drop rather than a reporting artifact.",
+        source: "reported", addedDate: "2026-09-02" }
+    ]
   }
 };
 
@@ -735,7 +773,7 @@ async function loadState() {
     streak: 0,
     best: 0,
     lastPracticedDate: null,
-    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0 },
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0, faq:0 },
     log: [],
     stampDates: [],
     answeredQuestions: []
@@ -1005,7 +1043,7 @@ document.getElementById('resetBtn').addEventListener('click', async () => {
   if (!confirm('Reset all streak and log data?')) return;
   state = {
     streak: 0, best: 0, lastPracticedDate: null,
-    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0 },
+    qIndex: { product_sense:0, execution:0, analytics:0, behavioral:0, fintech_domain:0, strategy:0, rca:0, gtm:0, faq:0 },
     log: [], stampDates: [], answeredQuestions: []
   };
   await saveState();
