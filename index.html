@@ -492,6 +492,9 @@ const TOPICS = {
         a: "Primary: assets under management (AUM) growth and net-new-money (deposits minus withdrawals) — reflects real trust, not just signups. Secondary: portfolio adherence to the recommended allocation, goal-completion rate. Guardrail: withdrawal rate during market downturns, since panic-selling signals a product/communication gap, not just market conditions." },
       { q: "How would you track whether your fintech product is staying within RBI's data localization and consent requirements as you scale?",
         a: "This isn't a single metric — build a compliance dashboard: % of data flows audited against localization rules, consent-capture completion rate, time-to-remediate flagged violations. Treat these as guardrails reviewed on a fixed cadence with legal/compliance, not ad hoc, since regulatory risk compounds silently until an audit or complaint surfaces it." },
+      { q: "You're building a tax-loss harvesting feature for a robo-advisory product that needs to run across millions of accounts nightly. How would you validate that it's working correctly at scale, not just in a demo account?",
+        a: "Validate in layers: unit-level correctness (does the harvesting logic obey wash-sale rules and cost-basis math for a single account, checked against a known-correct reference implementation), then a canary rollout to a small % of real accounts with human-reviewed spot-checks before full rollout. At scale, the real risk is silent drift — a batch job that partially fails or times out on a subset of accounts — so instrument completion rate per nightly run and alert on any account skipped, not just aggregate tax-savings numbers. Track realized tax savings per account as the north-star metric, but treat it as a lagging indicator; the leading indicators are job completion rate and rule-compliance rate.",
+        source: "reported", addedDate: "2026-09-03" },
       { q: "Approval rates for your BNPL product dropped 6 points over the past two weeks. Walk through how you'd diagnose it.",
         a: "Segment first along product/channel dimensions: by merchant category (some merchant risk profiles shifted?), by cohort (are new applicants riskier, or is scoring stricter for existing users?), and by underwriting rule (is one specific rule now rejecting more?). Cross-check against any recent model retrain, bureau data change, or policy tightening on your end. Isolate whether the drop is deliberate (a recent risk-tightening decision) before treating it as a bug — if intentional, the real question becomes whether it's overcorrecting.",
         source: "reported", addedDate: "2026-09-02" },
@@ -545,7 +548,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Tell me about the hardest trade-off you've had to make between user trust and short-term growth.",
         a: "STAR template — Situation: a specific moment where a growth lever (aggressive limits, opt-out defaults, monetized data use) tensioned with user trust. Task: your role in deciding. Action: how you weighed it — what data or principle tipped the decision, and who you brought into the conversation (legal, design, leadership). Result: what you chose, the actual outcome, and how you'd draw the line differently next time if at all.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "Tell me about a product you built that met the most resistance. How did you overcome it?",
+        a: "STAR template — Situation: name the specific resistance (from engineering, a stakeholder, or the market/users themselves) and why it existed — often a legitimate concern, not just inertia. Task: your role in getting the product through. Action: how you addressed the resistance directly — data that changed minds, a scoped-down pilot to de-risk the concern, or genuinely incorporating the pushback into a better version of the product rather than steamrolling it. Result: outcome, and whether the resistance turned out to have been right about something you should have listened to earlier.",
+        source: "reported", addedDate: "2026-09-03" }
     ]
   },
   fintech_domain: {
@@ -626,7 +632,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Interest rates just rose sharply, and your BNPL unit economics (funding cost vs. merchant fee revenue) are compressing. What's your 12-month strategic response?",
         a: "Funding-cost compression squeezes margin fastest on longer-tenor, interest-bearing plans — shift product mix toward shorter 'pay-in-4' style plans where merchant fees (not consumer interest) carry more of the economics, and renegotiate merchant fee tiers where your conversion/AOV lift data justifies it. In parallel, tighten underwriting selectively on the segments most exposed to rate-driven default risk rather than broadly, to protect margin without killing volume. Longer-term, diversify funding sources (forward-flow agreements, securitization) to reduce sensitivity to any single rate environment.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "Your fraud-detection ML model is a genuine competitive moat, but a much larger competitor just open-sourced a comparable fraud model. How do you respond strategically?",
+        a: "An open-sourced comparable model erodes the technology moat but not necessarily the data moat — your model's edge likely comes as much from proprietary transaction-pattern data as from the architecture itself, so the real question is whether your data advantage still holds. Don't rush to differentiate on model sophistication alone; instead double down on operational integration (how fast you act on a flag, how well false-positives are tuned to your specific user base) since that's harder to commoditize than an algorithm. Use the freed-up competitive pressure as a forcing function to accelerate the next layer of differentiation (e.g. real-time behavioral biometrics) before the market catches up there too.",
+        source: "claude", addedDate: "2026-09-03" }
     ]
   },
   rca: {
@@ -667,7 +676,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "After a root-cause fix ships, the metric recovers exactly to its pre-incident level and no further — but you expected some improvement above baseline too, since the fix also touched a related friction point. What do you check?",
         a: "Check whether the 'related friction point' the fix also touched actually shipped correctly and to the intended user segment — a partial or buggy rollout of that secondary improvement is the most common reason for a flat-at-baseline recovery. Also re-examine the original hypothesis: if the incident and the friction point were more independent than assumed, fixing the incident wouldn't be expected to move the friction-point improvement at all — recalibrate expectations rather than assuming something is still broken.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "A fraud-liability-shift feature you shipped last quarter is now flagged as the direct cause of a 12% dip in your consumer NPS, even though fraud losses dropped as expected. How do you investigate?",
+        a: "Fraud tools trade user friction for loss reduction almost by design, so first check whether the NPS dip concentrates specifically among legitimate users who got false-positived (step-up authentication, held transactions) rather than being a broad sentiment shift — pull verbatim NPS comments and cross-reference against who was actually flagged. If the dip is concentrated among false-positive-affected users, the fix is tuning the model's precision, not reversing the feature. If it's broad, something about the friction itself (messaging, recovery path) may be poorly designed even for legitimately-flagged users — check the appeal/dispute-resolution experience specifically, since a badly designed recovery path can sour even correctly-caught fraud attempts.",
+        source: "claude", addedDate: "2026-09-03" }
     ]
   },
   gtm: {
@@ -705,7 +717,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Your app just got a major platform policy change forced on it (e.g. app store payment rules) that breaks your current in-app purchase flow for a subscription product. How do you GTM the transition to users with minimal churn?",
         a: "Communicate the change proactively and well before the forced deadline, framing it as 'here's what's changing and exactly what you need to do,' not a surprise error state — the worst outcome is users hitting a broken purchase flow with no warning. Offer the smoothest available alternative path (e.g. web-based checkout link) and, if feasible, grandfather or grace-period existing subscribers so the transition doesn't look like a service disruption. Track churn/downgrade rate specifically among affected users during the transition window as the core GTM success metric, not just overall revenue, since a spike there is the leading indicator of a messaging failure.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "You're launching a joint fraud-liability-shift + faster-settlement bundle with a card network partner. The card network wants co-branding; your merchant customers are skeptical of anything that sounds like 'another card network fee.' How do you GTM this?",
+        a: "Frame the messaging around the merchant's outcome (faster cash flow, lower chargeback losses) rather than the partnership mechanics — most merchants don't care who's behind a feature, they care what it does for them. Negotiate co-branding placement that's secondary to your own brand in merchant-facing materials, reserving the network's branding for backend/compliance documentation where it matters for trust with their own audit requirements. Pilot with merchants already suffering visible chargeback pain, since they're the ones who'll tell the concrete ROI story that overcomes other merchants' fee skepticism.",
+        source: "claude", addedDate: "2026-09-03" }
     ]
   },
   faq: {
@@ -743,7 +758,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-02" },
       { q: "Daily active users on your core payments app dropped 5% overnight with no known release that day. Walk through your RCA.",
         a: "No known release doesn't mean no change — check third-party dependencies first (a payment partner/bank API version change, a certificate expiry, an ad platform/attribution tracking break inflating or deflating the number itself). Segment the drop by platform/OS version and geography to see if it's uniform (points to a measurement/tracking issue) or concentrated (points to a real functional break). Cross-check with a secondary data source (server-side transaction logs vs. client-side analytics) before concluding it's a real user drop rather than a reporting artifact.",
-        source: "reported", addedDate: "2026-09-02" }
+        source: "reported", addedDate: "2026-09-02" },
+      { q: "You're building a tax-loss harvesting feature for a robo-advisory product that needs to run across millions of accounts nightly. How would you validate that it's working correctly at scale, not just in a demo account?",
+        a: "Validate in layers: unit-level correctness (does the harvesting logic obey wash-sale rules and cost-basis math for a single account, checked against a known-correct reference implementation), then a canary rollout to a small % of real accounts with human-reviewed spot-checks before full rollout. At scale, the real risk is silent drift — a batch job that partially fails or times out on a subset of accounts — so instrument completion rate per nightly run and alert on any account skipped, not just aggregate tax-savings numbers. Track realized tax savings per account as the north-star metric, but treat it as a lagging indicator; the leading indicators are job completion rate and rule-compliance rate.",
+        source: "reported", addedDate: "2026-09-03" },
+      { q: "Tell me about a product you built that met the most resistance. How did you overcome it?",
+        a: "STAR template — Situation: name the specific resistance (from engineering, a stakeholder, or the market/users themselves) and why it existed — often a legitimate concern, not just inertia. Task: your role in getting the product through. Action: how you addressed the resistance directly — data that changed minds, a scoped-down pilot to de-risk the concern, or genuinely incorporating the pushback into a better version of the product rather than steamrolling it. Result: outcome, and whether the resistance turned out to have been right about something you should have listened to earlier.",
+        source: "reported", addedDate: "2026-09-03" }
     ]
   }
 };
