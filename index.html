@@ -468,7 +468,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "You're mid-sprint when your CEO asks for a demo-ready prototype of a new UPI-based micro-savings feature for an investor meeting in 5 days. Your team is already committed to a compliance-driven mandate change due the same week. How do you handle it?",
         a: "Don't silently deprioritize the compliance mandate to protect the demo — that's the kind of trade-off that needs to be made visibly, not by default. Scope the investor demo down to a clickable prototype or a narrow real-data slice that doesn't require full production engineering effort, freeing the team to stay on the compliance work. If leadership insists on both at full scope, escalate the trade-off explicitly with the compliance deadline risk spelled out, rather than absorbing the conflict into the team silently.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "Walk me through how you'd prioritize a roadmap when engineering capacity is constrained and three internal stakeholders each have competing urgent requests.",
+        a: "Don't just rank by who shouts loudest — score each request against the same explicit criteria (customer/revenue impact, regulatory urgency, effort) so stakeholders see the logic, not a political outcome. Separate genuinely urgent (has a hard external deadline or is actively losing money/customers) from merely important, since only the former should jump the queue. Communicate the ranked sequence and the reasoning back to all three stakeholders together, not one-on-one, so no one suspects a different story was told elsewhere — and revisit the ranking on a fixed cadence rather than re-litigating it every time someone escalates.",
+        source: "reported", addedDate: "2026-09-04" }
     ]
   },
   analytics: {
@@ -509,7 +512,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Your team wants to launch a referral program for a savings account product. What metrics would define success, and what's the biggest way this could look great on paper but be bad in reality?",
         a: "Define success as net-new funded accounts from referred users (not just signups — many referral programs juice vanity signups that never fund), plus referred-user 90-day retention vs. organic. The way this looks great on paper but is bad in reality: a generous referral bonus can attract reward-farmers who open an account, claim the bonus, and churn — so track cost-per-funded-account and early churn rate among referred users specifically, and cap or claw back bonuses tied to a minimum activity/retention threshold.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "As the PM for a crypto exchange's onboarding experience, how would you set goals and define success for the product?",
+        a: "Anchor on funded-account conversion, not just signups — crypto onboarding has a long trust-building step (KYC, funding source linkage) where most drop-off actually happens, so measure completion rate at each step (signup → KYC verified → funds deposited → first trade) rather than one blended number. Set the north-star as time-to-first-trade for verified users, since a long gap there signals friction even after KYC clears. Guardrail: verification pass rate shouldn't degrade if you're optimizing for speed, since loosening checks to boost conversion creates downstream compliance risk.",
+        source: "reported", addedDate: "2026-09-04" }
     ]
   },
   behavioral: {
@@ -551,7 +557,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Tell me about a product you built that met the most resistance. How did you overcome it?",
         a: "STAR template — Situation: name the specific resistance (from engineering, a stakeholder, or the market/users themselves) and why it existed — often a legitimate concern, not just inertia. Task: your role in getting the product through. Action: how you addressed the resistance directly — data that changed minds, a scoped-down pilot to de-risk the concern, or genuinely incorporating the pushback into a better version of the product rather than steamrolling it. Result: outcome, and whether the resistance turned out to have been right about something you should have listened to earlier.",
-        source: "reported", addedDate: "2026-09-03" }
+        source: "reported", addedDate: "2026-09-03" },
+      { q: "Tell me about a time you had to deliver bad news — a delay, a cut feature, a missed target — to a stakeholder who was counting on you.",
+        a: "STAR template — Situation: what was promised and why it slipped. Task: your responsibility in the delivery of that message, not just the underlying miss. Action: focus on how you delivered it (proactively vs. waiting to be asked, with a concrete revised plan rather than just an apology) and how you handled their reaction. Result: relationship outcome and whether trust was actually preserved or just patched over — interviewers are listening for whether you take ownership rather than deflecting to 'engineering was late.'",
+        source: "claude", addedDate: "2026-09-04" }
     ]
   },
   fintech_domain: {
@@ -635,7 +644,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Your fraud-detection ML model is a genuine competitive moat, but a much larger competitor just open-sourced a comparable fraud model. How do you respond strategically?",
         a: "An open-sourced comparable model erodes the technology moat but not necessarily the data moat — your model's edge likely comes as much from proprietary transaction-pattern data as from the architecture itself, so the real question is whether your data advantage still holds. Don't rush to differentiate on model sophistication alone; instead double down on operational integration (how fast you act on a flag, how well false-positives are tuned to your specific user base) since that's harder to commoditize than an algorithm. Use the freed-up competitive pressure as a forcing function to accelerate the next layer of differentiation (e.g. real-time behavioral biometrics) before the market catches up there too.",
-        source: "claude", addedDate: "2026-09-03" }
+        source: "claude", addedDate: "2026-09-03" },
+      { q: "A regulator in one of your key markets just proposed a rule that would ban a core feature of your product (e.g. instant crypto-to-fiat conversion) unless you add a mandatory cooling-off period. How do you think about your strategic response?",
+        a: "Don't treat this as purely a lobbying problem — model both scenarios (rule passes as-is, rule gets softened) and figure out if a cooling-off period is actually survivable for your business model or existential, since that determines how hard to fight it versus how fast to adapt. If survivable, get ahead of it: ship a compliant version voluntarily before the deadline, turning a forced compliance cost into a trust-building differentiator versus competitors who wait and scramble. If existential, that's a signal to diversify product mix in that market now rather than betting the company on a favorable final rule.",
+        source: "claude", addedDate: "2026-09-04" }
     ]
   },
   rca: {
@@ -720,7 +732,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "You're launching a joint fraud-liability-shift + faster-settlement bundle with a card network partner. The card network wants co-branding; your merchant customers are skeptical of anything that sounds like 'another card network fee.' How do you GTM this?",
         a: "Frame the messaging around the merchant's outcome (faster cash flow, lower chargeback losses) rather than the partnership mechanics — most merchants don't care who's behind a feature, they care what it does for them. Negotiate co-branding placement that's secondary to your own brand in merchant-facing materials, reserving the network's branding for backend/compliance documentation where it matters for trust with their own audit requirements. Pilot with merchants already suffering visible chargeback pain, since they're the ones who'll tell the concrete ROI story that overcomes other merchants' fee skepticism.",
-        source: "claude", addedDate: "2026-09-03" }
+        source: "claude", addedDate: "2026-09-03" },
+      { q: "You're launching a feature that only becomes valuable once a user has connected at least two other financial accounts (e.g. a net-worth tracker). How do you GTM something with this kind of activation cliff?",
+        a: "The GTM problem here is really an activation-sequencing problem — leading with the full net-worth-tracker pitch to a user with zero linked accounts sets up a promise the product can't deliver yet, so don't market the end-state feature to brand-new users at all. Instead, gate the feature's marketing behind a lighter first milestone (link just one account) and use progressive nudges to get to the two-account threshold, framing each additional link as unlocking more of a feature they've already started, not asking them to opt into something new. Track activation-cliff conversion (accounts linked: 0→1→2+) as the core GTM funnel metric, not top-of-funnel awareness, since awareness without accounts linked produces zero value.",
+        source: "claude", addedDate: "2026-09-04" }
     ]
   },
   faq: {
@@ -764,7 +779,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-03" },
       { q: "Tell me about a product you built that met the most resistance. How did you overcome it?",
         a: "STAR template — Situation: name the specific resistance (from engineering, a stakeholder, or the market/users themselves) and why it existed — often a legitimate concern, not just inertia. Task: your role in getting the product through. Action: how you addressed the resistance directly — data that changed minds, a scoped-down pilot to de-risk the concern, or genuinely incorporating the pushback into a better version of the product rather than steamrolling it. Result: outcome, and whether the resistance turned out to have been right about something you should have listened to earlier.",
-        source: "reported", addedDate: "2026-09-03" }
+        source: "reported", addedDate: "2026-09-03" },
+      { q: "Walk me through how you'd prioritize a roadmap when engineering capacity is constrained and three internal stakeholders each have competing urgent requests.",
+        a: "Don't just rank by who shouts loudest — score each request against the same explicit criteria (customer/revenue impact, regulatory urgency, effort) so stakeholders see the logic, not a political outcome. Separate genuinely urgent (has a hard external deadline or is actively losing money/customers) from merely important, since only the former should jump the queue. Communicate the ranked sequence and the reasoning back to all three stakeholders together, not one-on-one, so no one suspects a different story was told elsewhere — and revisit the ranking on a fixed cadence rather than re-litigating it every time someone escalates.",
+        source: "reported", addedDate: "2026-09-04" },
+      { q: "As the PM for a crypto exchange's onboarding experience, how would you set goals and define success for the product?",
+        a: "Anchor on funded-account conversion, not just signups — crypto onboarding has a long trust-building step (KYC, funding source linkage) where most drop-off actually happens, so measure completion rate at each step (signup → KYC verified → funds deposited → first trade) rather than one blended number. Set the north-star as time-to-first-trade for verified users, since a long gap there signals friction even after KYC clears. Guardrail: verification pass rate shouldn't degrade if you're optimizing for speed, since loosening checks to boost conversion creates downstream compliance risk.",
+        source: "reported", addedDate: "2026-09-04" }
     ]
   }
 };
