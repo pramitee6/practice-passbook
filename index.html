@@ -427,7 +427,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "How would you design the credit limit increase request flow for a secured credit card product?",
         a: "Secured cards serve credit-building users, so frame this as a graduation moment, not just a request form — proactively surface eligibility based on observed on-time payment history rather than making users guess when to ask. Show clearly what changes (does the security deposit requirement change too?) since ambiguity here erodes trust in a segment that's often credit-anxious. Metric: eligible-user opt-in rate, subsequent on-time payment rate post-increase (to confirm the increase wasn't over-extending risk).",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "Compare the PayPal app to the Venmo experience — what would you improve, from both a product and marketing perspective?",
+        a: "Frame the comparison around what each product actually optimizes for — PayPal skews utility/trust for transactional payments and merchant checkout, Venmo skews social (feed, emojis, splitting with friends), so 'improving' one by copying the other's surface features misses why users choose each. The sharper opportunity is usually in the handoff between them: PayPal's own users increasingly want the social/peer-payment ease Venmo has, so the improvement is more about surfacing peer-payment simplicity within PayPal's existing trust/reach, not a redesign. Metric: peer-payment feature adoption among existing PayPal users, cross-sell rate between merchant-checkout users and peer-payment usage.",
+        source: "reported", addedDate: "2026-09-05" }
     ]
   },
   execution: {
@@ -471,7 +474,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Walk me through how you'd prioritize a roadmap when engineering capacity is constrained and three internal stakeholders each have competing urgent requests.",
         a: "Don't just rank by who shouts loudest — score each request against the same explicit criteria (customer/revenue impact, regulatory urgency, effort) so stakeholders see the logic, not a political outcome. Separate genuinely urgent (has a hard external deadline or is actively losing money/customers) from merely important, since only the former should jump the queue. Communicate the ranked sequence and the reasoning back to all three stakeholders together, not one-on-one, so no one suspects a different story was told elsewhere — and revisit the ranking on a fixed cadence rather than re-litigating it every time someone escalates.",
-        source: "reported", addedDate: "2026-09-04" }
+        source: "reported", addedDate: "2026-09-04" },
+      { q: "Your team has capacity for exactly one major initiative next quarter. Engineering pitches a platform rewrite that will cut future feature-delivery time in half; Sales pitches three specific feature requests tied to deals worth $2M ARR closing this quarter if delivered. How do you decide?",
+        a: "Don't treat this as speed vs. revenue — quantify both properly first: what specifically breaks or slows without the rewrite over the next 2-3 quarters (is delivery already visibly degrading, or is this precautionary), and how firm is the $2M ARR (signed contingent on the feature vs. a soft sales promise). If the rewrite is precautionary and the deals are real and contractually tied to specific dates, take the revenue — technical debt rarely kills a company in one quarter, but losing signed deals does. If delivery is already visibly degrading team-wide, the rewrite protects far more than one quarter's revenue and should win; either way, make the trade-off criteria explicit before deciding, not after, so it doesn't look like whoever escalated loudest won.",
+        source: "claude", addedDate: "2026-09-05" }
     ]
   },
   analytics: {
@@ -515,7 +521,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "As the PM for a crypto exchange's onboarding experience, how would you set goals and define success for the product?",
         a: "Anchor on funded-account conversion, not just signups — crypto onboarding has a long trust-building step (KYC, funding source linkage) where most drop-off actually happens, so measure completion rate at each step (signup → KYC verified → funds deposited → first trade) rather than one blended number. Set the north-star as time-to-first-trade for verified users, since a long gap there signals friction even after KYC clears. Guardrail: verification pass rate shouldn't degrade if you're optimizing for speed, since loosening checks to boost conversion creates downstream compliance risk.",
-        source: "reported", addedDate: "2026-09-04" }
+        source: "reported", addedDate: "2026-09-04" },
+      { q: "Your risk model's AUC (a common model-quality metric) improved after a retrain, but the business is seeing more customer complaints about declined transactions. How do you reconcile these two signals?",
+        a: "AUC measures rank-ordering quality across the whole population — it can improve in aggregate while getting meaningfully worse for a specific, vocal segment (e.g. a particular merchant category or transaction size band), which is exactly where complaints would concentrate. Segment complaint volume against model decisions on the same population the AUC was measured on, rather than trusting the aggregate metric alone. This is also a reminder that AUC doesn't capture the cost asymmetry between a false decline (angry legitimate customer, lost revenue) and a false approve (fraud loss) — track precision/recall at your actual operating threshold, not just AUC, since that's what customers and revenue actually experience.",
+        source: "claude", addedDate: "2026-09-05" }
     ]
   },
   behavioral: {
@@ -603,7 +612,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Explain tokenization in the context of card payments, and why it matters for both fraud and regulatory compliance (e.g. RBI's card-on-file tokenization mandate).",
         a: "Tokenization replaces the actual card number with a merchant/device-specific token that's useless if intercepted elsewhere, so a data breach at one merchant doesn't expose the underlying card everywhere else. RBI's card-on-file tokenization mandate specifically bars merchants from storing raw card numbers at all, forcing the ecosystem toward token-based recurring billing — this reduces systemic breach impact but adds implementation complexity (each merchant relationship needs its own token, complicating card updates/expiry handling) that fintechs building recurring billing products have to solve for directly.",
-        source: "claude", addedDate: "2026-09-02" }
+        source: "claude", addedDate: "2026-09-02" },
+      { q: "Walk through what actually happens, system by system, when a customer swipes their card at a merchant terminal.",
+        a: "The terminal captures card data and sends it to the merchant's acquiring bank, which routes it through the card network (Visa/Mastercard/RuPay) to the issuing bank for authorization — the issuer checks funds/credit limit and fraud rules, then sends an approve/decline back through the same chain, typically in under a second. Authorization isn't settlement: the actual movement of money happens later in a batch (the merchant's acquirer and the issuer settle net amounts, often next business day), which is why a merchant sees a transaction as 'pending' before it's fully settled. Each hop (terminal, acquirer, network, issuer) can independently decline or add latency, which is why 'my card got declined' can have a completely different root cause depending on which party in the chain rejected it.",
+        source: "reported", addedDate: "2026-09-05" }
     ]
   },
   strategy: {
@@ -691,7 +703,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "A fraud-liability-shift feature you shipped last quarter is now flagged as the direct cause of a 12% dip in your consumer NPS, even though fraud losses dropped as expected. How do you investigate?",
         a: "Fraud tools trade user friction for loss reduction almost by design, so first check whether the NPS dip concentrates specifically among legitimate users who got false-positived (step-up authentication, held transactions) rather than being a broad sentiment shift — pull verbatim NPS comments and cross-reference against who was actually flagged. If the dip is concentrated among false-positive-affected users, the fix is tuning the model's precision, not reversing the feature. If it's broad, something about the friction itself (messaging, recovery path) may be poorly designed even for legitimately-flagged users — check the appeal/dispute-resolution experience specifically, since a badly designed recovery path can sour even correctly-caught fraud attempts.",
-        source: "claude", addedDate: "2026-09-03" }
+        source: "claude", addedDate: "2026-09-03" },
+      { q: "Support tickets mentioning 'app is slow' tripled this week for your banking app, but your APM (application performance monitoring) dashboards show p50/p95 latency unchanged. What's your RCA approach?",
+        a: "A real slowdown that your APM doesn't see is usually happening somewhere APM doesn't instrument — client-side rendering on a specific device/OS version, a third-party SDK (analytics, ad, or fraud-check library) blocking the main thread, or a CDN/DNS issue affecting a specific region or ISP that your server-side latency metrics never touch. Segment the complaints by app version, device model, and geography before assuming it's backend at all, and pull real user monitoring (RUM) data if you have it, since that captures the actual client-side experience your server-side APM dashboards structurally can't see.",
+        source: "claude", addedDate: "2026-09-05" }
     ]
   },
   gtm: {
@@ -785,7 +800,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-04" },
       { q: "As the PM for a crypto exchange's onboarding experience, how would you set goals and define success for the product?",
         a: "Anchor on funded-account conversion, not just signups — crypto onboarding has a long trust-building step (KYC, funding source linkage) where most drop-off actually happens, so measure completion rate at each step (signup → KYC verified → funds deposited → first trade) rather than one blended number. Set the north-star as time-to-first-trade for verified users, since a long gap there signals friction even after KYC clears. Guardrail: verification pass rate shouldn't degrade if you're optimizing for speed, since loosening checks to boost conversion creates downstream compliance risk.",
-        source: "reported", addedDate: "2026-09-04" }
+        source: "reported", addedDate: "2026-09-04" },
+      { q: "Compare the PayPal app to the Venmo experience — what would you improve, from both a product and marketing perspective?",
+        a: "Frame the comparison around what each product actually optimizes for — PayPal skews utility/trust for transactional payments and merchant checkout, Venmo skews social (feed, emojis, splitting with friends), so 'improving' one by copying the other's surface features misses why users choose each. The sharper opportunity is usually in the handoff between them: PayPal's own users increasingly want the social/peer-payment ease Venmo has, so the improvement is more about surfacing peer-payment simplicity within PayPal's existing trust/reach, not a redesign. Metric: peer-payment feature adoption among existing PayPal users, cross-sell rate between merchant-checkout users and peer-payment usage.",
+        source: "reported", addedDate: "2026-09-05" },
+      { q: "Walk through what actually happens, system by system, when a customer swipes their card at a merchant terminal.",
+        a: "The terminal captures card data and sends it to the merchant's acquiring bank, which routes it through the card network (Visa/Mastercard/RuPay) to the issuing bank for authorization — the issuer checks funds/credit limit and fraud rules, then sends an approve/decline back through the same chain, typically in under a second. Authorization isn't settlement: the actual movement of money happens later in a batch (the merchant's acquirer and the issuer settle net amounts, often next business day), which is why a merchant sees a transaction as 'pending' before it's fully settled. Each hop (terminal, acquirer, network, issuer) can independently decline or add latency, which is why 'my card got declined' can have a completely different root cause depending on which party in the chain rejected it.",
+        source: "reported", addedDate: "2026-09-05" }
     ]
   }
 };
