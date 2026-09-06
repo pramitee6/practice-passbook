@@ -477,7 +477,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-04" },
       { q: "Your team has capacity for exactly one major initiative next quarter. Engineering pitches a platform rewrite that will cut future feature-delivery time in half; Sales pitches three specific feature requests tied to deals worth $2M ARR closing this quarter if delivered. How do you decide?",
         a: "Don't treat this as speed vs. revenue — quantify both properly first: what specifically breaks or slows without the rewrite over the next 2-3 quarters (is delivery already visibly degrading, or is this precautionary), and how firm is the $2M ARR (signed contingent on the feature vs. a soft sales promise). If the rewrite is precautionary and the deals are real and contractually tied to specific dates, take the revenue — technical debt rarely kills a company in one quarter, but losing signed deals does. If delivery is already visibly degrading team-wide, the rewrite protects far more than one quarter's revenue and should win; either way, make the trade-off criteria explicit before deciding, not after, so it doesn't look like whoever escalated loudest won.",
-        source: "claude", addedDate: "2026-09-05" }
+        source: "claude", addedDate: "2026-09-05" },
+      { q: "Legal tells you a feature you're two days from shipping has a compliance gap that wasn't caught earlier — not severe enough to be illegal, but risky enough that they're uncomfortable. Engineering says fixing it properly adds a week. What do you do?",
+        a: "Don't treat 'not severe enough to be illegal' as clearance to ship — a compliance team flagging discomfort this close to launch is a signal worth taking seriously, since they typically only escalate when something crossed a real threshold for them. Get specific with Legal on exactly what risk they're flagging and what the minimum viable mitigation is (it may be smaller than a full week-long fix — e.g. a disclosure or a narrower initial rollout). If a minimum mitigation exists, ship with it and schedule the full fix immediately after; if Legal says there's no partial mitigation, slip the launch rather than override a compliance team's explicit discomfort.",
+        source: "claude", addedDate: "2026-09-06" }
     ]
   },
   analytics: {
@@ -569,7 +572,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-03" },
       { q: "Tell me about a time you had to deliver bad news — a delay, a cut feature, a missed target — to a stakeholder who was counting on you.",
         a: "STAR template — Situation: what was promised and why it slipped. Task: your responsibility in the delivery of that message, not just the underlying miss. Action: focus on how you delivered it (proactively vs. waiting to be asked, with a concrete revised plan rather than just an apology) and how you handled their reaction. Result: relationship outcome and whether trust was actually preserved or just patched over — interviewers are listening for whether you take ownership rather than deflecting to 'engineering was late.'",
-        source: "claude", addedDate: "2026-09-04" }
+        source: "claude", addedDate: "2026-09-04" },
+      { q: "Tell me about a time you cut scope or unblocked a team to ship faster, without sacrificing quality.",
+        a: "STAR template — Situation: what was at risk of slipping and why speed mattered (a market window, a committed date, team morale). Task: your role in the trade-off. Action: be specific about what you actually cut (a feature, a polish pass, a nice-to-have edge case) versus what you protected (core reliability, security, data integrity) — this is the part interviewers are really listening for, since 'we just moved faster' without naming the trade-off sounds like corner-cutting, not judgment. Result: outcome, and how you validated that what you cut didn't quietly become a problem later.",
+        source: "reported", addedDate: "2026-09-06" }
     ]
   },
   fintech_domain: {
@@ -615,7 +621,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Walk through what actually happens, system by system, when a customer swipes their card at a merchant terminal.",
         a: "The terminal captures card data and sends it to the merchant's acquiring bank, which routes it through the card network (Visa/Mastercard/RuPay) to the issuing bank for authorization — the issuer checks funds/credit limit and fraud rules, then sends an approve/decline back through the same chain, typically in under a second. Authorization isn't settlement: the actual movement of money happens later in a batch (the merchant's acquirer and the issuer settle net amounts, often next business day), which is why a merchant sees a transaction as 'pending' before it's fully settled. Each hop (terminal, acquirer, network, issuer) can independently decline or add latency, which is why 'my card got declined' can have a completely different root cause depending on which party in the chain rejected it.",
-        source: "reported", addedDate: "2026-09-05" }
+        source: "reported", addedDate: "2026-09-05" },
+      { q: "What is a 'nostro/vostro' account relationship, and why does it matter for cross-border payment product design?",
+        a: "A nostro account is 'our money held at your bank' (from the perspective of the bank holding it abroad); the same account is a vostro account from the foreign bank's perspective ('your money held at our bank') — these correspondent banking relationships are how banks settle cross-border payments without moving physical cash. For product design, this matters because settlement speed and cost are bounded by how many nostro/vostro hops a payment takes and how well-funded each account is — a payment can be authorized instantly but still take days to settle if it routes through a thinly-funded correspondent relationship, which is exactly the kind of hidden dependency that breaks a 'real-time transfer' promise.",
+        source: "claude", addedDate: "2026-09-06" }
     ]
   },
   strategy: {
@@ -659,7 +668,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-03" },
       { q: "A regulator in one of your key markets just proposed a rule that would ban a core feature of your product (e.g. instant crypto-to-fiat conversion) unless you add a mandatory cooling-off period. How do you think about your strategic response?",
         a: "Don't treat this as purely a lobbying problem — model both scenarios (rule passes as-is, rule gets softened) and figure out if a cooling-off period is actually survivable for your business model or existential, since that determines how hard to fight it versus how fast to adapt. If survivable, get ahead of it: ship a compliant version voluntarily before the deadline, turning a forced compliance cost into a trust-building differentiator versus competitors who wait and scramble. If existential, that's a signal to diversify product mix in that market now rather than betting the company on a favorable final rule.",
-        source: "claude", addedDate: "2026-09-04" }
+        source: "claude", addedDate: "2026-09-04" },
+      { q: "How should a payments infrastructure challenger differentiate itself from entrenched competitors like Stripe and Adyen in the enterprise payments space?",
+        a: "Competing head-on on breadth of payment methods or geographic coverage is a losing game against incumbents who've had a decade's head start — differentiate on a specific wedge where the incumbents are structurally weak, e.g. vertical-specific compliance (a payments stack purpose-built for one regulated industry) or superior developer experience for a specific integration pattern they've under-invested in. Win a small number of reference enterprise logos in that wedge first, since enterprise payments buyers heavily weight peer validation over feature comparison sheets. Expand breadth only after the wedge is defensible, rather than trying to out-Stripe Stripe on day one.",
+        source: "reported", addedDate: "2026-09-06" }
     ]
   },
   rca: {
@@ -750,7 +762,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-03" },
       { q: "You're launching a feature that only becomes valuable once a user has connected at least two other financial accounts (e.g. a net-worth tracker). How do you GTM something with this kind of activation cliff?",
         a: "The GTM problem here is really an activation-sequencing problem — leading with the full net-worth-tracker pitch to a user with zero linked accounts sets up a promise the product can't deliver yet, so don't market the end-state feature to brand-new users at all. Instead, gate the feature's marketing behind a lighter first milestone (link just one account) and use progressive nudges to get to the two-account threshold, framing each additional link as unlocking more of a feature they've already started, not asking them to opt into something new. Track activation-cliff conversion (accounts linked: 0→1→2+) as the core GTM funnel metric, not top-of-funnel awareness, since awareness without accounts linked produces zero value.",
-        source: "claude", addedDate: "2026-09-04" }
+        source: "claude", addedDate: "2026-09-04" },
+      { q: "You're launching a payments product into a market where a well-funded local competitor already has 70% share through deep bank partnerships you can't easily replicate. What's your GTM wedge?",
+        a: "Don't compete on the incumbent's terms (bank partnership breadth) — find the segment the incumbent's bank-partnership model structurally underserves, typically smaller merchants or newer verticals the banks are slow to onboard, and win there first with faster self-serve integration. Use that beachhead to build a reference base and unit economics proof before ever attempting a head-on enterprise sales motion. Price aggressively in the underserved segment initially since the goal is share and data, not margin, in phase one.",
+        source: "claude", addedDate: "2026-09-06" }
     ]
   },
   faq: {
@@ -806,7 +821,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-05" },
       { q: "Walk through what actually happens, system by system, when a customer swipes their card at a merchant terminal.",
         a: "The terminal captures card data and sends it to the merchant's acquiring bank, which routes it through the card network (Visa/Mastercard/RuPay) to the issuing bank for authorization — the issuer checks funds/credit limit and fraud rules, then sends an approve/decline back through the same chain, typically in under a second. Authorization isn't settlement: the actual movement of money happens later in a batch (the merchant's acquirer and the issuer settle net amounts, often next business day), which is why a merchant sees a transaction as 'pending' before it's fully settled. Each hop (terminal, acquirer, network, issuer) can independently decline or add latency, which is why 'my card got declined' can have a completely different root cause depending on which party in the chain rejected it.",
-        source: "reported", addedDate: "2026-09-05" }
+        source: "reported", addedDate: "2026-09-05" },
+      { q: "Tell me about a time you cut scope or unblocked a team to ship faster, without sacrificing quality.",
+        a: "STAR template — Situation: what was at risk of slipping and why speed mattered (a market window, a committed date, team morale). Task: your role in the trade-off. Action: be specific about what you actually cut (a feature, a polish pass, a nice-to-have edge case) versus what you protected (core reliability, security, data integrity) — this is the part interviewers are really listening for, since 'we just moved faster' without naming the trade-off sounds like corner-cutting, not judgment. Result: outcome, and how you validated that what you cut didn't quietly become a problem later.",
+        source: "reported", addedDate: "2026-09-06" },
+      { q: "How should a payments infrastructure challenger differentiate itself from entrenched competitors like Stripe and Adyen in the enterprise payments space?",
+        a: "Competing head-on on breadth of payment methods or geographic coverage is a losing game against incumbents who've had a decade's head start — differentiate on a specific wedge where the incumbents are structurally weak, e.g. vertical-specific compliance (a payments stack purpose-built for one regulated industry) or superior developer experience for a specific integration pattern they've under-invested in. Win a small number of reference enterprise logos in that wedge first, since enterprise payments buyers heavily weight peer validation over feature comparison sheets. Expand breadth only after the wedge is defensible, rather than trying to out-Stripe Stripe on day one.",
+        source: "reported", addedDate: "2026-09-06" }
     ]
   }
 };
