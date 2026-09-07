@@ -430,7 +430,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-02" },
       { q: "Compare the PayPal app to the Venmo experience — what would you improve, from both a product and marketing perspective?",
         a: "Frame the comparison around what each product actually optimizes for — PayPal skews utility/trust for transactional payments and merchant checkout, Venmo skews social (feed, emojis, splitting with friends), so 'improving' one by copying the other's surface features misses why users choose each. The sharper opportunity is usually in the handoff between them: PayPal's own users increasingly want the social/peer-payment ease Venmo has, so the improvement is more about surfacing peer-payment simplicity within PayPal's existing trust/reach, not a redesign. Metric: peer-payment feature adoption among existing PayPal users, cross-sell rate between merchant-checkout users and peer-payment usage.",
-        source: "reported", addedDate: "2026-09-05" }
+        source: "reported", addedDate: "2026-09-05" },
+      { q: "How would you apply an emerging technology — generative AI, biometrics, or similar — to a financial product to solve a real user problem, not just add it as a novelty feature?",
+        a: "Start from the user problem, not the technology — pick a specific, painful moment (e.g. disputing a transaction, understanding a decline reason, catching a suspicious charge before it's too late) and ask whether the emerging tech genuinely removes friction there or just repackages existing functionality with a chatbot UI. Prototype the narrowest version that tests the core value hypothesis (e.g. can a model actually explain a decline reason more clearly than existing static messaging) before investing in a full experience. Guard against 'innovation theater' — track whether usage of the new feature actually reduces the friction it was meant to solve (e.g. fewer repeat support contacts on the same issue), not just novelty-driven initial engagement.",
+        source: "reported", addedDate: "2026-09-07" }
     ]
   },
   execution: {
@@ -527,7 +530,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-04" },
       { q: "Your risk model's AUC (a common model-quality metric) improved after a retrain, but the business is seeing more customer complaints about declined transactions. How do you reconcile these two signals?",
         a: "AUC measures rank-ordering quality across the whole population — it can improve in aggregate while getting meaningfully worse for a specific, vocal segment (e.g. a particular merchant category or transaction size band), which is exactly where complaints would concentrate. Segment complaint volume against model decisions on the same population the AUC was measured on, rather than trusting the aggregate metric alone. This is also a reminder that AUC doesn't capture the cost asymmetry between a false decline (angry legitimate customer, lost revenue) and a false approve (fraud loss) — track precision/recall at your actual operating threshold, not just AUC, since that's what customers and revenue actually experience.",
-        source: "claude", addedDate: "2026-09-05" }
+        source: "claude", addedDate: "2026-09-05" },
+      { q: "How do you measure the success of a product launch? Which metrics matter most?",
+        a: "Separate leading from lagging indicators: in the first days/weeks, watch adoption and activation (are the right users trying it, and completing the core action) since revenue/retention metrics won't have matured yet. Pick 1-2 metrics that matter most based on the launch's actual goal — a growth launch cares about activation and viral/referral coefficient, a retention launch cares about repeat usage and churn delta versus a control cohort. Always pair the headline metric with a guardrail (e.g. don't let a growth push tank fraud rates or support load), since optimizing one metric in isolation is how launches quietly cause damage elsewhere.",
+        source: "reported", addedDate: "2026-09-07" }
     ]
   },
   behavioral: {
@@ -671,7 +677,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-04" },
       { q: "How should a payments infrastructure challenger differentiate itself from entrenched competitors like Stripe and Adyen in the enterprise payments space?",
         a: "Competing head-on on breadth of payment methods or geographic coverage is a losing game against incumbents who've had a decade's head start — differentiate on a specific wedge where the incumbents are structurally weak, e.g. vertical-specific compliance (a payments stack purpose-built for one regulated industry) or superior developer experience for a specific integration pattern they've under-invested in. Win a small number of reference enterprise logos in that wedge first, since enterprise payments buyers heavily weight peer validation over feature comparison sheets. Expand breadth only after the wedge is defensible, rather than trying to out-Stripe Stripe on day one.",
-        source: "reported", addedDate: "2026-09-06" }
+        source: "reported", addedDate: "2026-09-06" },
+      { q: "Your embedded-finance product depends entirely on one core banking-as-a-service (BaaS) provider. That provider was just hit with a regulatory consent order limiting their ability to onboard new bank partners. What's your strategic response?",
+        a: "Treat this as a single-point-of-failure event, not just your provider's problem — even if your existing service isn't immediately disrupted, a consent order signals elevated regulatory risk that could affect your provider's stability or force sudden changes to how you operate. Start scoping a second BaaS provider relationship now as a hedge, even if slow and expensive, rather than waiting for an actual outage to force an emergency migration. Use this moment to negotiate better terms/SLAs with your current provider, since they now have strong incentive to retain you, and communicate proactively with your own regulators/board about the dependency and your mitigation plan before anyone asks.",
+        source: "claude", addedDate: "2026-09-07" }
     ]
   },
   rca: {
@@ -718,7 +727,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-03" },
       { q: "Support tickets mentioning 'app is slow' tripled this week for your banking app, but your APM (application performance monitoring) dashboards show p50/p95 latency unchanged. What's your RCA approach?",
         a: "A real slowdown that your APM doesn't see is usually happening somewhere APM doesn't instrument — client-side rendering on a specific device/OS version, a third-party SDK (analytics, ad, or fraud-check library) blocking the main thread, or a CDN/DNS issue affecting a specific region or ISP that your server-side latency metrics never touch. Segment the complaints by app version, device model, and geography before assuming it's backend at all, and pull real user monitoring (RUM) data if you have it, since that captures the actual client-side experience your server-side APM dashboards structurally can't see.",
-        source: "claude", addedDate: "2026-09-05" }
+        source: "claude", addedDate: "2026-09-05" },
+      { q: "Two weeks after launching biometric login for your banking app, login success rate is fine, but overall session length dropped 15%. Walk through your RCA.",
+        a: "Don't assume biometric login itself caused the drop — check whether the metric definition changed (e.g. biometric login is faster, so users who used to linger on a slow password screen now reach content sooner, mechanically shortening 'session length' even if engagement per session is unchanged). Segment session length by entry method (biometric vs. password) and compare engagement-per-minute, not just raw duration, to see if this is a measurement artifact or a real behavior change. If it's real, check whether faster access changed usage patterns (e.g. users now do quick check-ins instead of longer browsing sessions) — that could be a neutral or even positive shift mislabeled as a regression by a metric that assumes longer sessions are always better.",
+        source: "claude", addedDate: "2026-09-07" }
     ]
   },
   gtm: {
@@ -765,7 +777,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-04" },
       { q: "You're launching a payments product into a market where a well-funded local competitor already has 70% share through deep bank partnerships you can't easily replicate. What's your GTM wedge?",
         a: "Don't compete on the incumbent's terms (bank partnership breadth) — find the segment the incumbent's bank-partnership model structurally underserves, typically smaller merchants or newer verticals the banks are slow to onboard, and win there first with faster self-serve integration. Use that beachhead to build a reference base and unit economics proof before ever attempting a head-on enterprise sales motion. Price aggressively in the underserved segment initially since the goal is share and data, not margin, in phase one.",
-        source: "claude", addedDate: "2026-09-06" }
+        source: "claude", addedDate: "2026-09-06" },
+      { q: "You're launching a small-business lending product, but small-business owners are your hardest-to-reach GTM audience — they don't respond to typical acquisition channels and are wary of fintech lenders after bad experiences with predatory players. What's your approach?",
+        a: "Lead with trust infrastructure before acquisition spend — partner with accounting software, POS systems, or industry associations small businesses already use and trust, since a warm introduction from an existing trusted tool overcomes skepticism that a cold ad never will. Publish transparent, comparison-friendly pricing (total cost of credit, not just a rate) proactively, since the predatory-lender scar tissue makes opacity itself a red flag regardless of your actual terms. Start with a narrow vertical (a specific industry your underwriting model handles especially well) rather than broad small-business marketing, so the trust-building message and word-of-mouth can concentrate in one community instead of diffusing across totally different business types.",
+        source: "claude", addedDate: "2026-09-07" }
     ]
   },
   faq: {
@@ -827,7 +842,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-06" },
       { q: "How should a payments infrastructure challenger differentiate itself from entrenched competitors like Stripe and Adyen in the enterprise payments space?",
         a: "Competing head-on on breadth of payment methods or geographic coverage is a losing game against incumbents who've had a decade's head start — differentiate on a specific wedge where the incumbents are structurally weak, e.g. vertical-specific compliance (a payments stack purpose-built for one regulated industry) or superior developer experience for a specific integration pattern they've under-invested in. Win a small number of reference enterprise logos in that wedge first, since enterprise payments buyers heavily weight peer validation over feature comparison sheets. Expand breadth only after the wedge is defensible, rather than trying to out-Stripe Stripe on day one.",
-        source: "reported", addedDate: "2026-09-06" }
+        source: "reported", addedDate: "2026-09-06" },
+      { q: "How would you apply an emerging technology — generative AI, biometrics, or similar — to a financial product to solve a real user problem, not just add it as a novelty feature?",
+        a: "Start from the user problem, not the technology — pick a specific, painful moment (e.g. disputing a transaction, understanding a decline reason, catching a suspicious charge before it's too late) and ask whether the emerging tech genuinely removes friction there or just repackages existing functionality with a chatbot UI. Prototype the narrowest version that tests the core value hypothesis (e.g. can a model actually explain a decline reason more clearly than existing static messaging) before investing in a full experience. Guard against 'innovation theater' — track whether usage of the new feature actually reduces the friction it was meant to solve (e.g. fewer repeat support contacts on the same issue), not just novelty-driven initial engagement.",
+        source: "reported", addedDate: "2026-09-07" },
+      { q: "How do you measure the success of a product launch? Which metrics matter most?",
+        a: "Separate leading from lagging indicators: in the first days/weeks, watch adoption and activation (are the right users trying it, and completing the core action) since revenue/retention metrics won't have matured yet. Pick 1-2 metrics that matter most based on the launch's actual goal — a growth launch cares about activation and viral/referral coefficient, a retention launch cares about repeat usage and churn delta versus a control cohort. Always pair the headline metric with a guardrail (e.g. don't let a growth push tank fraud rates or support load), since optimizing one metric in isolation is how launches quietly cause damage elsewhere.",
+        source: "reported", addedDate: "2026-09-07" }
     ]
   }
 };
