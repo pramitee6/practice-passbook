@@ -433,7 +433,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-05" },
       { q: "How would you apply an emerging technology — generative AI, biometrics, or similar — to a financial product to solve a real user problem, not just add it as a novelty feature?",
         a: "Start from the user problem, not the technology — pick a specific, painful moment (e.g. disputing a transaction, understanding a decline reason, catching a suspicious charge before it's too late) and ask whether the emerging tech genuinely removes friction there or just repackages existing functionality with a chatbot UI. Prototype the narrowest version that tests the core value hypothesis (e.g. can a model actually explain a decline reason more clearly than existing static messaging) before investing in a full experience. Guard against 'innovation theater' — track whether usage of the new feature actually reduces the friction it was meant to solve (e.g. fewer repeat support contacts on the same issue), not just novelty-driven initial engagement.",
-        source: "reported", addedDate: "2026-09-07" }
+        source: "reported", addedDate: "2026-09-07" },
+      { q: "Design a feature that helps users understand why their credit score changed this month.",
+        a: "Most credit-score confusion comes from users seeing a number move without any attributable cause — surface the top 1-2 specific factors that changed (a new hard inquiry, a utilization increase, an account aging) rather than a generic breakdown of all five scoring factors every time. Tie each factor to a concrete, actionable next step (pay down utilization by $X to recover ~Y points) instead of just naming the factor, since users act on guidance, not diagnosis. Metric: % of score-drop notifications that lead to a corrective action within 30 days, unsubscribe/mute rate on the notification (a proxy for anxiety-inducing rather than helpful framing).",
+        source: "claude", addedDate: "2026-09-08" }
     ]
   },
   execution: {
@@ -483,7 +486,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-05" },
       { q: "Legal tells you a feature you're two days from shipping has a compliance gap that wasn't caught earlier — not severe enough to be illegal, but risky enough that they're uncomfortable. Engineering says fixing it properly adds a week. What do you do?",
         a: "Don't treat 'not severe enough to be illegal' as clearance to ship — a compliance team flagging discomfort this close to launch is a signal worth taking seriously, since they typically only escalate when something crossed a real threshold for them. Get specific with Legal on exactly what risk they're flagging and what the minimum viable mitigation is (it may be smaller than a full week-long fix — e.g. a disclosure or a narrower initial rollout). If a minimum mitigation exists, ship with it and schedule the full fix immediately after; if Legal says there's no partial mitigation, slip the launch rather than override a compliance team's explicit discomfort.",
-        source: "claude", addedDate: "2026-09-06" }
+        source: "claude", addedDate: "2026-09-06" },
+      { q: "Design a system that detects and retries failed API calls to upstream banks without duplicating transactions. Walk through your approach.",
+        a: "The core requirement is idempotency — every retry needs a unique idempotency key tied to the original request so the upstream bank (or your own system) can recognize and discard a duplicate rather than double-processing it. Use exponential backoff with a capped retry count rather than immediate or unlimited retries, since hammering a struggling upstream bank API makes things worse, and distinguish retryable failures (timeout, 5xx) from non-retryable ones (4xx validation errors) so you're not blindly retrying a request that will never succeed. Track retry success rate and time-to-eventual-success per bank as the key execution metrics, since a bank with a consistently high retry rate is a signal to escalate the integration issue directly rather than keep absorbing it silently.",
+        source: "reported", addedDate: "2026-09-08" }
     ]
   },
   analytics: {
@@ -581,7 +587,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-04" },
       { q: "Tell me about a time you cut scope or unblocked a team to ship faster, without sacrificing quality.",
         a: "STAR template — Situation: what was at risk of slipping and why speed mattered (a market window, a committed date, team morale). Task: your role in the trade-off. Action: be specific about what you actually cut (a feature, a polish pass, a nice-to-have edge case) versus what you protected (core reliability, security, data integrity) — this is the part interviewers are really listening for, since 'we just moved faster' without naming the trade-off sounds like corner-cutting, not judgment. Result: outcome, and how you validated that what you cut didn't quietly become a problem later.",
-        source: "reported", addedDate: "2026-09-06" }
+        source: "reported", addedDate: "2026-09-06" },
+      { q: "Tell me about a time you dealt with a bug or product issue where trust or correctness was on the line. How did you handle it?",
+        a: "STAR template — Situation: what the issue was and why it specifically threatened trust or correctness, not just convenience (a miscalculated balance, a wrongly-declined transaction, data shown to the wrong user). Task: your role in the response, especially if you weren't the one who caused it. Action: focus on the sequencing — how fast you communicated transparently versus how fast you actually fixed it, since these interviews are testing whether you protect trust even under pressure to look competent. Result: outcome, and whether the incident changed any process to prevent a repeat, not just a one-time patch.",
+        source: "reported", addedDate: "2026-09-08" }
     ]
   },
   fintech_domain: {
@@ -630,7 +639,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-05" },
       { q: "What is a 'nostro/vostro' account relationship, and why does it matter for cross-border payment product design?",
         a: "A nostro account is 'our money held at your bank' (from the perspective of the bank holding it abroad); the same account is a vostro account from the foreign bank's perspective ('your money held at our bank') — these correspondent banking relationships are how banks settle cross-border payments without moving physical cash. For product design, this matters because settlement speed and cost are bounded by how many nostro/vostro hops a payment takes and how well-funded each account is — a payment can be authorized instantly but still take days to settle if it routes through a thinly-funded correspondent relationship, which is exactly the kind of hidden dependency that breaks a 'real-time transfer' promise.",
-        source: "claude", addedDate: "2026-09-06" }
+        source: "claude", addedDate: "2026-09-06" },
+      { q: "What's the difference between a 'hard pull' and a 'soft pull' credit inquiry, and why does this distinction matter for product design in a lending or credit-monitoring app?",
+        a: "A hard pull is logged by credit bureaus and can slightly lower a score (signals active credit-seeking behavior to future lenders); a soft pull isn't visible to other lenders and doesn't affect the score, typically used for pre-qualification or a user checking their own report. This matters for product design because leading with pre-qualification via soft pull (showing likely approval odds before a hard pull) reduces application abandonment from score-anxious users, while any flow that triggers a hard pull needs very explicit, unambiguous consent to avoid trust-damaging surprises on the user's credit report.",
+        source: "claude", addedDate: "2026-09-08" }
     ]
   },
   strategy: {
@@ -780,7 +792,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-06" },
       { q: "You're launching a small-business lending product, but small-business owners are your hardest-to-reach GTM audience — they don't respond to typical acquisition channels and are wary of fintech lenders after bad experiences with predatory players. What's your approach?",
         a: "Lead with trust infrastructure before acquisition spend — partner with accounting software, POS systems, or industry associations small businesses already use and trust, since a warm introduction from an existing trusted tool overcomes skepticism that a cold ad never will. Publish transparent, comparison-friendly pricing (total cost of credit, not just a rate) proactively, since the predatory-lender scar tissue makes opacity itself a red flag regardless of your actual terms. Start with a narrow vertical (a specific industry your underwriting model handles especially well) rather than broad small-business marketing, so the trust-building message and word-of-mouth can concentrate in one community instead of diffusing across totally different business types.",
-        source: "claude", addedDate: "2026-09-07" }
+        source: "claude", addedDate: "2026-09-07" },
+      { q: "You're launching an API product for other developers/fintechs to build on (e.g. instant bank-account verification). Your close competitor already has stronger brand recognition among developers. What's your GTM wedge?",
+        a: "Compete on the specific integration moments developers actually feel pain in, not brand awareness — publish a dramatically faster time-to-first-successful-call (sandbox that works in minutes, not a sales-gated demo) since developer-facing GTM lives or dies on hands-on trial friction, not marketing reach. Seed adoption through visible open-source integrations, tutorials, and hackathon sponsorships where developers already look for tools, rather than competing head-on for the same brand-search traffic the incumbent already owns. Track time-to-first-API-call and self-serve-to-paid conversion as core GTM metrics, since those reflect actual product-led adoption rather than top-of-funnel awareness.",
+        source: "claude", addedDate: "2026-09-08" }
     ]
   },
   faq: {
@@ -848,7 +863,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-07" },
       { q: "How do you measure the success of a product launch? Which metrics matter most?",
         a: "Separate leading from lagging indicators: in the first days/weeks, watch adoption and activation (are the right users trying it, and completing the core action) since revenue/retention metrics won't have matured yet. Pick 1-2 metrics that matter most based on the launch's actual goal — a growth launch cares about activation and viral/referral coefficient, a retention launch cares about repeat usage and churn delta versus a control cohort. Always pair the headline metric with a guardrail (e.g. don't let a growth push tank fraud rates or support load), since optimizing one metric in isolation is how launches quietly cause damage elsewhere.",
-        source: "reported", addedDate: "2026-09-07" }
+        source: "reported", addedDate: "2026-09-07" },
+      { q: "Design a system that detects and retries failed API calls to upstream banks without duplicating transactions. Walk through your approach.",
+        a: "The core requirement is idempotency — every retry needs a unique idempotency key tied to the original request so the upstream bank (or your own system) can recognize and discard a duplicate rather than double-processing it. Use exponential backoff with a capped retry count rather than immediate or unlimited retries, since hammering a struggling upstream bank API makes things worse, and distinguish retryable failures (timeout, 5xx) from non-retryable ones (4xx validation errors) so you're not blindly retrying a request that will never succeed. Track retry success rate and time-to-eventual-success per bank as the key execution metrics, since a bank with a consistently high retry rate is a signal to escalate the integration issue directly rather than keep absorbing it silently.",
+        source: "reported", addedDate: "2026-09-08" },
+      { q: "Tell me about a time you dealt with a bug or product issue where trust or correctness was on the line. How did you handle it?",
+        a: "STAR template — Situation: what the issue was and why it specifically threatened trust or correctness, not just convenience (a miscalculated balance, a wrongly-declined transaction, data shown to the wrong user). Task: your role in the response, especially if you weren't the one who caused it. Action: focus on the sequencing — how fast you communicated transparently versus how fast you actually fixed it, since these interviews are testing whether you protect trust even under pressure to look competent. Result: outcome, and whether the incident changed any process to prevent a repeat, not just a one-time patch.",
+        source: "reported", addedDate: "2026-09-08" }
     ]
   }
 };
