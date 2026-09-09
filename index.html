@@ -489,7 +489,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-06" },
       { q: "Design a system that detects and retries failed API calls to upstream banks without duplicating transactions. Walk through your approach.",
         a: "The core requirement is idempotency — every retry needs a unique idempotency key tied to the original request so the upstream bank (or your own system) can recognize and discard a duplicate rather than double-processing it. Use exponential backoff with a capped retry count rather than immediate or unlimited retries, since hammering a struggling upstream bank API makes things worse, and distinguish retryable failures (timeout, 5xx) from non-retryable ones (4xx validation errors) so you're not blindly retrying a request that will never succeed. Track retry success rate and time-to-eventual-success per bank as the key execution metrics, since a bank with a consistently high retry rate is a signal to escalate the integration issue directly rather than keep absorbing it silently.",
-        source: "reported", addedDate: "2026-09-08" }
+        source: "reported", addedDate: "2026-09-08" },
+      { q: "Your fraud-ops team wants to add a manual review step for all transactions above $500 to cut fraud losses. Product data shows this would add 12-24 hours of delay for legitimate high-value transactions. How do you resolve this?",
+        a: "Don't accept the trade-off as binary — ask fraud-ops for the actual precision of the $500 threshold rule (what % of transactions above it are genuinely fraudulent) before agreeing to blanket manual review, since a blunt threshold likely flags far more legitimate transactions than fraud ones. Propose a risk-scored approach instead: only transactions above $500 AND carrying other risk signals go to manual review, while clean high-value transactions from established customers pass through instantly. Pilot on a small volume slice first, measuring both fraud-loss reduction and legitimate-transaction delay together, rather than optimizing one metric while blind to the other.",
+        source: "claude", addedDate: "2026-09-09" }
     ]
   },
   analytics: {
@@ -539,7 +542,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-05" },
       { q: "How do you measure the success of a product launch? Which metrics matter most?",
         a: "Separate leading from lagging indicators: in the first days/weeks, watch adoption and activation (are the right users trying it, and completing the core action) since revenue/retention metrics won't have matured yet. Pick 1-2 metrics that matter most based on the launch's actual goal — a growth launch cares about activation and viral/referral coefficient, a retention launch cares about repeat usage and churn delta versus a control cohort. Always pair the headline metric with a guardrail (e.g. don't let a growth push tank fraud rates or support load), since optimizing one metric in isolation is how launches quietly cause damage elsewhere.",
-        source: "reported", addedDate: "2026-09-07" }
+        source: "reported", addedDate: "2026-09-07" },
+      { q: "When building a business case around a new metric-driven initiative, what's the difference between a north-star metric, a gut-check metric, and a counter-metric — and how would you pick one of each for a new BNPL feature?",
+        a: "North-star: the single metric that best represents real value delivered, e.g. repeat BNPL usage rate (proves ongoing trust, not just a one-time trial). Gut-check: a simpler, harder-to-game sanity metric you'd expect to move in the same direction if the north-star is genuinely improving for the right reasons, e.g. merchant checkout conversion lift — if BNPL usage rises but checkout conversion doesn't, something's off (cannibalization, not incrementality). Counter-metric: the guardrail that catches a north-star win achieved the wrong way, e.g. default/delinquency rate — rising BNPL usage funded by looser underwriting would show up here first.",
+        source: "reported", addedDate: "2026-09-09" }
     ]
   },
   behavioral: {
@@ -590,7 +596,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-06" },
       { q: "Tell me about a time you dealt with a bug or product issue where trust or correctness was on the line. How did you handle it?",
         a: "STAR template — Situation: what the issue was and why it specifically threatened trust or correctness, not just convenience (a miscalculated balance, a wrongly-declined transaction, data shown to the wrong user). Task: your role in the response, especially if you weren't the one who caused it. Action: focus on the sequencing — how fast you communicated transparently versus how fast you actually fixed it, since these interviews are testing whether you protect trust even under pressure to look competent. Result: outcome, and whether the incident changed any process to prevent a repeat, not just a one-time patch.",
-        source: "reported", addedDate: "2026-09-08" }
+        source: "reported", addedDate: "2026-09-08" },
+      { q: "Tell me about a time you had to give critical feedback to a peer or stakeholder whose work directly affected your product's success.",
+        a: "STAR template — Situation: whose work and why the gap mattered enough to address directly rather than work around. Task: your responsibility here, especially if you had no formal authority over them. Action: focus on how you framed the feedback to be actionable rather than just critical — tied to a specific outcome, not personality — and how you followed up rather than treating one conversation as sufficient. Result: whether the relationship and the work actually improved, and what you'd do differently in the delivery next time.",
+        source: "claude", addedDate: "2026-09-09" }
     ]
   },
   fintech_domain: {
@@ -692,7 +701,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-06" },
       { q: "Your embedded-finance product depends entirely on one core banking-as-a-service (BaaS) provider. That provider was just hit with a regulatory consent order limiting their ability to onboard new bank partners. What's your strategic response?",
         a: "Treat this as a single-point-of-failure event, not just your provider's problem — even if your existing service isn't immediately disrupted, a consent order signals elevated regulatory risk that could affect your provider's stability or force sudden changes to how you operate. Start scoping a second BaaS provider relationship now as a hedge, even if slow and expensive, rather than waiting for an actual outage to force an emergency migration. Use this moment to negotiate better terms/SLAs with your current provider, since they now have strong incentive to retain you, and communicate proactively with your own regulators/board about the dependency and your mitigation plan before anyone asks.",
-        source: "claude", addedDate: "2026-09-07" }
+        source: "claude", addedDate: "2026-09-07" },
+      { q: "Your company's core product depends on a data-sharing agreement with a major bank that's up for renewal in 6 months. The bank has signaled they may want significantly higher fees or equity in exchange for renewal. How do you think about your negotiating position and contingency plan?",
+        a: "Assess your actual leverage honestly — how replaceable is this specific bank relationship (are there other banks or an Account Aggregator-style alternative that could substitute), and how replaceable are you to them (do you drive meaningful volume/revenue for them too)? If leverage is mutual, negotiate hard and early rather than waiting until close to the deadline when you'll be negotiating from visible desperation. In parallel, start technical groundwork on at least one alternative data source now, even if you never use it, purely so the threat of switching is credible rather than bluffed — a credible alternative is often what actually improves the terms, not the negotiation tactics themselves.",
+        source: "claude", addedDate: "2026-09-09" }
     ]
   },
   rca: {
@@ -742,7 +754,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-05" },
       { q: "Two weeks after launching biometric login for your banking app, login success rate is fine, but overall session length dropped 15%. Walk through your RCA.",
         a: "Don't assume biometric login itself caused the drop — check whether the metric definition changed (e.g. biometric login is faster, so users who used to linger on a slow password screen now reach content sooner, mechanically shortening 'session length' even if engagement per session is unchanged). Segment session length by entry method (biometric vs. password) and compare engagement-per-minute, not just raw duration, to see if this is a measurement artifact or a real behavior change. If it's real, check whether faster access changed usage patterns (e.g. users now do quick check-ins instead of longer browsing sessions) — that could be a neutral or even positive shift mislabeled as a regression by a metric that assumes longer sessions are always better.",
-        source: "claude", addedDate: "2026-09-07" }
+        source: "claude", addedDate: "2026-09-07" },
+      { q: "Engagement on your product just declined for the third consecutive week. Walk through how you'd investigate before proposing any fix.",
+        a: "Resist proposing a fix in the same breath as noticing the decline — first segment the drop by user cohort (new vs. tenured), platform, and feature area to see if it's broad or concentrated, since a broad decline points to something systemic (a release, a seasonal pattern, a competitor) while a concentrated one points to a specific feature or segment issue. Check for confounds before attributing cause: a recent release, a tracking/instrumentation change, a shift in acquisition mix (lower-quality users diluting engagement averages), or an external event (holiday, market volatility for a trading app). Only propose a fix once you can state the specific mechanism causing the decline, not just the symptom — 'engagement is down' isn't a root cause, 'X% of the drop is new users from channel Y who never complete onboarding' is.",
+        source: "reported", addedDate: "2026-09-09" }
     ]
   },
   gtm: {
@@ -869,7 +884,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-08" },
       { q: "Tell me about a time you dealt with a bug or product issue where trust or correctness was on the line. How did you handle it?",
         a: "STAR template — Situation: what the issue was and why it specifically threatened trust or correctness, not just convenience (a miscalculated balance, a wrongly-declined transaction, data shown to the wrong user). Task: your role in the response, especially if you weren't the one who caused it. Action: focus on the sequencing — how fast you communicated transparently versus how fast you actually fixed it, since these interviews are testing whether you protect trust even under pressure to look competent. Result: outcome, and whether the incident changed any process to prevent a repeat, not just a one-time patch.",
-        source: "reported", addedDate: "2026-09-08" }
+        source: "reported", addedDate: "2026-09-08" },
+      { q: "When building a business case around a new metric-driven initiative, what's the difference between a north-star metric, a gut-check metric, and a counter-metric — and how would you pick one of each for a new BNPL feature?",
+        a: "North-star: the single metric that best represents real value delivered, e.g. repeat BNPL usage rate (proves ongoing trust, not just a one-time trial). Gut-check: a simpler, harder-to-game sanity metric you'd expect to move in the same direction if the north-star is genuinely improving for the right reasons, e.g. merchant checkout conversion lift — if BNPL usage rises but checkout conversion doesn't, something's off (cannibalization, not incrementality). Counter-metric: the guardrail that catches a north-star win achieved the wrong way, e.g. default/delinquency rate — rising BNPL usage funded by looser underwriting would show up here first.",
+        source: "reported", addedDate: "2026-09-09" },
+      { q: "Engagement on your product just declined for the third consecutive week. Walk through how you'd investigate before proposing any fix.",
+        a: "Resist proposing a fix in the same breath as noticing the decline — first segment the drop by user cohort (new vs. tenured), platform, and feature area to see if it's broad or concentrated, since a broad decline points to something systemic (a release, a seasonal pattern, a competitor) while a concentrated one points to a specific feature or segment issue. Check for confounds before attributing cause: a recent release, a tracking/instrumentation change, a shift in acquisition mix (lower-quality users diluting engagement averages), or an external event (holiday, market volatility for a trading app). Only propose a fix once you can state the specific mechanism causing the decline, not just the symptom — 'engagement is down' isn't a root cause, 'X% of the drop is new users from channel Y who never complete onboarding' is.",
+        source: "reported", addedDate: "2026-09-09" }
     ]
   }
 };
