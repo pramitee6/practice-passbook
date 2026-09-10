@@ -436,7 +436,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-07" },
       { q: "Design a feature that helps users understand why their credit score changed this month.",
         a: "Most credit-score confusion comes from users seeing a number move without any attributable cause — surface the top 1-2 specific factors that changed (a new hard inquiry, a utilization increase, an account aging) rather than a generic breakdown of all five scoring factors every time. Tie each factor to a concrete, actionable next step (pay down utilization by $X to recover ~Y points) instead of just naming the factor, since users act on guidance, not diagnosis. Metric: % of score-drop notifications that lead to a corrective action within 30 days, unsubscribe/mute rate on the notification (a proxy for anxiety-inducing rather than helpful framing).",
-        source: "claude", addedDate: "2026-09-08" }
+        source: "claude", addedDate: "2026-09-08" },
+      { q: "Design a feature that helps a small business owner understand their cash flow runway — how many days until they run out of money at current burn — inside a business banking app.",
+        a: "The hard part isn't the math, it's making an inherently anxiety-inducing number feel actionable rather than alarming — show the runway number alongside the top 1-2 levers that would extend it (a specific recurring expense, an overdue invoice to chase) rather than just a bare countdown. Use historical transaction patterns to project forward, but flag explicitly when the projection is based on thin data (a new business with only a few months of history) so owners don't over-trust a shaky estimate. Metric: % of users who take a suggested action (chase an invoice, adjust a subscription) within a week of a low-runway alert, not just alert open rate.",
+        source: "claude", addedDate: "2026-09-10" }
     ]
   },
   execution: {
@@ -599,7 +602,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-08" },
       { q: "Tell me about a time you had to give critical feedback to a peer or stakeholder whose work directly affected your product's success.",
         a: "STAR template — Situation: whose work and why the gap mattered enough to address directly rather than work around. Task: your responsibility here, especially if you had no formal authority over them. Action: focus on how you framed the feedback to be actionable rather than just critical — tied to a specific outcome, not personality — and how you followed up rather than treating one conversation as sufficient. Result: whether the relationship and the work actually improved, and what you'd do differently in the delivery next time.",
-        source: "claude", addedDate: "2026-09-09" }
+        source: "claude", addedDate: "2026-09-09" },
+      { q: "Tell me about a time your project's priorities changed midway through, after you'd already committed resources and communicated a plan to your team. How did you handle it?",
+        a: "STAR template — Situation: what changed and why (a leadership call, new data, an external event) and what had already been committed. Task: your responsibility in managing the pivot without losing team trust or momentum. Action: focus on how you re-communicated the change — transparently naming what triggered it rather than pretending the original plan was always wrong — and how you helped the team salvage any work already in progress rather than treating it as wasted. Result: team morale and delivery outcome, and what you'd do differently to catch the change earlier next time.",
+        source: "reported", addedDate: "2026-09-10" }
     ]
   },
   fintech_domain: {
@@ -651,7 +657,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-06" },
       { q: "What's the difference between a 'hard pull' and a 'soft pull' credit inquiry, and why does this distinction matter for product design in a lending or credit-monitoring app?",
         a: "A hard pull is logged by credit bureaus and can slightly lower a score (signals active credit-seeking behavior to future lenders); a soft pull isn't visible to other lenders and doesn't affect the score, typically used for pre-qualification or a user checking their own report. This matters for product design because leading with pre-qualification via soft pull (showing likely approval odds before a hard pull) reduces application abandonment from score-anxious users, while any flow that triggers a hard pull needs very explicit, unambiguous consent to avoid trust-damaging surprises on the user's credit report.",
-        source: "claude", addedDate: "2026-09-08" }
+        source: "claude", addedDate: "2026-09-08" },
+      { q: "What is 'chargeback liability shift,' and how does EMV chip adoption relate to who bears fraud losses on a disputed in-person transaction?",
+        a: "Liability shift means whichever party has the lesser fraud-prevention technology in a transaction bears the loss if it turns out to be fraudulent — post-EMV rollout, if a merchant hasn't upgraded to chip-reading terminals but the card is chip-enabled, liability for card-present fraud shifts from the issuer to the merchant. This was designed to incentivize merchant-side EMV adoption by making the cost of not upgrading concrete and immediate, rather than an abstract security recommendation. For product design, this matters when building merchant-facing fraud tooling — the terminal/acceptance-method used isn't just a UX choice, it directly determines who eats a fraud loss on any given disputed transaction.",
+        source: "claude", addedDate: "2026-09-10" }
     ]
   },
   strategy: {
@@ -704,7 +713,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-07" },
       { q: "Your company's core product depends on a data-sharing agreement with a major bank that's up for renewal in 6 months. The bank has signaled they may want significantly higher fees or equity in exchange for renewal. How do you think about your negotiating position and contingency plan?",
         a: "Assess your actual leverage honestly — how replaceable is this specific bank relationship (are there other banks or an Account Aggregator-style alternative that could substitute), and how replaceable are you to them (do you drive meaningful volume/revenue for them too)? If leverage is mutual, negotiate hard and early rather than waiting until close to the deadline when you'll be negotiating from visible desperation. In parallel, start technical groundwork on at least one alternative data source now, even if you never use it, purely so the threat of switching is credible rather than bluffed — a credible alternative is often what actually improves the terms, not the negotiation tactics themselves.",
-        source: "claude", addedDate: "2026-09-09" }
+        source: "claude", addedDate: "2026-09-09" },
+      { q: "Your remittance product's biggest competitive advantage has always been the lowest FX margin in your top 3 corridors. A new competitor just launched with zero FX margin, subsidized by VC funding. How do you respond strategically?",
+        a: "Don't chase them to zero margin — that's a subsidized price war you can't win against fresh VC capital, and matching it burns your own runway for a temporary, unsustainable position. Shift the value proposition toward what a subsidized entrant structurally can't match cheaply: reliability (guaranteed delivery times), customer support quality, or scale-driven speed advantages built over years of banking relationships. Use the pressure as a forcing function to diversify revenue (value-added services, business remittance) so your unit economics aren't entirely dependent on FX margin being your only differentiator, since a subsidized competitor's funding eventually runs out or the price eventually rises.",
+        source: "claude", addedDate: "2026-09-10" }
     ]
   },
   rca: {
@@ -810,7 +822,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-07" },
       { q: "You're launching an API product for other developers/fintechs to build on (e.g. instant bank-account verification). Your close competitor already has stronger brand recognition among developers. What's your GTM wedge?",
         a: "Compete on the specific integration moments developers actually feel pain in, not brand awareness — publish a dramatically faster time-to-first-successful-call (sandbox that works in minutes, not a sales-gated demo) since developer-facing GTM lives or dies on hands-on trial friction, not marketing reach. Seed adoption through visible open-source integrations, tutorials, and hackathon sponsorships where developers already look for tools, rather than competing head-on for the same brand-search traffic the incumbent already owns. Track time-to-first-API-call and self-serve-to-paid conversion as core GTM metrics, since those reflect actual product-led adoption rather than top-of-funnel awareness.",
-        source: "claude", addedDate: "2026-09-08" }
+        source: "claude", addedDate: "2026-09-08" },
+      { q: "You're launching a merchant cash advance product, but merchants who need it most (thin credit history, seasonal revenue) are the hardest to reach through traditional lending marketing, which assumes a credit-savvy audience. What's your GTM approach?",
+        a: "Lead with revenue-based framing, not credit-product framing — merchants who don't think of themselves as 'credit-worthy' respond better to 'get an advance against your future sales' than to language that sounds like a loan application with rejection risk attached. Distribute through payment processors and POS providers who already see the merchant's real-time revenue data, since that's both a natural underwriting signal and a channel these merchants already trust and use daily. Track approval-rate-to-inquiry ratio by channel closely, since the wrong channel will drive high inquiry volume from merchants who don't actually qualify, wasting both marketing spend and merchant goodwill.",
+        source: "claude", addedDate: "2026-09-10" }
     ]
   },
   faq: {
@@ -890,7 +905,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-09" },
       { q: "Engagement on your product just declined for the third consecutive week. Walk through how you'd investigate before proposing any fix.",
         a: "Resist proposing a fix in the same breath as noticing the decline — first segment the drop by user cohort (new vs. tenured), platform, and feature area to see if it's broad or concentrated, since a broad decline points to something systemic (a release, a seasonal pattern, a competitor) while a concentrated one points to a specific feature or segment issue. Check for confounds before attributing cause: a recent release, a tracking/instrumentation change, a shift in acquisition mix (lower-quality users diluting engagement averages), or an external event (holiday, market volatility for a trading app). Only propose a fix once you can state the specific mechanism causing the decline, not just the symptom — 'engagement is down' isn't a root cause, 'X% of the drop is new users from channel Y who never complete onboarding' is.",
-        source: "reported", addedDate: "2026-09-09" }
+        source: "reported", addedDate: "2026-09-09" },
+      { q: "Tell me about a time your project's priorities changed midway through, after you'd already committed resources and communicated a plan to your team. How did you handle it?",
+        a: "STAR template — Situation: what changed and why (a leadership call, new data, an external event) and what had already been committed. Task: your responsibility in managing the pivot without losing team trust or momentum. Action: focus on how you re-communicated the change — transparently naming what triggered it rather than pretending the original plan was always wrong — and how you helped the team salvage any work already in progress rather than treating it as wasted. Result: team morale and delivery outcome, and what you'd do differently to catch the change earlier next time.",
+        source: "reported", addedDate: "2026-09-10" }
     ]
   }
 };
