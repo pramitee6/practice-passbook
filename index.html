@@ -439,7 +439,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-08" },
       { q: "Design a feature that helps a small business owner understand their cash flow runway — how many days until they run out of money at current burn — inside a business banking app.",
         a: "The hard part isn't the math, it's making an inherently anxiety-inducing number feel actionable rather than alarming — show the runway number alongside the top 1-2 levers that would extend it (a specific recurring expense, an overdue invoice to chase) rather than just a bare countdown. Use historical transaction patterns to project forward, but flag explicitly when the projection is based on thin data (a new business with only a few months of history) so owners don't over-trust a shaky estimate. Metric: % of users who take a suggested action (chase an invoice, adjust a subscription) within a week of a low-runway alert, not just alert open rate.",
-        source: "claude", addedDate: "2026-09-10" }
+        source: "claude", addedDate: "2026-09-10" },
+      { q: "Design a feature for a digital bank that helps users recognize and avoid subscription traps — free trials that silently convert to paid, forgotten recurring charges.",
+        a: "The core insight is timing: warn before the trial converts, not after the charge already happened, since post-charge notifications just turn into refund-request tickets instead of prevented friction. Surface a simple, scannable list of all recurring charges with next-charge-date and a one-tap cancel-reminder toggle, rather than burying this in a generic transaction history the user has to manually pattern-match. Metric: % of flagged upcoming trial-conversions that get an explicit user action (cancel reminder set, or dismissed as intentional) before the charge date, not just notification open rate.",
+        source: "claude", addedDate: "2026-09-11" }
     ]
   },
   execution: {
@@ -495,7 +498,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-08" },
       { q: "Your fraud-ops team wants to add a manual review step for all transactions above $500 to cut fraud losses. Product data shows this would add 12-24 hours of delay for legitimate high-value transactions. How do you resolve this?",
         a: "Don't accept the trade-off as binary — ask fraud-ops for the actual precision of the $500 threshold rule (what % of transactions above it are genuinely fraudulent) before agreeing to blanket manual review, since a blunt threshold likely flags far more legitimate transactions than fraud ones. Propose a risk-scored approach instead: only transactions above $500 AND carrying other risk signals go to manual review, while clean high-value transactions from established customers pass through instantly. Pilot on a small volume slice first, measuring both fraud-loss reduction and legitimate-transaction delay together, rather than optimizing one metric while blind to the other.",
-        source: "claude", addedDate: "2026-09-09" }
+        source: "claude", addedDate: "2026-09-09" },
+      { q: "You're two sprints into a quarter-long project when a competitor ships a feature that makes half of your remaining roadmap redundant. Engineering has already built significant infrastructure toward the original plan. How do you respond?",
+        a: "Don't let sunk infrastructure cost dictate the decision — evaluate whether the built infrastructure is genuinely reusable toward a revised plan or whether continuing is just protecting past investment. Get a fast, honest assessment from engineering on what specifically the competitor's move actually obsoletes versus what's still differentiated, since 'they shipped something similar' often overstates the actual overlap once you look closely. Re-scope the remaining roadmap around what's still valuable and communicate the change transparently to stakeholders now rather than quietly finishing a plan you already know is partly moot, even if that means eating a hard conversation about the sprints already spent.",
+        source: "claude", addedDate: "2026-09-11" }
     ]
   },
   analytics: {
@@ -548,7 +554,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-07" },
       { q: "When building a business case around a new metric-driven initiative, what's the difference between a north-star metric, a gut-check metric, and a counter-metric — and how would you pick one of each for a new BNPL feature?",
         a: "North-star: the single metric that best represents real value delivered, e.g. repeat BNPL usage rate (proves ongoing trust, not just a one-time trial). Gut-check: a simpler, harder-to-game sanity metric you'd expect to move in the same direction if the north-star is genuinely improving for the right reasons, e.g. merchant checkout conversion lift — if BNPL usage rises but checkout conversion doesn't, something's off (cannibalization, not incrementality). Counter-metric: the guardrail that catches a north-star win achieved the wrong way, e.g. default/delinquency rate — rising BNPL usage funded by looser underwriting would show up here first.",
-        source: "reported", addedDate: "2026-09-09" }
+        source: "reported", addedDate: "2026-09-09" },
+      { q: "Your BNPL default rate looks stable in the aggregate dashboard, but a data analyst flags that default rate has actually been rising steadily for the 'first-time borrower' cohort specifically, masked by a growing base of repeat borrowers with much lower default rates. What do you do?",
+        a: "Treat this as a leading indicator, not a footnote — the blended average is being propped up by a shrinking-risk repeat-borrower base while the acquisition funnel's underlying risk quality may be deteriorating, which will eventually show up in the aggregate once repeat-borrower growth slows. Segment underwriting performance by cohort vintage going forward as a standing practice, not a one-off investigation, since blended metrics systematically hide this exact failure mode in any product with a growing base and rising volume. Escalate to risk/underwriting immediately to check whether a recent acquisition channel or approval-criteria change is driving the first-time cohort's rising risk, rather than waiting for the blended number to eventually catch up.",
+        source: "claude", addedDate: "2026-09-11" }
     ]
   },
   behavioral: {
@@ -769,7 +778,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-07" },
       { q: "Engagement on your product just declined for the third consecutive week. Walk through how you'd investigate before proposing any fix.",
         a: "Resist proposing a fix in the same breath as noticing the decline — first segment the drop by user cohort (new vs. tenured), platform, and feature area to see if it's broad or concentrated, since a broad decline points to something systemic (a release, a seasonal pattern, a competitor) while a concentrated one points to a specific feature or segment issue. Check for confounds before attributing cause: a recent release, a tracking/instrumentation change, a shift in acquisition mix (lower-quality users diluting engagement averages), or an external event (holiday, market volatility for a trading app). Only propose a fix once you can state the specific mechanism causing the decline, not just the symptom — 'engagement is down' isn't a root cause, 'X% of the drop is new users from channel Y who never complete onboarding' is.",
-        source: "reported", addedDate: "2026-09-09" }
+        source: "reported", addedDate: "2026-09-09" },
+      { q: "Your customer support team reports a spike in calls about 'I can't see my recent transactions,' but your uptime dashboards show 100% API availability during the window in question. What's your RCA approach?",
+        a: "100% uptime measures whether the API responded, not whether it returned correct or complete data — check for a caching layer serving stale data, a pagination/sync bug hiding recent transactions from the response, or a partner/bank feed delay that's technically 'up' but behind on data freshness. Pull the actual transaction data for a sample of affected accounts and compare it against what the backend recorded at the time, rather than trusting that 'API responded 200 OK' means the user saw correct information. Segment by account type, bank partner, and app version to isolate whether this is a client-side rendering issue, a specific partner feed lag, or a broader sync bug.",
+        source: "claude", addedDate: "2026-09-11" }
     ]
   },
   gtm: {
@@ -825,7 +837,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-08" },
       { q: "You're launching a merchant cash advance product, but merchants who need it most (thin credit history, seasonal revenue) are the hardest to reach through traditional lending marketing, which assumes a credit-savvy audience. What's your GTM approach?",
         a: "Lead with revenue-based framing, not credit-product framing — merchants who don't think of themselves as 'credit-worthy' respond better to 'get an advance against your future sales' than to language that sounds like a loan application with rejection risk attached. Distribute through payment processors and POS providers who already see the merchant's real-time revenue data, since that's both a natural underwriting signal and a channel these merchants already trust and use daily. Track approval-rate-to-inquiry ratio by channel closely, since the wrong channel will drive high inquiry volume from merchants who don't actually qualify, wasting both marketing spend and merchant goodwill.",
-        source: "claude", addedDate: "2026-09-10" }
+        source: "claude", addedDate: "2026-09-10" },
+      { q: "You're launching a new savings product but your target segment (Gen Z, first savings account) doesn't trust traditional bank marketing and is highly influenced by peer/creator content instead. What's your GTM approach?",
+        a: "Shift budget from traditional acquisition channels toward creator partnerships with genuine domain credibility (personal finance creators who already have this audience's trust), and insist on authentic, unscripted content over polished ad-style placements, since this segment can detect and devalues obvious sponsored messaging. Build a low-commitment entry point (e.g. a small no-minimum savings goal) that a creator can genuinely demonstrate using rather than just mention, since demonstrated use converts skepticism better than a claim. Track second-deposit rate (not just account opens) as the core GTM success metric, since Gen Z account-opening rates can look strong from curiosity/creator-driven traffic while genuine adoption requires seeing continued engagement.",
+        source: "claude", addedDate: "2026-09-11" }
     ]
   },
   faq: {
