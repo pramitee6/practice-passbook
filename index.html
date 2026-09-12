@@ -557,7 +557,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-09" },
       { q: "Your BNPL default rate looks stable in the aggregate dashboard, but a data analyst flags that default rate has actually been rising steadily for the 'first-time borrower' cohort specifically, masked by a growing base of repeat borrowers with much lower default rates. What do you do?",
         a: "Treat this as a leading indicator, not a footnote — the blended average is being propped up by a shrinking-risk repeat-borrower base while the acquisition funnel's underlying risk quality may be deteriorating, which will eventually show up in the aggregate once repeat-borrower growth slows. Segment underwriting performance by cohort vintage going forward as a standing practice, not a one-off investigation, since blended metrics systematically hide this exact failure mode in any product with a growing base and rising volume. Escalate to risk/underwriting immediately to check whether a recent acquisition channel or approval-criteria change is driving the first-time cohort's rising risk, rather than waiting for the blended number to eventually catch up.",
-        source: "claude", addedDate: "2026-09-11" }
+        source: "claude", addedDate: "2026-09-11" },
+      { q: "Two dashboards report different numbers for the same metric — 'monthly active users' — one from your product analytics tool, one from your data warehouse. Leadership is asking which one is right before a board meeting tomorrow. How do you handle it?",
+        a: "Don't just pick the higher or more convenient number — quickly identify the actual definitional difference (different session-timeout windows, different bot-filtering logic, different user-identity resolution across devices) since 'different tools, different definitions' is almost always the real cause, not a data error. For tomorrow's meeting, present the number you have the most confidence auditing end-to-end, clearly caveat the discrepancy and why it exists, and commit to a single source-of-truth definition going forward rather than let the ambiguity linger past the immediate deadline. Long-term, this is a signal to formalize one certified definition per core metric with clear ownership, since ad hoc reconciliation under deadline pressure is how boards lose trust in a team's numbers.",
+        source: "claude", addedDate: "2026-09-12" }
     ]
   },
   behavioral: {
@@ -614,7 +617,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-09" },
       { q: "Tell me about a time your project's priorities changed midway through, after you'd already committed resources and communicated a plan to your team. How did you handle it?",
         a: "STAR template — Situation: what changed and why (a leadership call, new data, an external event) and what had already been committed. Task: your responsibility in managing the pivot without losing team trust or momentum. Action: focus on how you re-communicated the change — transparently naming what triggered it rather than pretending the original plan was always wrong — and how you helped the team salvage any work already in progress rather than treating it as wasted. Result: team morale and delivery outcome, and what you'd do differently to catch the change earlier next time.",
-        source: "reported", addedDate: "2026-09-10" }
+        source: "reported", addedDate: "2026-09-10" },
+      { q: "Describe a time you had trouble getting everyone on board with your idea. How did you eventually align the team?",
+        a: "STAR template — Situation: what the idea was and why it met resistance (unclear value, competing priorities, skepticism from a specific stakeholder). Task: your role in driving alignment without formal authority to just mandate it. Action: focus on the specific tactic that actually moved people — data that reframed the trade-off, a small pilot that de-risked the idea, or genuinely incorporating a skeptic's concern into a stronger version of the plan — rather than just repeating the pitch louder. Result: whether alignment held once real work started, and what you'd do differently to build buy-in earlier next time.",
+        source: "reported", addedDate: "2026-09-12" }
     ]
   },
   fintech_domain: {
@@ -669,7 +675,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-08" },
       { q: "What is 'chargeback liability shift,' and how does EMV chip adoption relate to who bears fraud losses on a disputed in-person transaction?",
         a: "Liability shift means whichever party has the lesser fraud-prevention technology in a transaction bears the loss if it turns out to be fraudulent — post-EMV rollout, if a merchant hasn't upgraded to chip-reading terminals but the card is chip-enabled, liability for card-present fraud shifts from the issuer to the merchant. This was designed to incentivize merchant-side EMV adoption by making the cost of not upgrading concrete and immediate, rather than an abstract security recommendation. For product design, this matters when building merchant-facing fraud tooling — the terminal/acceptance-method used isn't just a UX choice, it directly determines who eats a fraud loss on any given disputed transaction.",
-        source: "claude", addedDate: "2026-09-10" }
+        source: "claude", addedDate: "2026-09-10" },
+      { q: "Explain what a 'sponsor bank' is in the context of a fintech offering debit cards or accounts, and what obligations the fintech still carries even though the bank holds the charter.",
+        a: "A sponsor bank holds the actual banking charter and is legally responsible for the deposits/cards, licensing the fintech to operate 'as if' it were a bank via a partnership — this is how non-bank fintechs can offer FDIC-insured accounts without becoming a bank themselves. The fintech still carries real operational obligations: it typically runs the actual product experience, and depending on the agreement, takes on significant compliance responsibilities (KYC/AML monitoring, transaction monitoring) that the sponsor bank oversees but doesn't necessarily execute directly. Regulators increasingly hold both parties accountable when things go wrong, so 'the bank is responsible, not us' is not a safe assumption for a fintech's own compliance program.",
+        source: "claude", addedDate: "2026-09-12" }
     ]
   },
   strategy: {
@@ -725,7 +734,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-09" },
       { q: "Your remittance product's biggest competitive advantage has always been the lowest FX margin in your top 3 corridors. A new competitor just launched with zero FX margin, subsidized by VC funding. How do you respond strategically?",
         a: "Don't chase them to zero margin — that's a subsidized price war you can't win against fresh VC capital, and matching it burns your own runway for a temporary, unsustainable position. Shift the value proposition toward what a subsidized entrant structurally can't match cheaply: reliability (guaranteed delivery times), customer support quality, or scale-driven speed advantages built over years of banking relationships. Use the pressure as a forcing function to diversify revenue (value-added services, business remittance) so your unit economics aren't entirely dependent on FX margin being your only differentiator, since a subsidized competitor's funding eventually runs out or the price eventually rises.",
-        source: "claude", addedDate: "2026-09-10" }
+        source: "claude", addedDate: "2026-09-10" },
+      { q: "How do you ensure your product roadmap stays compliant with banking regulations and internal risk policies as it evolves?",
+        a: "Compliance can't be a final gate before launch — embed a compliance/risk reviewer into roadmap planning itself so regulatory constraints shape scoping decisions upfront, not after engineering has already built toward a non-compliant design. Maintain a living map of which regulations touch which product areas (data localization, lending disclosure rules, AML thresholds) so a new feature's compliance surface is checked against known requirements systematically, not from memory. Build a lightweight escalation path for when a roadmap item surfaces a genuinely new regulatory question nobody's addressed before, since the riskiest gaps are the ones existing policy doesn't yet cover.",
+        source: "reported", addedDate: "2026-09-12" }
     ]
   },
   rca: {
@@ -781,7 +793,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-09" },
       { q: "Your customer support team reports a spike in calls about 'I can't see my recent transactions,' but your uptime dashboards show 100% API availability during the window in question. What's your RCA approach?",
         a: "100% uptime measures whether the API responded, not whether it returned correct or complete data — check for a caching layer serving stale data, a pagination/sync bug hiding recent transactions from the response, or a partner/bank feed delay that's technically 'up' but behind on data freshness. Pull the actual transaction data for a sample of affected accounts and compare it against what the backend recorded at the time, rather than trusting that 'API responded 200 OK' means the user saw correct information. Segment by account type, bank partner, and app version to isolate whether this is a client-side rendering issue, a specific partner feed lag, or a broader sync bug.",
-        source: "claude", addedDate: "2026-09-11" }
+        source: "claude", addedDate: "2026-09-11" },
+      { q: "Your onboarding completion rate dropped sharply right after you simplified the sign-up form by removing several fields. The team is confused since fewer fields should mean less friction. How do you investigate?",
+        a: "Check whether the removed fields were actually collecting data a downstream step depends on — e.g. if you removed an income field that KYC/underwriting needs, users may now be dropping at a later step (a new, unexpected data-collection prompt) that wasn't there before, shifting the friction rather than removing it. Segment the funnel by exact step to see precisely where the drop-off moved to, rather than assuming the shorter form itself is the problem. Also check whether removing fields changed downstream approval rates (thinner data hurting automated decisioning), which could be surfacing as later-stage abandonment when users get an unexpected manual-review delay instead of instant approval.",
+        source: "claude", addedDate: "2026-09-12" }
     ]
   },
   gtm: {
@@ -923,7 +938,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-09" },
       { q: "Tell me about a time your project's priorities changed midway through, after you'd already committed resources and communicated a plan to your team. How did you handle it?",
         a: "STAR template — Situation: what changed and why (a leadership call, new data, an external event) and what had already been committed. Task: your responsibility in managing the pivot without losing team trust or momentum. Action: focus on how you re-communicated the change — transparently naming what triggered it rather than pretending the original plan was always wrong — and how you helped the team salvage any work already in progress rather than treating it as wasted. Result: team morale and delivery outcome, and what you'd do differently to catch the change earlier next time.",
-        source: "reported", addedDate: "2026-09-10" }
+        source: "reported", addedDate: "2026-09-10" },
+      { q: "Describe a time you had trouble getting everyone on board with your idea. How did you eventually align the team?",
+        a: "STAR template — Situation: what the idea was and why it met resistance (unclear value, competing priorities, skepticism from a specific stakeholder). Task: your role in driving alignment without formal authority to just mandate it. Action: focus on the specific tactic that actually moved people — data that reframed the trade-off, a small pilot that de-risked the idea, or genuinely incorporating a skeptic's concern into a stronger version of the plan — rather than just repeating the pitch louder. Result: whether alignment held once real work started, and what you'd do differently to build buy-in earlier next time.",
+        source: "reported", addedDate: "2026-09-12" },
+      { q: "How do you ensure your product roadmap stays compliant with banking regulations and internal risk policies as it evolves?",
+        a: "Compliance can't be a final gate before launch — embed a compliance/risk reviewer into roadmap planning itself so regulatory constraints shape scoping decisions upfront, not after engineering has already built toward a non-compliant design. Maintain a living map of which regulations touch which product areas (data localization, lending disclosure rules, AML thresholds) so a new feature's compliance surface is checked against known requirements systematically, not from memory. Build a lightweight escalation path for when a roadmap item surfaces a genuinely new regulatory question nobody's addressed before, since the riskiest gaps are the ones existing policy doesn't yet cover.",
+        source: "reported", addedDate: "2026-09-12" }
     ]
   }
 };
