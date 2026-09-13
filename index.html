@@ -442,7 +442,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-10" },
       { q: "Design a feature for a digital bank that helps users recognize and avoid subscription traps — free trials that silently convert to paid, forgotten recurring charges.",
         a: "The core insight is timing: warn before the trial converts, not after the charge already happened, since post-charge notifications just turn into refund-request tickets instead of prevented friction. Surface a simple, scannable list of all recurring charges with next-charge-date and a one-tap cancel-reminder toggle, rather than burying this in a generic transaction history the user has to manually pattern-match. Metric: % of flagged upcoming trial-conversions that get an explicit user action (cancel reminder set, or dismissed as intentional) before the charge date, not just notification open rate.",
-        source: "claude", addedDate: "2026-09-11" }
+        source: "claude", addedDate: "2026-09-11" },
+      { q: "How would you improve the onboarding experience for a non-tech-savvy user on a mobile-first digital bank like Chime?",
+        a: "Non-tech-savvy users drop off at ambiguity, not complexity per se — audit every screen for jargon (routing number, direct deposit, KYC) and replace with plain-language explanations shown inline rather than in a separate help doc they won't seek out. Break the flow into visibly small steps with a persistent progress indicator, since uncertainty about 'how much is left' causes abandonment more than the steps themselves. Offer a live-agent or video-call assist option at the exact point users historically get stuck (usually identity verification), since this segment often needs a human safety net that a fully self-serve flow doesn't provide. Metric: completion rate segmented by device/OS proxy for tech comfort, drop-off point concentration.",
+        source: "reported", addedDate: "2026-09-13" }
     ]
   },
   execution: {
@@ -501,7 +504,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-09" },
       { q: "You're two sprints into a quarter-long project when a competitor ships a feature that makes half of your remaining roadmap redundant. Engineering has already built significant infrastructure toward the original plan. How do you respond?",
         a: "Don't let sunk infrastructure cost dictate the decision — evaluate whether the built infrastructure is genuinely reusable toward a revised plan or whether continuing is just protecting past investment. Get a fast, honest assessment from engineering on what specifically the competitor's move actually obsoletes versus what's still differentiated, since 'they shipped something similar' often overstates the actual overlap once you look closely. Re-scope the remaining roadmap around what's still valuable and communicate the change transparently to stakeholders now rather than quietly finishing a plan you already know is partly moot, even if that means eating a hard conversation about the sprints already spent.",
-        source: "claude", addedDate: "2026-09-11" }
+        source: "claude", addedDate: "2026-09-11" },
+      { q: "How do you handle a feature request that is high value but technically very expensive to build?",
+        a: "Separate the value from the specific implementation being proposed — the requester usually has one solution in mind, but the underlying need can often be met with a cheaper, narrower version that captures most of the value at a fraction of the cost. Push for a phased approach: ship the highest-value slice first to validate the value hypothesis before committing full engineering cost to the complete vision, since 'high value' is often an estimate, not a proven fact yet. If the expensive full build is genuinely required, make the cost/value trade-off explicit to stakeholders with what else it displaces, rather than quietly absorbing it into the roadmap and hoping capacity works out.",
+        source: "reported", addedDate: "2026-09-13" }
     ]
   },
   analytics: {
@@ -620,7 +626,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-10" },
       { q: "Describe a time you had trouble getting everyone on board with your idea. How did you eventually align the team?",
         a: "STAR template — Situation: what the idea was and why it met resistance (unclear value, competing priorities, skepticism from a specific stakeholder). Task: your role in driving alignment without formal authority to just mandate it. Action: focus on the specific tactic that actually moved people — data that reframed the trade-off, a small pilot that de-risked the idea, or genuinely incorporating a skeptic's concern into a stronger version of the plan — rather than just repeating the pitch louder. Result: whether alignment held once real work started, and what you'd do differently to build buy-in earlier next time.",
-        source: "reported", addedDate: "2026-09-12" }
+        source: "reported", addedDate: "2026-09-12" },
+      { q: "Tell me about a time you had to build something you personally disagreed with, because leadership had already made the call.",
+        a: "STAR template — Situation: what was decided and why you disagreed (data, user impact, a different strategic read). Task: your responsibility once the decision was made — this tests whether you can execute in good faith after losing an internal debate, not whether you were right. Action: focus on how you separated 'I disagreed' from 'I'll build it well anyway' — did you flag your concern once clearly and then commit, or keep relitigating it in a way that undermined the team? Result: outcome, whether your concern turned out valid, and how you handled being right or wrong about it afterward.",
+        source: "claude", addedDate: "2026-09-13" }
     ]
   },
   fintech_domain: {
@@ -678,7 +687,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-10" },
       { q: "Explain what a 'sponsor bank' is in the context of a fintech offering debit cards or accounts, and what obligations the fintech still carries even though the bank holds the charter.",
         a: "A sponsor bank holds the actual banking charter and is legally responsible for the deposits/cards, licensing the fintech to operate 'as if' it were a bank via a partnership — this is how non-bank fintechs can offer FDIC-insured accounts without becoming a bank themselves. The fintech still carries real operational obligations: it typically runs the actual product experience, and depending on the agreement, takes on significant compliance responsibilities (KYC/AML monitoring, transaction monitoring) that the sponsor bank oversees but doesn't necessarily execute directly. Regulators increasingly hold both parties accountable when things go wrong, so 'the bank is responsible, not us' is not a safe assumption for a fintech's own compliance program.",
-        source: "claude", addedDate: "2026-09-12" }
+        source: "claude", addedDate: "2026-09-12" },
+      { q: "What is 'interchange++' pricing versus 'blended' pricing for merchant payment processing, and why would a merchant care about the difference?",
+        a: "Blended pricing charges the merchant one flat rate regardless of the card type or transaction details, bundling the processor's markup with the underlying interchange fee so the merchant can't see how much goes where. Interchange++ (or 'cost-plus') pricing separates the actual interchange fee, the card network's assessment fee, and the processor's markup into three visible line items, so the merchant sees exactly what the processor is charging on top of pass-through costs. Sophisticated, high-volume merchants generally prefer interchange++ for transparency and often lower effective cost, while blended pricing is simpler for small merchants who don't want itemized statements — a payments product targeting SMBs often defaults to blended, while an enterprise-focused product needs interchange++ to win larger merchants.",
+        source: "claude", addedDate: "2026-09-13" }
     ]
   },
   strategy: {
@@ -855,7 +867,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-10" },
       { q: "You're launching a new savings product but your target segment (Gen Z, first savings account) doesn't trust traditional bank marketing and is highly influenced by peer/creator content instead. What's your GTM approach?",
         a: "Shift budget from traditional acquisition channels toward creator partnerships with genuine domain credibility (personal finance creators who already have this audience's trust), and insist on authentic, unscripted content over polished ad-style placements, since this segment can detect and devalues obvious sponsored messaging. Build a low-commitment entry point (e.g. a small no-minimum savings goal) that a creator can genuinely demonstrate using rather than just mention, since demonstrated use converts skepticism better than a claim. Track second-deposit rate (not just account opens) as the core GTM success metric, since Gen Z account-opening rates can look strong from curiosity/creator-driven traffic while genuine adoption requires seeing continued engagement.",
-        source: "claude", addedDate: "2026-09-11" }
+        source: "claude", addedDate: "2026-09-11" },
+      { q: "You're launching a rewards credit card, but your target segment already holds 3-4 other rewards cards and is skeptical that yours adds anything new. What's your GTM approach?",
+        a: "Don't compete on 'another card with points' — lead with a specific, differentiated redemption category or partner ecosystem this segment's existing cards don't cover well (e.g. rent payment rewards, or a category they spend heavily in but current cards under-reward). Use a strong, time-limited welcome bonus to overcome switching inertia, but back it with genuinely differentiated ongoing value, since a one-time bonus alone produces a spike-and-churn pattern once the bonus is claimed. Track active-card-of-choice rate (whether it becomes their top-of-wallet card for its target category) rather than just approval/signup volume, since a card sitting unused in a segment with 3-4 other cards already is a GTM failure even with strong signup numbers.",
+        source: "claude", addedDate: "2026-09-13" }
     ]
   },
   faq: {
@@ -944,7 +959,13 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-12" },
       { q: "How do you ensure your product roadmap stays compliant with banking regulations and internal risk policies as it evolves?",
         a: "Compliance can't be a final gate before launch — embed a compliance/risk reviewer into roadmap planning itself so regulatory constraints shape scoping decisions upfront, not after engineering has already built toward a non-compliant design. Maintain a living map of which regulations touch which product areas (data localization, lending disclosure rules, AML thresholds) so a new feature's compliance surface is checked against known requirements systematically, not from memory. Build a lightweight escalation path for when a roadmap item surfaces a genuinely new regulatory question nobody's addressed before, since the riskiest gaps are the ones existing policy doesn't yet cover.",
-        source: "reported", addedDate: "2026-09-12" }
+        source: "reported", addedDate: "2026-09-12" },
+      { q: "How would you improve the onboarding experience for a non-tech-savvy user on a mobile-first digital bank like Chime?",
+        a: "Non-tech-savvy users drop off at ambiguity, not complexity per se — audit every screen for jargon (routing number, direct deposit, KYC) and replace with plain-language explanations shown inline rather than in a separate help doc they won't seek out. Break the flow into visibly small steps with a persistent progress indicator, since uncertainty about 'how much is left' causes abandonment more than the steps themselves. Offer a live-agent or video-call assist option at the exact point users historically get stuck (usually identity verification), since this segment often needs a human safety net that a fully self-serve flow doesn't provide. Metric: completion rate segmented by device/OS proxy for tech comfort, drop-off point concentration.",
+        source: "reported", addedDate: "2026-09-13" },
+      { q: "How do you handle a feature request that is high value but technically very expensive to build?",
+        a: "Separate the value from the specific implementation being proposed — the requester usually has one solution in mind, but the underlying need can often be met with a cheaper, narrower version that captures most of the value at a fraction of the cost. Push for a phased approach: ship the highest-value slice first to validate the value hypothesis before committing full engineering cost to the complete vision, since 'high value' is often an estimate, not a proven fact yet. If the expensive full build is genuinely required, make the cost/value trade-off explicit to stakeholders with what else it displaces, rather than quietly absorbing it into the roadmap and hoping capacity works out.",
+        source: "reported", addedDate: "2026-09-13" }
     ]
   }
 };
