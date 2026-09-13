@@ -991,6 +991,10 @@ async function loadState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (!parsed.answeredQuestions) parsed.answeredQuestions = [];
+      if (!parsed.qIndex) parsed.qIndex = {};
+      Object.keys(TOPICS).forEach(key => {
+        if (typeof parsed.qIndex[key] !== 'number') parsed.qIndex[key] = 0;
+      });
       return parsed;
     }
   } catch(e) {}
