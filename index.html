@@ -445,7 +445,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-11" },
       { q: "How would you improve the onboarding experience for a non-tech-savvy user on a mobile-first digital bank like Chime?",
         a: "Non-tech-savvy users drop off at ambiguity, not complexity per se — audit every screen for jargon (routing number, direct deposit, KYC) and replace with plain-language explanations shown inline rather than in a separate help doc they won't seek out. Break the flow into visibly small steps with a persistent progress indicator, since uncertainty about 'how much is left' causes abandonment more than the steps themselves. Offer a live-agent or video-call assist option at the exact point users historically get stuck (usually identity verification), since this segment often needs a human safety net that a fully self-serve flow doesn't provide. Metric: completion rate segmented by device/OS proxy for tech comfort, drop-off point concentration.",
-        source: "reported", addedDate: "2026-09-13" }
+        source: "reported", addedDate: "2026-09-13" },
+      { q: "Design a feature that helps gig workers (rideshare, delivery) smooth out their income across good weeks and bad weeks.",
+        a: "Don't default to a lending product — gig workers are often debt-wary after inconsistent-income struggles, so a savings-based smoothing tool (auto-set-aside a % of high-earning days into a buffer, auto-draw-down on low-earning days) avoids the psychological and cost burden of credit. Use actual platform-earnings data (via a gig-platform integration or Account Aggregator-style consent) to calibrate what 'good' and 'bad' weeks look like for that specific worker, rather than a generic income-smoothing default. Metric: % of low-earning weeks where the buffer was actually drawn down (proves real utility, not just enrollment), and buffer replenishment rate after a draw-down (signals sustainable use vs. depletion).",
+        source: "claude", addedDate: "2026-09-14" }
     ]
   },
   execution: {
@@ -507,7 +510,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-11" },
       { q: "How do you handle a feature request that is high value but technically very expensive to build?",
         a: "Separate the value from the specific implementation being proposed — the requester usually has one solution in mind, but the underlying need can often be met with a cheaper, narrower version that captures most of the value at a fraction of the cost. Push for a phased approach: ship the highest-value slice first to validate the value hypothesis before committing full engineering cost to the complete vision, since 'high value' is often an estimate, not a proven fact yet. If the expensive full build is genuinely required, make the cost/value trade-off explicit to stakeholders with what else it displaces, rather than quietly absorbing it into the roadmap and hoping capacity works out.",
-        source: "reported", addedDate: "2026-09-13" }
+        source: "reported", addedDate: "2026-09-13" },
+      { q: "Your team commits to a launch date for a regulatory-required change 8 weeks out. At week 6, QA finds a critical bug that will take at least 3 weeks to properly fix. The regulatory deadline is fixed and cannot move. What do you do?",
+        a: "First separate 'critical to the regulatory requirement' from 'critical in general' — some bugs are severe from an engineering-quality standpoint but don't actually block the specific compliance requirement, in which case you can ship the compliant core on time and fix the broader bug in a fast-follow. If the bug genuinely blocks the regulatory requirement itself, escalate immediately to legal/compliance to understand the real consequence of missing the date (often there's more nuance — a grace period, a phased enforcement) rather than assuming zero flexibility. Mobilize additional engineering resources or narrow the fix's scope to the minimum needed for compliance specifically, rather than the originally-planned full fix, to close the gap within the fixed timeline.",
+        source: "claude", addedDate: "2026-09-14" }
     ]
   },
   analytics: {
@@ -566,7 +572,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-11" },
       { q: "Two dashboards report different numbers for the same metric — 'monthly active users' — one from your product analytics tool, one from your data warehouse. Leadership is asking which one is right before a board meeting tomorrow. How do you handle it?",
         a: "Don't just pick the higher or more convenient number — quickly identify the actual definitional difference (different session-timeout windows, different bot-filtering logic, different user-identity resolution across devices) since 'different tools, different definitions' is almost always the real cause, not a data error. For tomorrow's meeting, present the number you have the most confidence auditing end-to-end, clearly caveat the discrepancy and why it exists, and commit to a single source-of-truth definition going forward rather than let the ambiguity linger past the immediate deadline. Long-term, this is a signal to formalize one certified definition per core metric with clear ownership, since ad hoc reconciliation under deadline pressure is how boards lose trust in a team's numbers.",
-        source: "claude", addedDate: "2026-09-12" }
+        source: "claude", addedDate: "2026-09-12" },
+      { q: "Your team ships an A/B test for a new checkout flow. The test 'wins' with a statistically significant lift in conversion rate, but 3 weeks post-rollout, overall revenue per user is flat. How do you explain this?",
+        a: "A conversion-rate lift doesn't guarantee a revenue lift if the new flow is disproportionately converting lower-value transactions (e.g. it removed friction that previously filtered out price-sensitive or high-refund-risk users). Segment the post-rollout data by order value and refund/chargeback rate to check if average order value or margin quietly dropped even as volume rose. Also check for a novelty effect — some conversion lifts in A/B tests decay once the initial test-period behavior normalizes, so compare week 1 vs. week 3 post-rollout trend before concluding the effect is real and durable, not just a temporary artifact of the test period itself.",
+        source: "claude", addedDate: "2026-09-14" }
     ]
   },
   behavioral: {
@@ -749,7 +758,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-10" },
       { q: "How do you ensure your product roadmap stays compliant with banking regulations and internal risk policies as it evolves?",
         a: "Compliance can't be a final gate before launch — embed a compliance/risk reviewer into roadmap planning itself so regulatory constraints shape scoping decisions upfront, not after engineering has already built toward a non-compliant design. Maintain a living map of which regulations touch which product areas (data localization, lending disclosure rules, AML thresholds) so a new feature's compliance surface is checked against known requirements systematically, not from memory. Build a lightweight escalation path for when a roadmap item surfaces a genuinely new regulatory question nobody's addressed before, since the riskiest gaps are the ones existing policy doesn't yet cover.",
-        source: "reported", addedDate: "2026-09-12" }
+        source: "reported", addedDate: "2026-09-12" },
+      { q: "Should your digital bank pursue a banking charter of its own, or continue operating through a sponsor-bank partnership indefinitely?",
+        a: "A charter removes sponsor-bank dependency risk and captures more economics (you're no longer sharing margin or subject to a partner's risk appetite/regulatory standing) but comes with a multi-year approval process, much higher direct regulatory/compliance burden, and capital requirements that fundamentally change the business's risk profile. Pursue a charter only once scale justifies the fixed compliance cost and the sponsor-bank relationship has become a genuine growth constraint (capacity limits, product restrictions, pricing) rather than just a preference for more control. Many successful fintechs stay sponsor-bank-based indefinitely and simply diversify across multiple sponsor banks to reduce single-partner risk — that's often the better risk-adjusted move than a full charter.",
+        source: "claude", addedDate: "2026-09-14" }
     ]
   },
   rca: {
@@ -808,7 +820,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-11" },
       { q: "Your onboarding completion rate dropped sharply right after you simplified the sign-up form by removing several fields. The team is confused since fewer fields should mean less friction. How do you investigate?",
         a: "Check whether the removed fields were actually collecting data a downstream step depends on — e.g. if you removed an income field that KYC/underwriting needs, users may now be dropping at a later step (a new, unexpected data-collection prompt) that wasn't there before, shifting the friction rather than removing it. Segment the funnel by exact step to see precisely where the drop-off moved to, rather than assuming the shorter form itself is the problem. Also check whether removing fields changed downstream approval rates (thinner data hurting automated decisioning), which could be surfacing as later-stage abandonment when users get an unexpected manual-review delay instead of instant approval.",
-        source: "claude", addedDate: "2026-09-12" }
+        source: "claude", addedDate: "2026-09-12" },
+      { q: "One of your top-managed merchant accounts reaches out to you on a Saturday saying they've noticed an unusual spike in chargebacks. Walk through how you'd handle it, from initial response through resolution.",
+        a: "Respond immediately even before you have answers — acknowledge the merchant's concern and commit to a timeline, since silence over a weekend on a top account erodes trust fast regardless of how real the underlying issue turns out to be. Pull chargeback data for that merchant specifically: segment by chargeback reason code, time window, and whether it correlates with a recent change on either side (their checkout flow, your fraud rules, a promotional campaign that changed their traffic mix). Distinguish a genuine fraud/dispute spike from a data or reporting artifact before proposing any fix, and loop in risk/fraud teams in parallel rather than sequentially given the urgency — then follow up with the merchant with a clear root cause and remediation plan, not just reassurance.",
+        source: "reported", addedDate: "2026-09-14" }
     ]
   },
   gtm: {
@@ -965,7 +980,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-13" },
       { q: "How do you handle a feature request that is high value but technically very expensive to build?",
         a: "Separate the value from the specific implementation being proposed — the requester usually has one solution in mind, but the underlying need can often be met with a cheaper, narrower version that captures most of the value at a fraction of the cost. Push for a phased approach: ship the highest-value slice first to validate the value hypothesis before committing full engineering cost to the complete vision, since 'high value' is often an estimate, not a proven fact yet. If the expensive full build is genuinely required, make the cost/value trade-off explicit to stakeholders with what else it displaces, rather than quietly absorbing it into the roadmap and hoping capacity works out.",
-        source: "reported", addedDate: "2026-09-13" }
+        source: "reported", addedDate: "2026-09-13" },
+      { q: "One of your top-managed merchant accounts reaches out to you on a Saturday saying they've noticed an unusual spike in chargebacks. Walk through how you'd handle it, from initial response through resolution.",
+        a: "Respond immediately even before you have answers — acknowledge the merchant's concern and commit to a timeline, since silence over a weekend on a top account erodes trust fast regardless of how real the underlying issue turns out to be. Pull chargeback data for that merchant specifically: segment by chargeback reason code, time window, and whether it correlates with a recent change on either side (their checkout flow, your fraud rules, a promotional campaign that changed their traffic mix). Distinguish a genuine fraud/dispute spike from a data or reporting artifact before proposing any fix, and loop in risk/fraud teams in parallel rather than sequentially given the urgency — then follow up with the merchant with a clear root cause and remediation plan, not just reassurance.",
+        source: "reported", addedDate: "2026-09-14" }
     ]
   }
 };
