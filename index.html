@@ -638,7 +638,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-12" },
       { q: "Tell me about a time you had to build something you personally disagreed with, because leadership had already made the call.",
         a: "STAR template — Situation: what was decided and why you disagreed (data, user impact, a different strategic read). Task: your responsibility once the decision was made — this tests whether you can execute in good faith after losing an internal debate, not whether you were right. Action: focus on how you separated 'I disagreed' from 'I'll build it well anyway' — did you flag your concern once clearly and then commit, or keep relitigating it in a way that undermined the team? Result: outcome, whether your concern turned out valid, and how you handled being right or wrong about it afterward.",
-        source: "claude", addedDate: "2026-09-13" }
+        source: "claude", addedDate: "2026-09-13" },
+      { q: "Tell me about a time you shipped a product decision that was later shown to be wrong by the data. How did you find out, and what did you do next?",
+        a: "STAR template — Situation: the decision and the confidence you had in it at the time. Task: your role in both making the original call and in surfacing/acting on the correction. Action: focus on how you discovered you were wrong (a metric, user feedback, a competitor's move) and specifically what you did once you knew — did you reverse quickly, or did ego/sunk cost delay the correction? Result: the actual cost of being wrong plus the cost of the delay in correcting it, and what changed in your decision process afterward.",
+        source: "claude", addedDate: "2026-09-15" }
     ]
   },
   fintech_domain: {
@@ -699,7 +702,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-12" },
       { q: "What is 'interchange++' pricing versus 'blended' pricing for merchant payment processing, and why would a merchant care about the difference?",
         a: "Blended pricing charges the merchant one flat rate regardless of the card type or transaction details, bundling the processor's markup with the underlying interchange fee so the merchant can't see how much goes where. Interchange++ (or 'cost-plus') pricing separates the actual interchange fee, the card network's assessment fee, and the processor's markup into three visible line items, so the merchant sees exactly what the processor is charging on top of pass-through costs. Sophisticated, high-volume merchants generally prefer interchange++ for transparency and often lower effective cost, while blended pricing is simpler for small merchants who don't want itemized statements — a payments product targeting SMBs often defaults to blended, while an enterprise-focused product needs interchange++ to win larger merchants.",
-        source: "claude", addedDate: "2026-09-13" }
+        source: "claude", addedDate: "2026-09-13" },
+      { q: "BNPL providers have recently started reporting payment behavior to credit bureaus, reversing years of positioning BNPL as 'outside the credit system.' What does this shift mean for how a BNPL product should be designed going forward?",
+        a: "Credit bureau reporting changes the stakes of a missed payment from 'annoying late fee' to 'lasting credit-history damage,' so the product now needs much clearer upfront disclosure and reminder systems than when BNPL was consequence-light. It also changes the underwriting opportunity: reported repayment history becomes a genuine credit-building tool for thin-file users, which BNPL providers can now market as a feature rather than avoiding the credit-system framing. Product implication: dispute/hardship-accommodation flows become more important, since a wrongly-reported late payment now has real consequences for the user beyond the BNPL relationship itself, raising the bar for how carefully those edge cases are handled.",
+        source: "claude", addedDate: "2026-09-15" }
     ]
   },
   strategy: {
@@ -761,7 +767,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-12" },
       { q: "Should your digital bank pursue a banking charter of its own, or continue operating through a sponsor-bank partnership indefinitely?",
         a: "A charter removes sponsor-bank dependency risk and captures more economics (you're no longer sharing margin or subject to a partner's risk appetite/regulatory standing) but comes with a multi-year approval process, much higher direct regulatory/compliance burden, and capital requirements that fundamentally change the business's risk profile. Pursue a charter only once scale justifies the fixed compliance cost and the sponsor-bank relationship has become a genuine growth constraint (capacity limits, product restrictions, pricing) rather than just a preference for more control. Many successful fintechs stay sponsor-bank-based indefinitely and simply diversify across multiple sponsor banks to reduce single-partner risk — that's often the better risk-adjusted move than a full charter.",
-        source: "claude", addedDate: "2026-09-14" }
+        source: "claude", addedDate: "2026-09-14" },
+      { q: "A card-issuing platform you rely on for real-time transaction risk-scoring just announced they're building a competing product-analytics layer on top of the same data — encroaching on a feature you've built and sell as a differentiator. How do you respond strategically?",
+        a: "This is a classic platform-risk scenario — a vendor with deep data access is well-positioned to commoditize anything built purely on top of their data. Assess how defensible your differentiator actually is: if it's mostly the data itself, you're exposed; if it's genuinely proprietary modeling, UX, or workflow integration on top, you have more room. Use this as a forcing function to deepen the parts of your product that aren't easily replicated by the platform (customer relationships, workflow depth, cross-platform aggregation if you serve multiple issuers), and open a direct conversation with the platform about the overlap before it becomes adversarial, since vendor relationships are often still negotiable at this stage.",
+        source: "claude", addedDate: "2026-09-15" }
     ]
   },
   rca: {
@@ -823,7 +832,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-12" },
       { q: "One of your top-managed merchant accounts reaches out to you on a Saturday saying they've noticed an unusual spike in chargebacks. Walk through how you'd handle it, from initial response through resolution.",
         a: "Respond immediately even before you have answers — acknowledge the merchant's concern and commit to a timeline, since silence over a weekend on a top account erodes trust fast regardless of how real the underlying issue turns out to be. Pull chargeback data for that merchant specifically: segment by chargeback reason code, time window, and whether it correlates with a recent change on either side (their checkout flow, your fraud rules, a promotional campaign that changed their traffic mix). Distinguish a genuine fraud/dispute spike from a data or reporting artifact before proposing any fix, and loop in risk/fraud teams in parallel rather than sequentially given the urgency — then follow up with the merchant with a clear root cause and remediation plan, not just reassurance.",
-        source: "reported", addedDate: "2026-09-14" }
+        source: "reported", addedDate: "2026-09-14" },
+      { q: "Your real-time fraud risk-scoring model, which scores transactions at the moment of authorization, suddenly starts adding 200-400ms of latency to every transaction — not failing, just slow. Merchants are complaining about checkout lag. How do you investigate?",
+        a: "Separate model-inference latency from infrastructure latency first — check whether the model itself is taking longer to score (a recent model update, more complex features being computed) versus a downstream bottleneck (database lookup, network hop, a scaling/capacity issue under current transaction volume). Correlate the onset time precisely against any recent deploy, traffic spike, or dependency change, since 200-400ms consistently added points to a systemic cause, not random noise. Given this sits directly in the authorization path, treat it with elevated urgency — even sub-second latency added at checkout measurably increases cart abandonment, so a temporary rollback to the prior model/infra state while investigating is often the right call rather than debugging live in production.",
+        source: "claude", addedDate: "2026-09-15" }
     ]
   },
   gtm: {
@@ -885,7 +897,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-11" },
       { q: "You're launching a rewards credit card, but your target segment already holds 3-4 other rewards cards and is skeptical that yours adds anything new. What's your GTM approach?",
         a: "Don't compete on 'another card with points' — lead with a specific, differentiated redemption category or partner ecosystem this segment's existing cards don't cover well (e.g. rent payment rewards, or a category they spend heavily in but current cards under-reward). Use a strong, time-limited welcome bonus to overcome switching inertia, but back it with genuinely differentiated ongoing value, since a one-time bonus alone produces a spike-and-churn pattern once the bonus is claimed. Track active-card-of-choice rate (whether it becomes their top-of-wallet card for its target category) rather than just approval/signup volume, since a card sitting unused in a segment with 3-4 other cards already is a GTM failure even with strong signup numbers.",
-        source: "claude", addedDate: "2026-09-13" }
+        source: "claude", addedDate: "2026-09-13" },
+      { q: "You're launching a card-issuing platform's new AI-powered fraud decisioning feature, but your primary customers (other fintechs building on your platform) are wary of 'AI' features after high-profile AI failures elsewhere in the industry. What's your GTM approach?",
+        a: "Lead with transparency and control, not the AI framing itself — emphasize explainability (why a transaction was flagged, not just a black-box score) and give customers configurable override/threshold controls so they don't feel like they're ceding decisioning entirely to an opaque model. Offer a shadow-mode pilot where the AI scores run alongside existing rules without affecting live decisions, so customers can validate accuracy against their own data before trusting it in production. Lead GTM with case-study data from early adopters showing concrete fraud-loss reduction and false-positive rates, since skeptical technical buyers respond to evidence over marketing claims about AI capability.",
+        source: "claude", addedDate: "2026-09-15" }
     ]
   },
   faq: {
