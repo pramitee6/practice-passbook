@@ -448,7 +448,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-13" },
       { q: "Design a feature that helps gig workers (rideshare, delivery) smooth out their income across good weeks and bad weeks.",
         a: "Don't default to a lending product — gig workers are often debt-wary after inconsistent-income struggles, so a savings-based smoothing tool (auto-set-aside a % of high-earning days into a buffer, auto-draw-down on low-earning days) avoids the psychological and cost burden of credit. Use actual platform-earnings data (via a gig-platform integration or Account Aggregator-style consent) to calibrate what 'good' and 'bad' weeks look like for that specific worker, rather than a generic income-smoothing default. Metric: % of low-earning weeks where the buffer was actually drawn down (proves real utility, not just enrollment), and buffer replenishment rate after a draw-down (signals sustainable use vs. depletion).",
-        source: "claude", addedDate: "2026-09-14" }
+        source: "claude", addedDate: "2026-09-14" },
+      { q: "Design a feature that helps first-time tax filers understand and file their taxes without needing to hire a professional.",
+        a: "The core barrier isn't the forms, it's fear of getting something wrong with real financial and legal consequences — lead with reassurance mechanisms (a clear audit-risk indicator per answer, a 'why we're asking this' explanation at every field) rather than just simplifying the form itself. Use a conversational, one-question-at-a-time flow that infers as much as possible from prior answers (e.g. W-2 upload auto-fills income fields) to reduce the total decisions a nervous first-timer has to make. Metric: completion rate without abandoning to a paid preparer mid-flow, and post-filing confidence score, since a technically-correct return that leaves the user anxious is a product failure even if it worked.",
+        source: "claude", addedDate: "2026-09-16" }
     ]
   },
   execution: {
@@ -513,7 +516,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-13" },
       { q: "Your team commits to a launch date for a regulatory-required change 8 weeks out. At week 6, QA finds a critical bug that will take at least 3 weeks to properly fix. The regulatory deadline is fixed and cannot move. What do you do?",
         a: "First separate 'critical to the regulatory requirement' from 'critical in general' — some bugs are severe from an engineering-quality standpoint but don't actually block the specific compliance requirement, in which case you can ship the compliant core on time and fix the broader bug in a fast-follow. If the bug genuinely blocks the regulatory requirement itself, escalate immediately to legal/compliance to understand the real consequence of missing the date (often there's more nuance — a grace period, a phased enforcement) rather than assuming zero flexibility. Mobilize additional engineering resources or narrow the fix's scope to the minimum needed for compliance specifically, rather than the originally-planned full fix, to close the gap within the fixed timeline.",
-        source: "claude", addedDate: "2026-09-14" }
+        source: "claude", addedDate: "2026-09-14" },
+      { q: "You're asked to scope a 2-day engineering spike to unblock a stalled roadmap decision. How do you scope it so it actually produces a usable answer rather than a half-finished exploration?",
+        a: "Define the single decision the spike needs to unblock before writing anything — a spike with an open-ended 'explore the space' goal reliably produces exactly the half-finished exploration you're trying to avoid. Timebox research/discovery to day 1 morning at most, forcing a hypothesis to form early, then spend the rest of the time validating or breaking that specific hypothesis rather than generating alternatives. End with a forced decision artifact (a one-page recommendation with a clear yes/no ask), even if imperfect, since the point of a spike is to unblock a decision, not to produce a polished plan.",
+        source: "claude", addedDate: "2026-09-16" }
     ]
   },
   analytics: {
@@ -575,7 +581,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-12" },
       { q: "Your team ships an A/B test for a new checkout flow. The test 'wins' with a statistically significant lift in conversion rate, but 3 weeks post-rollout, overall revenue per user is flat. How do you explain this?",
         a: "A conversion-rate lift doesn't guarantee a revenue lift if the new flow is disproportionately converting lower-value transactions (e.g. it removed friction that previously filtered out price-sensitive or high-refund-risk users). Segment the post-rollout data by order value and refund/chargeback rate to check if average order value or margin quietly dropped even as volume rose. Also check for a novelty effect — some conversion lifts in A/B tests decay once the initial test-period behavior normalizes, so compare week 1 vs. week 3 post-rollout trend before concluding the effect is real and durable, not just a temporary artifact of the test period itself.",
-        source: "claude", addedDate: "2026-09-14" }
+        source: "claude", addedDate: "2026-09-14" },
+      { q: "You're asked to define OKRs for a fintech app's fraud team for the next quarter. The natural instinct is 'reduce fraud losses by X%.' What's the risk with that framing, and how would you structure the OKR instead?",
+        a: "A pure loss-reduction target creates a strong incentive to over-block borderline transactions, since declining more aggressively is the easiest lever to hit the number — the team can 'succeed' on the OKR while quietly damaging legitimate-user experience and revenue. Structure it as a paired objective: reduce fraud losses by X% AND hold false-positive/decline rate on legitimate transactions within Y% of baseline, so the team can't trade one for the other unchecked. Add a leading-indicator key result (e.g. model precision at current threshold) alongside the lagging loss number, so progress is visible before a full quarter's loss data is even in.",
+        source: "claude", addedDate: "2026-09-16" }
     ]
   },
   behavioral: {
@@ -705,7 +714,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-13" },
       { q: "BNPL providers have recently started reporting payment behavior to credit bureaus, reversing years of positioning BNPL as 'outside the credit system.' What does this shift mean for how a BNPL product should be designed going forward?",
         a: "Credit bureau reporting changes the stakes of a missed payment from 'annoying late fee' to 'lasting credit-history damage,' so the product now needs much clearer upfront disclosure and reminder systems than when BNPL was consequence-light. It also changes the underwriting opportunity: reported repayment history becomes a genuine credit-building tool for thin-file users, which BNPL providers can now market as a feature rather than avoiding the credit-system framing. Product implication: dispute/hardship-accommodation flows become more important, since a wrongly-reported late payment now has real consequences for the user beyond the BNPL relationship itself, raising the bar for how carefully those edge cases are handled.",
-        source: "claude", addedDate: "2026-09-15" }
+        source: "claude", addedDate: "2026-09-15" },
+      { q: "What does it mean for a fintech to operate under a 'money transmitter license' (MTL) in the US, and why is this often more operationally painful than a single federal charter?",
+        a: "An MTL is a state-by-state license required to move money on behalf of others (as opposed to holding deposits, which requires a bank charter) — since money transmission is regulated at the state level in the US, a fintech operating nationally typically needs to hold separate licenses in most or all 50 states, each with its own bonding, capital, and reporting requirements. This creates significant operational overhead compared to a single federal bank charter, which would cover the whole country under one regulator — many fintechs route around this by partnering with a chartered bank instead of holding MTLs directly. Product implication: launching in a new state isn't just a marketing decision, it's gated by whether the MTL (or bank partnership coverage) is already in place there.",
+        source: "claude", addedDate: "2026-09-16" }
     ]
   },
   strategy: {
@@ -770,7 +782,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-14" },
       { q: "A card-issuing platform you rely on for real-time transaction risk-scoring just announced they're building a competing product-analytics layer on top of the same data — encroaching on a feature you've built and sell as a differentiator. How do you respond strategically?",
         a: "This is a classic platform-risk scenario — a vendor with deep data access is well-positioned to commoditize anything built purely on top of their data. Assess how defensible your differentiator actually is: if it's mostly the data itself, you're exposed; if it's genuinely proprietary modeling, UX, or workflow integration on top, you have more room. Use this as a forcing function to deepen the parts of your product that aren't easily replicated by the platform (customer relationships, workflow depth, cross-platform aggregation if you serve multiple issuers), and open a direct conversation with the platform about the overlap before it becomes adversarial, since vendor relationships are often still negotiable at this stage.",
-        source: "claude", addedDate: "2026-09-15" }
+        source: "claude", addedDate: "2026-09-15" },
+      { q: "Why do you think Intuit acquired Credit Karma? Walk through the strategic rationale.",
+        a: "Intuit's core products (TurboTax, QuickBooks) already had massive user data and financial-lifecycle relevance but limited reach into the free, aspirational side of personal finance where Credit Karma dominated — the acquisition bought distribution and a top-of-funnel financial-health entry point that feeds naturally into Intuit's paid products (tax prep, lending referrals). It also consolidated a potential competitive threat: Credit Karma's own expansion into tax filing and financial products could have eroded Intuit's TurboTax moat if left independent. The real strategic prize was the data and habit-loop — Credit Karma's frequent, free-to-use credit-monitoring engagement gives Intuit many more touchpoints per user per year than tax software's once-a-year interaction, valuable for cross-sell and lifetime-value expansion.",
+        source: "reported", addedDate: "2026-09-16" }
     ]
   },
   rca: {
@@ -998,7 +1013,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-13" },
       { q: "One of your top-managed merchant accounts reaches out to you on a Saturday saying they've noticed an unusual spike in chargebacks. Walk through how you'd handle it, from initial response through resolution.",
         a: "Respond immediately even before you have answers — acknowledge the merchant's concern and commit to a timeline, since silence over a weekend on a top account erodes trust fast regardless of how real the underlying issue turns out to be. Pull chargeback data for that merchant specifically: segment by chargeback reason code, time window, and whether it correlates with a recent change on either side (their checkout flow, your fraud rules, a promotional campaign that changed their traffic mix). Distinguish a genuine fraud/dispute spike from a data or reporting artifact before proposing any fix, and loop in risk/fraud teams in parallel rather than sequentially given the urgency — then follow up with the merchant with a clear root cause and remediation plan, not just reassurance.",
-        source: "reported", addedDate: "2026-09-14" }
+        source: "reported", addedDate: "2026-09-14" },
+      { q: "Why do you think Intuit acquired Credit Karma? Walk through the strategic rationale.",
+        a: "Intuit's core products (TurboTax, QuickBooks) already had massive user data and financial-lifecycle relevance but limited reach into the free, aspirational side of personal finance where Credit Karma dominated — the acquisition bought distribution and a top-of-funnel financial-health entry point that feeds naturally into Intuit's paid products (tax prep, lending referrals). It also consolidated a potential competitive threat: Credit Karma's own expansion into tax filing and financial products could have eroded Intuit's TurboTax moat if left independent. The real strategic prize was the data and habit-loop — Credit Karma's frequent, free-to-use credit-monitoring engagement gives Intuit many more touchpoints per user per year than tax software's once-a-year interaction, valuable for cross-sell and lifetime-value expansion.",
+        source: "reported", addedDate: "2026-09-16" }
     ]
   }
 };
