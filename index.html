@@ -519,7 +519,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-14" },
       { q: "You're asked to scope a 2-day engineering spike to unblock a stalled roadmap decision. How do you scope it so it actually produces a usable answer rather than a half-finished exploration?",
         a: "Define the single decision the spike needs to unblock before writing anything — a spike with an open-ended 'explore the space' goal reliably produces exactly the half-finished exploration you're trying to avoid. Timebox research/discovery to day 1 morning at most, forcing a hypothesis to form early, then spend the rest of the time validating or breaking that specific hypothesis rather than generating alternatives. End with a forced decision artifact (a one-page recommendation with a clear yes/no ask), even if imperfect, since the point of a spike is to unblock a decision, not to produce a polished plan.",
-        source: "claude", addedDate: "2026-09-16" }
+        source: "claude", addedDate: "2026-09-16" },
+      { q: "Your open-banking data provider partner just announced they're deprecating a legacy API your product depends on, with a 6-month migration window. Internal engineering estimates the full migration will take 8 months. How do you manage this?",
+        a: "Immediately clarify with the partner what actually happens at the deprecation deadline — a hard cutoff, a grace period, or a throttled/degraded legacy access — since the real urgency depends entirely on this, and vendors often have more flexibility than the initial announcement suggests, especially for an established customer. In parallel, break the 8-month migration into phases and identify whether a partial migration (the highest-volume or highest-risk integrations first) could be completed within the 6-month window, even if some lower-priority integrations migrate after. Escalate the timeline gap to leadership now with a concrete ask (more engineering resources, a negotiated extension, or accepted temporary risk on the tail integrations) rather than waiting until month 5 to reveal the shortfall.",
+        source: "claude", addedDate: "2026-09-17" }
     ]
   },
   analytics: {
@@ -584,7 +587,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-14" },
       { q: "You're asked to define OKRs for a fintech app's fraud team for the next quarter. The natural instinct is 'reduce fraud losses by X%.' What's the risk with that framing, and how would you structure the OKR instead?",
         a: "A pure loss-reduction target creates a strong incentive to over-block borderline transactions, since declining more aggressively is the easiest lever to hit the number — the team can 'succeed' on the OKR while quietly damaging legitimate-user experience and revenue. Structure it as a paired objective: reduce fraud losses by X% AND hold false-positive/decline rate on legitimate transactions within Y% of baseline, so the team can't trade one for the other unchecked. Add a leading-indicator key result (e.g. model precision at current threshold) alongside the lagging loss number, so progress is visible before a full quarter's loss data is even in.",
-        source: "claude", addedDate: "2026-09-16" }
+        source: "claude", addedDate: "2026-09-16" },
+      { q: "Pick a specific customer segment for a challenger bank's paycheck-advance feature and walk through the full funnel you'd examine — discovery, activation, funded use, retention, and withdrawal/guardrail metrics.",
+        a: "For a segment like gig workers with irregular income: discovery (% of eligible users who see and engage with the feature — placement matters since this isn't a product people search for), activation (% who complete setup, e.g. linking income verification), funded use (% who actually draw an advance, not just enroll — enrollment without use signals a trust or awareness gap, not eligibility). Retention: repeat usage rate without becoming a permanent crutch (healthy usage looks like occasional draws tied to real income gaps, not every single pay cycle). Guardrail: withdrawal/default rate and a financial-wellbeing proxy (e.g. whether reliance is increasing or stable over time), since a paycheck-advance product succeeding purely on repeat-usage growth without this guardrail could mean it's fostering dependency rather than genuinely helping.",
+        source: "claude", addedDate: "2026-09-17" }
     ]
   },
   behavioral: {
@@ -650,7 +656,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-13" },
       { q: "Tell me about a time you shipped a product decision that was later shown to be wrong by the data. How did you find out, and what did you do next?",
         a: "STAR template — Situation: the decision and the confidence you had in it at the time. Task: your role in both making the original call and in surfacing/acting on the correction. Action: focus on how you discovered you were wrong (a metric, user feedback, a competitor's move) and specifically what you did once you knew — did you reverse quickly, or did ego/sunk cost delay the correction? Result: the actual cost of being wrong plus the cost of the delay in correcting it, and what changed in your decision process afterward.",
-        source: "claude", addedDate: "2026-09-15" }
+        source: "claude", addedDate: "2026-09-15" },
+      { q: "Tell me about a time you had to make a call between two engineers/designers with conflicting technical opinions, where you didn't have the technical depth to independently judge who was right.",
+        a: "STAR template — Situation: the specific disagreement and why it mattered enough that a decision couldn't just be deferred. Task: your role given you weren't the technical authority — this tests judgment and process, not technical expertise. Action: focus on how you structured the decision without pretending false expertise — did you get both sides to argue against a shared set of criteria (user impact, timeline, maintainability), bring in a neutral third technical opinion, or run a small experiment to settle it empirically? Result: what was decided, whether it held up, and how both engineers felt about the process afterward even if only one 'won.'",
+        source: "claude", addedDate: "2026-09-17" }
     ]
   },
   fintech_domain: {
@@ -850,7 +859,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-14" },
       { q: "Your real-time fraud risk-scoring model, which scores transactions at the moment of authorization, suddenly starts adding 200-400ms of latency to every transaction — not failing, just slow. Merchants are complaining about checkout lag. How do you investigate?",
         a: "Separate model-inference latency from infrastructure latency first — check whether the model itself is taking longer to score (a recent model update, more complex features being computed) versus a downstream bottleneck (database lookup, network hop, a scaling/capacity issue under current transaction volume). Correlate the onset time precisely against any recent deploy, traffic spike, or dependency change, since 200-400ms consistently added points to a systemic cause, not random noise. Given this sits directly in the authorization path, treat it with elevated urgency — even sub-second latency added at checkout measurably increases cart abandonment, so a temporary rollback to the prior model/infra state while investigating is often the right call rather than debugging live in production.",
-        source: "claude", addedDate: "2026-09-15" }
+        source: "claude", addedDate: "2026-09-15" },
+      { q: "Using a structured framework like TROPIC (Time, Region, Other features/products, Platform, Industry/Competition, Cannibalization), walk through how you'd diagnose why daily active trades on your investing app dropped 20% in a week.",
+        a: "Time: check if the drop aligns with a specific day/hour pattern (weekend, market-holiday, or time-zone-specific issue) rather than a flat decline. Region: segment by geography to see if it's global or localized to one market (a regional outage, a local competitor promotion, a regulatory change). Other features/Platform: check if a recent release on a specific platform (iOS vs. Android vs. web) or a specific feature broke or introduced friction. Industry/Competition: check if a broader market event (a volatility spike, a competitor's aggressive promotion) is pulling volume elsewhere. Cannibalization: check whether a new feature (e.g. auto-invest) is substituting for manual trades rather than genuinely reducing engagement — segment trade volume by manual vs. automated to rule this out before concluding it's a real decline.",
+        source: "reported", addedDate: "2026-09-17" }
     ]
   },
   gtm: {
@@ -915,7 +927,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-13" },
       { q: "You're launching a card-issuing platform's new AI-powered fraud decisioning feature, but your primary customers (other fintechs building on your platform) are wary of 'AI' features after high-profile AI failures elsewhere in the industry. What's your GTM approach?",
         a: "Lead with transparency and control, not the AI framing itself — emphasize explainability (why a transaction was flagged, not just a black-box score) and give customers configurable override/threshold controls so they don't feel like they're ceding decisioning entirely to an opaque model. Offer a shadow-mode pilot where the AI scores run alongside existing rules without affecting live decisions, so customers can validate accuracy against their own data before trusting it in production. Lead GTM with case-study data from early adopters showing concrete fraud-loss reduction and false-positive rates, since skeptical technical buyers respond to evidence over marketing claims about AI capability.",
-        source: "claude", addedDate: "2026-09-15" }
+        source: "claude", addedDate: "2026-09-15" },
+      { q: "You're launching an open-banking data product where your primary customers (other fintechs) need production access gated behind a sales conversation, not self-serve signup, unlike most developer tools today. How do you GTM this without losing developers to friction-averse competitors?",
+        a: "Accept that sandbox/dev access should still be instantly self-serve even if production access is gated — losing a developer's initial interest to signup friction is a GTM failure regardless of whether production requires sales, so the wedge is making evaluation frictionless while gating only the regulated final step. Equip sales with a fast, transparent path from sandbox-validated integration to production (a clear checklist of compliance/security requirements upfront, not surprise gates discovered mid-negotiation), since developers who've already built against your sandbox are your warmest possible leads and slow-walking them loses that momentum. Track sandbox-to-production conversion rate and time-to-production as core GTM metrics, since sandbox signups alone say nothing about revenue if production access becomes an unpredictable bottleneck.",
+        source: "claude", addedDate: "2026-09-17" }
     ]
   },
   faq: {
@@ -1016,7 +1031,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-14" },
       { q: "Why do you think Intuit acquired Credit Karma? Walk through the strategic rationale.",
         a: "Intuit's core products (TurboTax, QuickBooks) already had massive user data and financial-lifecycle relevance but limited reach into the free, aspirational side of personal finance where Credit Karma dominated — the acquisition bought distribution and a top-of-funnel financial-health entry point that feeds naturally into Intuit's paid products (tax prep, lending referrals). It also consolidated a potential competitive threat: Credit Karma's own expansion into tax filing and financial products could have eroded Intuit's TurboTax moat if left independent. The real strategic prize was the data and habit-loop — Credit Karma's frequent, free-to-use credit-monitoring engagement gives Intuit many more touchpoints per user per year than tax software's once-a-year interaction, valuable for cross-sell and lifetime-value expansion.",
-        source: "reported", addedDate: "2026-09-16" }
+        source: "reported", addedDate: "2026-09-16" },
+      { q: "Using a structured framework like TROPIC (Time, Region, Other features/products, Platform, Industry/Competition, Cannibalization), walk through how you'd diagnose why daily active trades on your investing app dropped 20% in a week.",
+        a: "Time: check if the drop aligns with a specific day/hour pattern (weekend, market-holiday, or time-zone-specific issue) rather than a flat decline. Region: segment by geography to see if it's global or localized to one market (a regional outage, a local competitor promotion, a regulatory change). Other features/Platform: check if a recent release on a specific platform (iOS vs. Android vs. web) or a specific feature broke or introduced friction. Industry/Competition: check if a broader market event (a volatility spike, a competitor's aggressive promotion) is pulling volume elsewhere. Cannibalization: check whether a new feature (e.g. auto-invest) is substituting for manual trades rather than genuinely reducing engagement — segment trade volume by manual vs. automated to rule this out before concluding it's a real decline.",
+        source: "reported", addedDate: "2026-09-17" }
     ]
   }
 };
