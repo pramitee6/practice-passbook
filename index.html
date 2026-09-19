@@ -525,7 +525,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-16" },
       { q: "Your open-banking data provider partner just announced they're deprecating a legacy API your product depends on, with a 6-month migration window. Internal engineering estimates the full migration will take 8 months. How do you manage this?",
         a: "Immediately clarify with the partner what actually happens at the deprecation deadline — a hard cutoff, a grace period, or a throttled/degraded legacy access — since the real urgency depends entirely on this, and vendors often have more flexibility than the initial announcement suggests, especially for an established customer. In parallel, break the 8-month migration into phases and identify whether a partial migration (the highest-volume or highest-risk integrations first) could be completed within the 6-month window, even if some lower-priority integrations migrate after. Escalate the timeline gap to leadership now with a concrete ask (more engineering resources, a negotiated extension, or accepted temporary risk on the tail integrations) rather than waiting until month 5 to reveal the shortfall.",
-        source: "claude", addedDate: "2026-09-17" }
+        source: "claude", addedDate: "2026-09-17" },
+      { q: "You're told you have 2 additional engineers for one quarter, on loan from another team, with no guarantee of them beyond that quarter. How do you decide what to have them work on?",
+        a: "Prioritize work that produces standalone value within the quarter even if the loan isn't extended — don't start a project that only pays off if the engineers stay longer than committed, since losing them mid-project wastes the investment and leaves a half-built feature nobody owns. Look for a backlog item that's high-value but was previously deprioritized purely due to capacity, not due to unclear scope or unresolved dependencies, since a loaned team has no ramp-up slack for ambiguous work. Set a checkpoint at the midpoint of the quarter to assess real progress and renegotiate scope early if needed, rather than discovering at the end that the timeline was too optimistic for a team new to your codebase.",
+        source: "claude", addedDate: "2026-09-19" }
     ]
   },
   analytics: {
@@ -593,7 +596,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-16" },
       { q: "Pick a specific customer segment for a challenger bank's paycheck-advance feature and walk through the full funnel you'd examine — discovery, activation, funded use, retention, and withdrawal/guardrail metrics.",
         a: "For a segment like gig workers with irregular income: discovery (% of eligible users who see and engage with the feature — placement matters since this isn't a product people search for), activation (% who complete setup, e.g. linking income verification), funded use (% who actually draw an advance, not just enroll — enrollment without use signals a trust or awareness gap, not eligibility). Retention: repeat usage rate without becoming a permanent crutch (healthy usage looks like occasional draws tied to real income gaps, not every single pay cycle). Guardrail: withdrawal/default rate and a financial-wellbeing proxy (e.g. whether reliance is increasing or stable over time), since a paycheck-advance product succeeding purely on repeat-usage growth without this guardrail could mean it's fostering dependency rather than genuinely helping.",
-        source: "claude", addedDate: "2026-09-17" }
+        source: "claude", addedDate: "2026-09-17" },
+      { q: "You're launching a crypto staking product. How would you define activation and success metrics, and what's a misleading metric you'd want to avoid over-indexing on?",
+        a: "Activation should be measured as first-stake-completed within a defined window (not just 'staking enabled'), since enabling a feature and actually committing funds are very different intent signals. Track net flows into staking (not gross, since gross can be inflated by people staking then quickly unstaking), revenue (protocol/platform fee capture), retention lift (do stakers churn less than non-stakers, controlling for the fact that stakers may already be more committed users), and support cost per staker (staking introduces new confusion — lockup periods, slashing risk — that drives support volume). The misleading metric to avoid over-indexing on is raw AUM staked, since a small number of whale accounts can dominate that number and mask whether the product is actually working for the broader retail base — segment by account size before trusting an aggregate AUM trend.",
+        source: "reported", addedDate: "2026-09-19" }
     ]
   },
   behavioral: {
@@ -662,7 +668,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-15" },
       { q: "Tell me about a time you had to make a call between two engineers/designers with conflicting technical opinions, where you didn't have the technical depth to independently judge who was right.",
         a: "STAR template — Situation: the specific disagreement and why it mattered enough that a decision couldn't just be deferred. Task: your role given you weren't the technical authority — this tests judgment and process, not technical expertise. Action: focus on how you structured the decision without pretending false expertise — did you get both sides to argue against a shared set of criteria (user impact, timeline, maintainability), bring in a neutral third technical opinion, or run a small experiment to settle it empirically? Result: what was decided, whether it held up, and how both engineers felt about the process afterward even if only one 'won.'",
-        source: "claude", addedDate: "2026-09-17" }
+        source: "claude", addedDate: "2026-09-17" },
+      { q: "Tell me about a time you had to operate in a messy, regulated, high-stakes environment where you didn't have a clean playbook to follow.",
+        a: "STAR template — Situation: what made the environment genuinely ambiguous (new regulation with no precedent, a first-of-its-kind product, conflicting guidance from different stakeholders). Task: your role in moving forward despite the lack of a clean playbook. Action: focus on how you built confidence incrementally — smaller, reversible bets, checking in with compliance/legal at decision points rather than only at the end, documenting your reasoning so it could be defended later. Result: the outcome, and specifically what judgment call you're most confident was right in hindsight, since this question is testing composure under genuine ambiguity, not whether you had a textbook answer.",
+        source: "claude", addedDate: "2026-09-19" }
     ]
   },
   fintech_domain: {
@@ -803,7 +812,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-16" },
       { q: "Your AI-native expense-management platform's core differentiator is LLM-powered auto-categorization. A well-funded competitor just announced they're open-sourcing a comparable categorization model. How do you respond strategically?",
         a: "Same situation as any AI-feature moat eroding — the model itself commoditizes fast, so the real question is whether your differentiation was ever purely the model or also the surrounding workflow (how corrections feed back into the system, integration depth with existing accounting/ERP tools, trust built through accuracy track record). Double down on the parts of the experience that compound with usage and data (your model gets better with your specific customer base's correction history, which a newly open-sourced model starts from zero on). Consider whether to also open-source or commoditize the now-less-differentiated piece yourself to focus resources on the next layer of differentiation, rather than defending a position that's already lost its edge.",
-        source: "claude", addedDate: "2026-09-18" }
+        source: "claude", addedDate: "2026-09-18" },
+      { q: "Your crypto exchange is deciding whether to list a new, high-demand but higher-risk token that a competitor just listed and is getting significant trading volume on. How do you evaluate whether to follow?",
+        a: "Don't treat 'a competitor listed it and it's getting volume' as sufficient justification — evaluate the token independently against your own listing criteria (liquidity depth, smart-contract security audit status, regulatory classification risk, team/project legitimacy), since chasing competitor volume on a token that later turns out to be fraudulent or gets pulled by regulators costs far more in trust than the missed short-term volume. If it passes your own bar, move quickly since being meaningfully late to a trending token does cost real volume — but the sequencing should be 'pass our diligence, then move fast,' not 'move fast because a competitor moved.'",
+        source: "claude", addedDate: "2026-09-19" }
     ]
   },
   rca: {
@@ -945,7 +957,10 @@ const TOPICS = {
         source: "claude", addedDate: "2026-09-17" },
       { q: "You're launching an AI-native finance platform's automation features, but your target buyer (a controller or finance leader) is worried that AI in financial workflows creates audit and compliance risk, not just efficiency gains. What's your GTM approach?",
         a: "Lead with auditability, not automation speed — controllers care more about 'can I trace and defend every decision to an auditor' than about time saved, so surface a clear, exportable audit trail for every AI-driven decision (what it categorized, why, and any human override) as a headline feature, not a footnote. Position early adoption around low-risk, high-volume categories first (routine recurring expenses) rather than pitching full end-to-end automation on day one, letting the buyer build trust incrementally. Use compliance-specific proof points (SOC 2, audit-firm validation, or a case study showing successful audit pass-through) as GTM collateral, since a controller's real objection is risk exposure, not whether the technology works.",
-        source: "claude", addedDate: "2026-09-18" }
+        source: "claude", addedDate: "2026-09-18" },
+      { q: "You're launching earned-wage-access (EWA) as an employer benefit, but your actual end users (employees) never choose to buy it — the employer does. What's your GTM motion, and how does it differ from a typical B2C fintech launch?",
+        a: "This is fundamentally a B2B2C motion — the GTM target is HR/benefits leaders at employers, not employees directly, so the pitch needs to address employer concerns (payroll integration complexity, cost to the company, liability/compliance exposure) before employee-facing value even matters. Once an employer adopts, the GTM problem shifts to internal activation — driving employee awareness and usage within that employer, which needs employer-provided channels (onboarding materials, internal comms) since you have no direct marketing access to employees otherwise. Track employer adoption rate as the top-of-funnel GTM metric, but track employee activation rate within adopting employers as the metric that actually proves the product delivers value, since a benefit employers adopt but employees never use isn't a GTM win, just a signed contract.",
+        source: "claude", addedDate: "2026-09-19" }
     ]
   },
   faq: {
@@ -1055,7 +1070,10 @@ const TOPICS = {
         source: "reported", addedDate: "2026-09-18" },
       { q: "Walk through how a real-time balance update needs to work correctly when multiple transactions hit an account simultaneously — what ledger-accuracy guarantees does the system need?",
         a: "The core requirement is atomicity and ordering — concurrent transactions against the same account need to be serialized (e.g. via row-level locking or an append-only ledger with sequential entries) so two simultaneous debits can't both read a balance that permits them and overdraw the account (a classic race condition). The system needs strong consistency for the balance-check-and-debit operation specifically, even if other parts of the system can tolerate eventual consistency, since money moving incorrectly is a fundamentally different risk than a slightly stale UI. Idempotency keys on each transaction prevent a retry (from a timeout or network blip) from double-processing the same debit, and an append-only ledger (rather than just updating a balance field) gives you an audit trail to reconstruct exactly how a balance was reached if a dispute arises.",
-        source: "reported", addedDate: "2026-09-18" }
+        source: "reported", addedDate: "2026-09-18" },
+      { q: "You're launching a crypto staking product. How would you define activation and success metrics, and what's a misleading metric you'd want to avoid over-indexing on?",
+        a: "Activation should be measured as first-stake-completed within a defined window (not just 'staking enabled'), since enabling a feature and actually committing funds are very different intent signals. Track net flows into staking (not gross, since gross can be inflated by people staking then quickly unstaking), revenue (protocol/platform fee capture), retention lift (do stakers churn less than non-stakers, controlling for the fact that stakers may already be more committed users), and support cost per staker (staking introduces new confusion — lockup periods, slashing risk — that drives support volume). The misleading metric to avoid over-indexing on is raw AUM staked, since a small number of whale accounts can dominate that number and mask whether the product is actually working for the broader retail base — segment by account size before trusting an aggregate AUM trend.",
+        source: "reported", addedDate: "2026-09-19" }
     ]
   }
 };
